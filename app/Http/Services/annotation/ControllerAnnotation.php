@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\services\annotation;
+namespace App\Http\Services\annotation;
 
 use Doctrine\Common\Annotations\Annotation\Attributes;
 use Doctrine\Common\Annotations\Annotation\Required;

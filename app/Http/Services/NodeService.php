@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\services;
+namespace App\Http\Services;
 
 use App\Http\services\auth\Node;
 use Doctrine\Common\Annotations\AnnotationException;
