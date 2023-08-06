@@ -143,7 +143,7 @@
                     layer.close(loading);
                     if (data.code === 1) {
                         layer.msg(data.msg, {icon: 1}, function () {
-                            window.location.href = location.protocol + '//' + location.host + '/' + data.url;
+                            window.location.href = '/admin';
                         });
                     } else {
                         layer.msg(data.msg, {icon: 2});
