@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Http\Controllers\admin\ErrorPageController;
 use App\Http\JumpTrait;
+use App\Http\Services\AuthService;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,8 +25,8 @@ class CheckAuth
         $adminConfig = config('admin');
         $parameters  = request()->route()->parameters;
         $controller  = $parameters['controller'] ?? 'index';
+        $adminId     = session('admin.id', 0);
         if (!in_array($controller, $adminConfig['no_login_controller'])) {
-            $adminId    = session('admin.id');
             $expireTime = session('admin.expire_time');
             if (empty($adminId)) {
                 return $this->responseView('请先登录后台', [], __url("/login"));
@@ -34,6 +35,19 @@ class CheckAuth
             if ($expireTime !== true && time() > $expireTime) {
                 $request->session()->forget('admin');
                 return $this->responseView('登录已过期，请重新登录', [], __url("/login"));
+            }
+        }
+        // 验证权限
+        if ($adminId) {
+            $authService = app(AuthService::class, ['adminId' => $adminId]);
+            $currentNode = $authService->getCurrentNode();
+            if (!in_array($controller, $adminConfig['no_auth_controller']) && !in_array($controller, $adminConfig['no_auth_node'])) {
+                $check = $authService->checkNode($currentNode);
+                if (!$check) return $this->error('无权限访问');
+                // 判断是否为演示环境
+                if (env('EASYADMIN.IS_DEMO', false) && \request()->method() == 'POST') {
+                    return $this->responseView('演示环境下不允许修改');
+                }
             }
         }
         return $next($request);

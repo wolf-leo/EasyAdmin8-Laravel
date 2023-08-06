@@ -3,6 +3,8 @@
 namespace App\Http\Services;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 /**
  * 权限验证服务
@@ -86,7 +88,7 @@ class AuthService
         if (!isset($this->nodeList[$node])) {
             return false;
         }
-        $nodeInfo = $this->nodeList[$node];
+        $nodeInfo = get_object_vars($this->nodeList[$node]);
         if ($nodeInfo['is_auth'] == 0) {
             return true;
         }
@@ -95,7 +97,7 @@ class AuthService
             return false;
         }
         // 判断该节点是否允许访问
-        if (in_array($node, $this->adminNode)) {
+        if (isset($this->adminNode[$node])) {
             return true;
         }
         return false;
@@ -105,9 +107,10 @@ class AuthService
      * 获取当前节点
      * @return string
      */
-    public function getCurrentNode()
+    public function getCurrentNode(): string
     {
-        return $this->parseNodeStr(request()->controller() . '/' . request()->action());
+        $parameters = request()->route()->parameters ?? [];
+        return ($parameters['secondary'] ?? '') . '.' . ($parameters['controller'] ?? '') . '/' . ($parameters['action'] ?? '');
     }
 
     /**
@@ -124,20 +127,16 @@ class AuthService
                     ])->first();
         $adminInfo = get_object_vars($adminInfo);
         if (!empty($adminInfo) && !empty($adminInfo['auth_ids'])) {
-            $buildAuthSql     = DB::table($this->config['system_auth'])
-                ->distinct(true)
-                ->whereIn('id', $adminInfo['auth_ids'])
-                ->select('id')
-                ->toSql();
-            $buildAuthNodeSql = DB::table($this->config['system_auth_node'])
-                ->distinct(true)
-                ->where("auth_id IN {$buildAuthSql}")
-                ->select('node_id')
-                ->toSql();
-            $nodeList         = DB::table($this->config['system_node'])
-                ->distinct(true)
-                ->where("id IN {$buildAuthNodeSql}")->get()
-                ->keyBy('node')->toArray();
+
+            $nodeIds  = DB::table($this->config['system_auth_node'])
+                ->whereIn('auth_id', explode(',', $adminInfo['auth_ids']))
+                ->select('node_id')->get()->map(function ($value) {
+                    return (array)$value;
+                })->toArray();
+            $nodeList = DB::table($this->config['system_node'])
+                ->whereIn('id', $nodeIds)->get()->keyBy('node')->map(function ($value) {
+                    return (array)$value;
+                })->toArray();
         }
         return $nodeList;
     }
@@ -160,14 +159,14 @@ class AuthService
      * @param string $node
      * @return string
      */
-    public function parseNodeStr($node): string
+    public function parseNodeStr(string $node): string
     {
         $array = explode('/', $node);
         foreach ($array as $key => $val) {
             if ($key == 0) {
                 $val = explode('.', $val);
                 foreach ($val as &$vo) {
-                    $vo = \think\helper\Str::snake(lcfirst($vo));
+                    $vo = Str::snake(lcfirst($vo));
                 }
                 $val         = implode('.', $val);
                 $array[$key] = $val;
