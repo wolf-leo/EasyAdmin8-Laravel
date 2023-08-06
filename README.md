@@ -33,7 +33,7 @@
 
 4.设置 APP_KEY ，命令 php artisan key:generate
 
-5.一命令启动(php artisan serve)或者配置伪静态(以 Nginx 为例)
+5.命令启动(php artisan serve)或者配置伪静态(以 Nginx 为例)
   
 location / {
      try_files $uri $uri/ /index.php$is_args$query_string;  
@@ -47,19 +47,19 @@ location / {
 
 ## 界面预览
 
-###        
+###          
 
 <center>
   <img src="public/static/common/images/easyadmin8-01.png" />
 </center>
 
-###        
+###          
 
 <center>
   <img src="public/static/common/images/easyadmin8-02.png" />
 </center>
 
-###        
+###          
 
 <center>
   <img src="public/static/common/images/easyadmin8-03.png" />
