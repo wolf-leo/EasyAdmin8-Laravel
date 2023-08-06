@@ -12,7 +12,7 @@
 
 ## 安装教程
 
-> EasyAdmin8-Laravel 使用 Composer 来管理项目依赖。因此，在使用 EasyAdmin8 之前，请确保你的机器已经安装了 Composer。
+> EasyAdmin8-Laravel 使用 Composer 来管理项目依赖。因此，在使用 EasyAdmin8-Laravel 之前，请确保你的机器已经安装了 Composer。
 
 ### 通过git下载安装包，composer安装依赖包
 
@@ -47,19 +47,19 @@ location / {
 
 ## 界面预览
 
-###       
+###        
 
 <center>
   <img src="public/static/common/images/easyadmin8-01.png" />
 </center>
 
-###       
+###        
 
 <center>
   <img src="public/static/common/images/easyadmin8-02.png" />
 </center>
 
-###       
+###        
 
 <center>
   <img src="public/static/common/images/easyadmin8-03.png" />
@@ -89,7 +89,7 @@ location / {
 
 > 任何用户在使用 `EasyAdmin8-Laravel` 后台框架前，请您仔细阅读并透彻理解本声明。您可以选择不使用`EasyAdmin8-Laravel`后台框架，若您一旦使用`EasyAdmin8-Laravel`后台框架，您的使用行为即被视为对本声明全部内容的认可和接受。
 
-* 请注意，`EasyAdmin8-Laravel` 不可免费商用。
+* 请留意`EasyAdmin8-Laravel` 对应的协议，个人或企业商用请遵循协议或得到相应授权。
 
 * `EasyAdmin8-Laravel`后台框架是一款开源的后台快速开发框架 ，主要用于更便捷地开发后台管理；其尊重并保护所有用户的个人隐私权，不窃取任何用户计算机中的信息。更不具备用户数据存储等网络传输功能。
 
