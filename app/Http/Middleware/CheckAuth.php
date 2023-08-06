@@ -43,10 +43,10 @@ class CheckAuth
             $currentNode = $authService->getCurrentNode();
             if (!in_array($controller, $adminConfig['no_auth_controller']) && !in_array($controller, $adminConfig['no_auth_node'])) {
                 $check = $authService->checkNode($currentNode);
-                if (!$check) return $this->error('无权限访问');
+                if (!$check) return (request()->ajax() || request()->method() == 'POST') ? $this->error('无权限访问') : $this->responseView('无权限访问');
                 // 判断是否为演示环境
                 if (env('EASYADMIN.IS_DEMO', false) && \request()->method() == 'POST') {
-                    return $this->error('演示环境下不允许修改');
+                    return (request()->ajax() || request()->method() == 'POST') ? $this->error('演示环境下不允许修改') : $this->responseView('无权限访问');
                 }
             }
         }

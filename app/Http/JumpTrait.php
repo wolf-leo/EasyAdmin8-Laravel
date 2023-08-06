@@ -96,7 +96,7 @@ trait JumpTrait
      */
     protected function getResponseType(): string
     {
-        return (request()->ajax() || request()->post()) ? 'json' : 'html';
+        return (request()->ajax() || request()->method() == 'POST') ? 'json' : 'html';
     }
 
 }
