@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\admin\system;
 
 use App\Http\Controllers\common\AdminController as Controller;
-use App\Http\services\annotation\NodeAnnotation;
-use App\Http\services\annotation\ControllerAnnotation;
-use App\Http\services\TriggerService;
+use App\Http\Services\annotation\NodeAnnotation;
+use App\Http\Services\annotation\ControllerAnnotation;
+use App\Http\Services\TriggerService;
 use App\Models\SystemAdmin;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;

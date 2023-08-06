@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\common\AdminController;
-use App\Http\services\MenuService;
-use App\Http\services\UploadService;
+use App\Http\Services\MenuService;
+use App\Http\Services\UploadService;
 use App\Models\SystemUploadfile;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;

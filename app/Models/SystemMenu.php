@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Http\services\SystemLogService;
+use App\Http\Services\SystemLogService;
 
 class SystemMenu extends BaseModel
 {

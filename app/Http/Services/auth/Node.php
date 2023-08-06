@@ -6,9 +6,9 @@ use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\DocParser;
-use App\Http\services\annotation\ControllerAnnotation;
-use App\Http\services\annotation\NodeAnnotation;
-use App\Http\services\tool\CommonTool;
+use App\Http\Services\annotation\ControllerAnnotation;
+use App\Http\Services\annotation\NodeAnnotation;
+use App\Http\Services\tool\CommonTool;
 use ReflectionException;
 
 /**

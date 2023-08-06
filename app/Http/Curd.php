@@ -2,7 +2,7 @@
 
 namespace App\Http;
 
-use App\Http\services\tool\CommonTool;
+use App\Http\Services\tool\CommonTool;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;

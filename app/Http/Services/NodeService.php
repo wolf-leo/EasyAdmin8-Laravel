@@ -2,7 +2,7 @@
 
 namespace App\Http\Services;
 
-use App\Http\services\auth\Node;
+use App\Http\Services\auth\Node;
 use Doctrine\Common\Annotations\AnnotationException;
 
 class NodeService

@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Http\services\SystemLogService;
-use App\Http\services\tool\CommonTool;
+use App\Http\Services\SystemLogService;
+use App\Http\Services\tool\CommonTool;
 use Closure;
 use Illuminate\Http\Request;
 

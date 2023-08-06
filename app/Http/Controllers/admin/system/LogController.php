@@ -6,8 +6,8 @@ use App\Http\Controllers\common\AdminController;
 use App\Models\SystemLog;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
-use App\Http\services\annotation\NodeAnnotation;
-use App\Http\services\annotation\ControllerAnnotation;
+use App\Http\Services\annotation\NodeAnnotation;
+use App\Http\Services\annotation\ControllerAnnotation;
 
 /**
  * @ControllerAnnotation(title="操作日志管理")

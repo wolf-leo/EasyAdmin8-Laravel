@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Http\services\SystemLogService;
+use App\Http\Services\SystemLogService;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class SystemLog extends BaseModel
