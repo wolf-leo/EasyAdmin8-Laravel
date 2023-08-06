@@ -46,7 +46,7 @@ class CheckAuth
                 if (!$check) return $this->error('无权限访问');
                 // 判断是否为演示环境
                 if (env('EASYADMIN.IS_DEMO', false) && \request()->method() == 'POST') {
-                    return $this->responseView('演示环境下不允许修改');
+                    return $this->error('演示环境下不允许修改');
                 }
             }
         }
