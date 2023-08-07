@@ -43,7 +43,7 @@ location / {
 
 ## CURD命令大全
 
-> 计划中...
+> 参考 [CURD命令大全](CURD.md)
 
 ## 界面预览
 
