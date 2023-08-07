@@ -104,9 +104,9 @@ class AdminController extends Controller
         if (empty($template)) {
             $basePath = ".{$this->controller}.{$this->action}";
             if ($this->secondary) {
-                $template = $this->adminConfig['admin_alias_name'] . '.' . $this->secondary . $basePath;
+                $template = 'admin.' . $this->secondary . $basePath;
             } else {
-                $template = $this->adminConfig['admin_alias_name'] . $basePath;
+                $template = 'admin' . $basePath;
             }
         }
         return view($template, $args);

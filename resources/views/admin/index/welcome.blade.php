@@ -159,8 +159,8 @@
                                 <td>Gitee</td>
                                 <td>
                                     <div class="layui-btn-container">
-                                        <a href='https://gitee.com/wolf18/easyAdmin8' target="_blank">
-                                            <img src='https://gitee.com/wolf18/easyAdmin8/badge/star.svg?theme=dark' alt='star'/>
+                                        <a href='https://gitee.com/wolf18/EasyAdmin8-Laravel' target="_blank">
+                                            <img src='https://gitee.com/wolf18/EasyAdmin8-Laravel/badge/star.svg?theme=dark' alt='star'/>
                                         </a>
                                     </div>
                                 </td>
@@ -168,7 +168,7 @@
                             <tr>
                                 <td>Github</td>
                                 <td>
-                                    <a href="https://github.com/wolf-leo/easyAdmin8" target="_blank" style="text-decoration: none;">
+                                    <a href="https://github.com/wolf-leo/EasyAdmin8-Laravel" target="_blank" style="text-decoration: none;">
                                         <i class="layui-icon layui-icon-github" style="font-size: 25px; color: #333333;"></i>
                                     </a>
                                 </td>
