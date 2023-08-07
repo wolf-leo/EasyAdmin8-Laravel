@@ -8,7 +8,13 @@
 >
 > 演示地址：[http://laravel.easyadmin8.top/admin](http://laravel.easyadmin8.top/admin)
 >
->##### 【如果不能访问，可以自行本地搭建预览或参考下方界面预览图】
+>【如果不能访问，可以自行本地搭建预览或参考下方界面预览图】
+
+## 所有PHP版本
+> ThinKPHP:[GitHub](https://github.com/wolf-leo/EasyAdmin8)  [Gitee](https://gitee.com/wolf18/easyAdmin8)
+>
+> Laravel :[GitHub](https://github.com/wolf-leo/EasyAdmin8-Laravel)  [Gitee](https://gitee.com/wolf18/EasyAdmin8-Laravel)
+>
 
 ## 安装教程
 
