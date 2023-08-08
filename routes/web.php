@@ -27,6 +27,7 @@ Route::controller(\App\Http\Controllers\common\InstallController::class)->group(
 $admin = config('admin.admin_alias_name');
 Route::middleware([\App\Http\Middleware\SystemLog::class, \App\Http\Middleware\CheckAuth::class])->group(function () use ($admin) {
     Route::prefix($admin)->group(function () {
+
         // 后台首页
         Route::get('/', [\App\Http\Controllers\admin\IndexController::class, 'index']);
 
