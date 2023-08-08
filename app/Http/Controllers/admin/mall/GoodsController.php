@@ -22,6 +22,24 @@ class GoodsController extends AdminController
     }
 
     /**
+     * @NodeAnnotation(title="列表")
+     */
+    public function index(): View|JsonResponse
+    {
+        if (!request()->ajax()) return $this->fetch();
+        list($page, $limit, $where) = $this->buildTableParams();
+        $count = $this->model->where($where)->count();
+        $list  = $this->model->where($where)->with(['cate'])->orderByDesc($this->order)->paginate($limit)->items();
+        $data  = [
+            'code'  => 0,
+            'msg'   => '',
+            'count' => $count,
+            'data'  => $list,
+        ];
+        return json($data);
+    }
+
+    /**
      * @NodeAnnotation(title="入库")
      */
     public function stock(): View|JsonResponse
