@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Http\Controllers\admin\ErrorPageController;
 use App\Http\JumpTrait;
 use Closure;
 use Illuminate\Http\Request;
