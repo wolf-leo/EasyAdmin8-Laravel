@@ -35,7 +35,7 @@ class SystemLog
                 in_array($key, $this->sensitiveParams) && $params[$key] = "***********";
             }
             $method = strtolower($request->method());
-            $url    = $request->url();
+            $url    = $request->getPathInfo();
             if (in_array($method, ['post', 'put', 'delete'])) {
                 $ip   = CommonTool::getRealIp();
                 $data = [
