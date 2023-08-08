@@ -11,5 +11,5 @@ class MallGoods extends BaseModel
     {
         return $this->hasOne(MallCate::class, 'id', 'cate_id')->select('id', 'title');
     }
-    
+
 }
