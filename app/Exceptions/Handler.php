@@ -44,8 +44,6 @@ class Handler extends ExceptionHandler
         }
 
         //系统默认错误
-        if (config('app.debug')) {
-            return parent::render($request, $e);
-        }
+        return parent::render($request, $e);
     }
 }
