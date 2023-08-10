@@ -89,6 +89,7 @@ class CommonTool
     public static function replaceTemplate($string, $array): mixed
     {
         foreach ($array as $key => $val) {
+            if (is_null($val)) $val = '';
             $string = str_replace("{{" . $key . "}}", $val, $string);
         }
         return $string;
