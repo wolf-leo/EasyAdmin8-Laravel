@@ -10,12 +10,6 @@
 >
 >【如果不能访问，可以自行本地搭建预览或参考下方界面预览图】
 
-## 所有PHP版本
-> ThinKPHP:[GitHub](https://github.com/wolf-leo/EasyAdmin8)  [Gitee](https://gitee.com/wolf18/easyAdmin8)
->
-> Laravel :[GitHub](https://github.com/wolf-leo/EasyAdmin8-Laravel)  [Gitee](https://gitee.com/wolf18/EasyAdmin8-Laravel)
->
-
 ## 安装教程
 
 > EasyAdmin8-Laravel 使用 Composer 来管理项目依赖。因此，在使用 EasyAdmin8-Laravel 之前，请确保你的机器已经安装了 Composer。
@@ -69,6 +63,28 @@ location / {
 
 <center>
   <img src="public/static/common/images/easyadmin8-03.png" />
+</center>
+
+## 所有PHP版本
+
+> #### ThinKPHP:
+>
+>   [https://github.com/wolf-leo/EasyAdmin8](https://github.com/wolf-leo/EasyAdmin8)
+>
+>   [https://gitee.com/wolf18/easyAdmin8](https://gitee.com/wolf18/easyAdmin8)
+>
+> #### Laravel :
+>
+>   [https://github.com/wolf-leo/EasyAdmin8-Laravel](https://github.com/wolf-leo/EasyAdmin8-Laravel)
+>
+>   [https://gitee.com/wolf18/EasyAdmin8-Laravel](https://gitee.com/wolf18/EasyAdmin8-Laravel)
+
+## 交流群
+
+<center>
+
+![EasyAdmin8-Laravel 交流群](public/static/common/images/EasyAdmin8-Laravel.png)
+
 </center>
 
 ## 相关文档
