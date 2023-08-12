@@ -2,11 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class SystemConfig extends Model
+class SystemConfig extends BaseModel
 {
-    protected $table = "system_config";
 
-    public $timestamps = false;
 }
