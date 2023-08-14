@@ -90,9 +90,10 @@ class MenuController extends AdminController
             if ($validator->fails()) {
                 return $this->error($validator->errors()->first());
             }
-            if ($row->pid == HOME_PID) $post['pid'] = HOME_PID;
+            $params = [];
+            if ($row->pid == HOME_PID) $params['pid'] = HOME_PID;
             try {
-                $save = updateFields($this->model, $row);
+                $save = updateFields($this->model, $row, $params);
             } catch (\Exception $e) {
                 return $this->error('保存失败');
             }
