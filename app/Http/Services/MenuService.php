@@ -29,7 +29,7 @@ class MenuService
             ->where('pid', HOME_PID)
             ->select('title', 'icon', 'href')->first();
         !empty($data) && $data->href = __url('/' . $data->href);
-        return get_object_vars($data);
+        return $data ? get_object_vars($data) : [];
     }
 
     public function getMenuTree(): array
