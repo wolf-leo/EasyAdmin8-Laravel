@@ -78,6 +78,12 @@ location / {
 >   [https://github.com/wolf-leo/EasyAdmin8-Laravel](https://github.com/wolf-leo/EasyAdmin8-Laravel)
 >
 >   [https://gitee.com/wolf18/EasyAdmin8-Laravel](https://gitee.com/wolf18/EasyAdmin8-Laravel)
+>
+> #### webman :
+>
+>   [https://github.com/wolf-leo/EasyAdmin8-webman](https://github.com/wolf-leo/EasyAdmin8-webman)
+>
+>   [https://gitee.com/wolf18/EasyAdmin8-webman](https://gitee.com/wolf18/EasyAdmin8-webman)
 
 ## 交流群
 
