@@ -25,7 +25,7 @@
                 @if($captcha == 1)
                     <div id="validatePanel" class="item" style="width: 137px;">
                         <input type="text" name="captcha" placeholder="请输入验证码" maxlength="4">
-                        <img id="refreshCaptcha" class="validateImg" src="{:url('login/captcha')}" onclick="this.src='{:url(\'login/captcha\')}?seed='+Math.random()">
+                        <img id="refreshCaptcha" class="validateImg" src="{{__url('login/captcha')}}" onclick="this.src='{{__url('login/captcha')}}?seed='+Math.random()">
                     </div>
                 @endif
             </div>
