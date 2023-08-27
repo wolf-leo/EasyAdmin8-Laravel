@@ -17,6 +17,7 @@ return [
     // 不需要验证登录的节点
     'no_login_node'        => [
         'login/index',
+        'login/captcha',
         'login/out',
     ],
 
