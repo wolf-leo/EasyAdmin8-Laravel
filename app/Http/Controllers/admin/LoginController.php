@@ -4,6 +4,8 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\common\AdminController;
 use App\Models\SystemAdmin;
+use Gregwar\Captcha\CaptchaBuilder;
+use Gregwar\Captcha\PhraseBuilder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
@@ -22,11 +24,15 @@ class LoginController extends AdminController
 
     public function index(): View|JsonResponse
     {
+        $captcha = env('EASYADMIN.CAPTCHA', false);
         if (!request()->ajax()) {
-            $captcha = env('EASYADMIN.CAPTCHA', 1);
             return view('admin.login', compact('captcha'));
         }
-
+        if ($captcha) {
+            if (strtolower(request()->post('captcha')) !== request()->session()->get('captcha')) {
+                return $this->error('图片验证码错误');
+            }
+        }
         $post      = \request()->post();
         $rules     = [
             'username'   => 'required',
@@ -55,6 +61,22 @@ class LoginController extends AdminController
         $admin['expire_time'] = $post['keep_login'] == 1 ? true : time() + 7200;
         session(compact('admin'));
         return $this->success('登录成功', [], __url());
+    }
+
+    public function captcha(): Response
+    {
+        $length  = 4;
+        $chars   = '0123456789';
+        $phrase  = new PhraseBuilder($length, $chars);
+        $builder = new CaptchaBuilder(null, $phrase);
+        // 生成验证码
+        $builder->build();
+        // 将验证码的值存储到session中
+        request()->session()->put('captcha', strtolower($builder->getPhrase()));
+        // 获得验证码图片二进制数据
+        $img_content = $builder->get();
+        // 输出验证码二进制数据
+        return response($img_content, 200, ['Content-Type' => 'image/jpeg']);
     }
 
     public function out(): Response|JsonResponse
