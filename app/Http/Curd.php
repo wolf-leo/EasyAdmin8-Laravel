@@ -5,12 +5,12 @@ namespace App\Http;
 use App\Http\Services\tool\CommonTool;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
-use JetBrains\PhpStorm\NoReturn;
 use jianyan\excel\Excel;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
+use App\Http\Services\annotation\NodeAnnotation;
+use App\Http\Services\annotation\ControllerAnnotation;
 
 /**
  * 后台CURD复用
@@ -21,7 +21,7 @@ trait Curd
 {
 
     /**
-     * @NodeAnotation(title="列表")
+     * @NodeAnnotation(title="列表")
      */
     public function index(): View|JsonResponse
     {
@@ -42,7 +42,7 @@ trait Curd
     }
 
     /**
-     * @NodeAnotation(title="添加")
+     * @NodeAnnotation(title="添加")
      */
     public function add(): View|JsonResponse
     {
@@ -58,7 +58,7 @@ trait Curd
     }
 
     /**
-     * @NodeAnotation(title="编辑")
+     * @NodeAnnotation(title="编辑")
      */
     public function edit(): View|JsonResponse
     {
@@ -68,7 +68,7 @@ trait Curd
         if (request()->ajax()) {
             try {
                 $save = updateFields($this->model, $row);
-            } catch (\PDOException | \Exception $e) {
+            } catch (\PDOException|\Exception $e) {
                 return $this->error('保存失败:' . $e->getMessage());
             }
             return $save ? $this->success('保存成功') : $this->error('保存失败');
@@ -78,7 +78,7 @@ trait Curd
     }
 
     /**
-     * @NodeAnotation(title="删除")
+     * @NodeAnnotation(title="删除")
      */
     public function delete(): JsonResponse
     {
@@ -89,14 +89,14 @@ trait Curd
         if (empty($row)) return $this->error('数据不存在');
         try {
             $save = $this->model->whereIn('id', $id)->delete();
-        } catch (\PDOException | \Exception $e) {
+        } catch (\PDOException|\Exception $e) {
             return $this->error('删除失败:' . $e->getMessage());
         }
         return $save ? $this->success('删除成功') : $this->error('删除失败');
     }
 
     /**
-     * @NodeAnotation(title="导出")
+     * @NodeAnnotation(title="导出")
      */
     public function export(): View|bool
     {
@@ -118,13 +118,13 @@ trait Curd
         $fileName = time();
         try {
             return Excel::exportData($list, $header, $fileName, 'xlsx');
-        } catch (Exception | \PhpOffice\PhpSpreadsheet\Exception$e) {
+        } catch (Exception|\PhpOffice\PhpSpreadsheet\Exception$e) {
             return $this->error($e->getMessage());
         }
     }
 
     /**
-     * @NodeAnotation(title="属性修改")
+     * @NodeAnnotation(title="属性修改")
      */
     public function modify(): JsonResponse
     {
@@ -150,7 +150,7 @@ trait Curd
         try {
             foreach ($post as $key => $item) if ($key == 'field') $row->$item = $post['value'];
             $row->save();
-        } catch (\PDOException | \Exception $e) {
+        } catch (\PDOException|\Exception $e) {
             return $this->error("操作失败:" . $e->getMessage());
         }
         return $this->success('保存成功');
