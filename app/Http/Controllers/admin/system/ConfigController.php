@@ -38,7 +38,8 @@ class ConfigController extends AdminController
     public function save(): JsonResponse
     {
         if (!request()->ajax()) return $this->error();
-        $post = request()->post();
+        $post         = request()->post();
+        $notAddFields = ['_token', 'file', 'group'];
         try {
             $group = $post['group'] ?? '';
             if (empty($group)) return $this->error('保存失败');
@@ -48,11 +49,11 @@ class ConfigController extends AdminController
                 $this->model->where('name', 'upload_allow_type')->update(['value' => implode(',', array_keys($upload_types))]);
             }
             foreach ($post as $key => $val) {
-                if ($key == '_token') continue;
+                if (in_array($key, $notAddFields)) continue;
                 if ($this->model->where('name', $key)->count()) {
                     $this->model->where('name', $key)->update(['value' => $val,]);
                 } else {
-                    $this->model->save(
+                    $this->model->insert(
                         [
                             'name'  => $key,
                             'value' => $val,
