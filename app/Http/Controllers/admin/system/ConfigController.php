@@ -19,7 +19,9 @@ class ConfigController extends AdminController
     public function initialize()
     {
         parent::initialize();
-        $this->model = new SystemConfig();
+        $this->model  = new SystemConfig();
+        $upload_types = config('admin.upload_types');
+        $this->assign(compact('upload_types'));
     }
 
     /**
@@ -38,9 +40,25 @@ class ConfigController extends AdminController
         if (!request()->ajax()) return $this->error();
         $post = request()->post();
         try {
+            $group = $post['group'] ?? '';
+            if (empty($group)) return $this->error('保存失败');
+            if ($group == 'upload') {
+                $upload_types = config('admin.upload_types');
+                // 兼容旧版本
+                $this->model->where('name', 'upload_allow_type')->update(['value' => implode(',', array_keys($upload_types))]);
+            }
             foreach ($post as $key => $val) {
-                if (in_array($key, ['file', 'files'])) continue;
-                $this->model->where('name', $key)->update(['value' => $val,]);
+                if ($key == '_token') continue;
+                if ($this->model->where('name', $key)->count()) {
+                    $this->model->where('name', $key)->update(['value' => $val,]);
+                } else {
+                    $this->model->save(
+                        [
+                            'name'  => $key,
+                            'value' => $val,
+                            'group' => $group,
+                        ]);
+                }
             }
             TriggerService::updateSysconfig();
         } catch (\Exception $e) {

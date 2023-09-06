@@ -13,8 +13,7 @@ File Encoding         : 65001
 Date: 2020-05-17 23:24:06
 */
 
-SET
-FOREIGN_KEY_CHECKS=0;
+SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
 -- Table structure for ea_mall_cate
@@ -219,7 +218,7 @@ VALUES ('57', 'upload_allow_size', 'upload', '1024000', '允许上传的大小',
 INSERT INTO `ea_system_config`
 VALUES ('58', 'upload_allow_mime', 'upload', 'image/gif,image/jpeg,video/x-msvideo,text/plain,image/png', '允许上传的文件mime', '0', null, null);
 INSERT INTO `ea_system_config`
-VALUES ('59', 'upload_allow_type', 'upload', 'local,oss,cos', '可用的上传文件方式', '0', null, null);
+VALUES ('59', 'upload_allow_type', 'upload', 'local,oss,qnoss,cos', '可用的上传文件方式', '0', null, null);
 INSERT INTO `ea_system_config`
 VALUES ('60', 'oss_access_key_id', 'upload', '填你的', '阿里云oss公钥', '0', null, null);
 INSERT INTO `ea_system_config`
@@ -261,7 +260,15 @@ VALUES ('81', 'cos_secret_key', 'upload', '填你的', '腾讯云cos私钥', '0'
 INSERT INTO `ea_system_config`
 VALUES ('82', 'cos_region', 'upload', '填你的', '存储桶地域', '0', null, null);
 INSERT INTO `ea_system_config`
-VALUES ('83', 'tecos_bucket', 'upload', '填你的', '存储桶名称', '0', null, null);
+VALUES ('83', 'cos_bucket', 'upload', '填你的', '存储桶名称', '0', null, null);
+INSERT INTO `ea_system_config`
+VALUES ('84', 'qnoss_access_key', 'upload', '填你的', '访问密钥', '0', null, null);
+INSERT INTO `ea_system_config`
+VALUES ('85', 'qnoss_secret_key', 'upload', '填你的', '安全密钥', '0', null, null);
+INSERT INTO `ea_system_config`
+VALUES ('86', 'qnoss_bucket', 'upload', '填你的', '存储空间', '0', null, null);
+INSERT INTO `ea_system_config`
+VALUES ('87', 'qnoss_domain', 'upload', '填你的', '访问域名', '0', null, null);
 
 -- ----------------------------
 -- Table structure for ea_system_menu

@@ -18,7 +18,9 @@ class UploadfileController extends AdminController
     public function initialize()
     {
         parent::initialize();
-        $this->model = new SystemUploadfile();
+        $this->model  = new SystemUploadfile();
+        $upload_types = config('admin.upload_types');
+        $this->assign(compact('upload_types'));
     }
 
 }

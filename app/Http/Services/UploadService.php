@@ -6,6 +6,9 @@ use App\Models\SystemUploadfile;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use OSS\Core\OssException;
+use OSS\OssClient;
+use Qcloud\Cos\Client;
 
 class UploadService
 {
@@ -106,24 +109,67 @@ class UploadService
         $endpoint        = $config['oss_endpoint'];
         $bucket          = $config['oss_bucket'];
         if ($file->isValid()) {
-            $object = $this->setFilePath($file, 'blog -static/');
+            $object = $this->setFilePath($file, env('EASYADMIN.OSS_STATIC_PREFIX', 'easyadmin8') . '/');
             try {
                 $ossClient       = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
                 $_rs             = $ossClient->putObject($bucket, $object, file_get_contents($file->getRealPath()));
-                $oss_request_url = $_rs['oss - request - url'] ?? '';
+                $oss_request_url = $_rs['oss-request-url'] ?? '';
                 if (empty($oss_request_url)) return ['code' => 0, 'data' => '上传至OSS失败'];
                 $oss_request_url = str_replace('http://', 'https://', $oss_request_url);
+                $this->setSaveData($file);
             } catch (OssException $e) {
                 return ['code' => 0, 'data' => $e->getMessage()];
             }
-
-            $data = $type == 'editor' ? ['state' => 'success', 'msg' => $oss_request_url, 'name' => ''] : ['url' => $oss_request_url];
+            $data = ['url' => $oss_request_url];
+            $this->save($oss_request_url);
             return ['code' => 1, 'data' => $data];
         }
         $data = '上传失败';
         return ['code' => 0, 'data' => $data];
     }
 
+    /**
+     * 腾讯云cos
+     *
+     * @param UploadedFile $file
+     * @param string $type
+     * @return array
+     */
+    public function cos(UploadedFile $file, string $type = ''): array
+    {
+        $config    = $this->getConfig();
+        $secretId  = $config['cos_secret_id'];              //替换为用户的 secretId，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
+        $secretKey = $config['cos_secret_key'];             //替换为用户的 secretKey，请登录访问管理控制台进行查看和管理，https://console.cloud.tencent.com/cam/capi
+        $region    = $config['cos_region'];                 //替换为用户的 region，已创建桶归属的region可以在控制台查看，https://console.cloud.tencent.com/cos5/bucket
+        if ($file->isValid()) {
+            $cosClient = new Client(
+                [
+                    'region'      => $region,
+                    'schema'      => 'http',
+                    'credentials' => ['secretId' => $secretId, 'secretKey' => $secretKey,
+                    ],
+                ]);
+            try {
+                $object   = $this->setFilePath($file, env('EASYADMIN.OSS_STATIC_PREFIX', 'easyadmin8') . '/');
+                $result   = $cosClient->upload(
+                    $config['cos_bucket'],         //存储桶名称，由BucketName-Appid 组成，可以在COS控制台查看 https://console.cloud.tencent.com/cos5/bucket
+                    $object,                       //此处的 key 为对象键
+                    file_get_contents($file->getRealPath())
+                );
+                $location = $result['Location'] ?? '';
+                if (empty($location)) return ['code' => 0, 'data' => '上传至COS失败'];
+                $location = 'https://' . $location;
+                $this->setSaveData($file);
+            } catch (\Exception $e) {
+                return ['code' => 0, 'data' => $e->getMessage()];
+            }
+            $data = ['url' => $location];
+            $this->save($location);
+            return ['code' => 1, 'data' => $data];
+        }
+        $data = '上传失败';
+        return ['code' => 0, 'data' => $data];
+    }
 
     protected function save(string $url = ''): bool
     {
