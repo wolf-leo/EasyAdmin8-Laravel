@@ -364,7 +364,7 @@ class BuildCurd
                 'tableColumns'    => $formatColums,
             ];
             if (!empty($bindSelectField)) {
-                $relationArray                                      = explode(DIRECTORY_SEPARATOR, $modelFilename);
+                $relationArray                                      = explode('\\', $modelFilename);
                 $this->tableColumns[$foreignKey]['bindSelectField'] = $bindSelectField;
                 $this->tableColumns[$foreignKey]['bindRelation']    = end($relationArray);
             }
@@ -720,7 +720,7 @@ class BuildCurd
      */
     protected function buildRelationSelectModel($relation, $filed): mixed
     {
-        $relationArray = explode(DIRECTORY_SEPARATOR, $relation);
+        $relationArray = explode('\\', $relation);
         $name          = end($relationArray);
         $name          = "get{$name}List";
         $selectCode    = CommonTool::replaceTemplate(
@@ -988,7 +988,7 @@ class BuildCurd
         $selectList = '';
         foreach ($this->relationArray as $relation) {
             if (!empty($relation['bindSelectField'])) {
-                $relationArray = explode(DIRECTORY_SEPARATOR, $relation['modelFilename']);
+                $relationArray = explode('\\', $relation['modelFilename']);
                 $selectList    .= $this->buildSelectController(end($relationArray));
             }
         }
