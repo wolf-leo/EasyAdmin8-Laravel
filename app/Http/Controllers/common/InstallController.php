@@ -76,7 +76,7 @@ class InstallController extends Controller
         ];
         try {
             Config::set("database.connections.mysql", $config);
-        } catch (\Throwable | Exception $exception) {
+        } catch (\Throwable|Exception $exception) {
             return $this->error($exception->getMessage());
         }
         // 检测数据库连接
@@ -161,7 +161,7 @@ class InstallController extends Controller
     protected function createDatabase($database, $config): bool
     {
         try {
-            $con = mysqli_connect($config['host'] ?? '127.0.0.1', $config['username'] ?? 'root', $config['password'] ?? '');
+            $con = mysqli_connect($config['host'] ?? '127.0.0.1', $config['username'] ?? 'root', $config['password'] ?? '', null, $config['port'] ?? '');
             mysqli_query($con, "CREATE DATABASE IF NOT EXISTS `{$database}` DEFAULT CHARACTER SET {$config['charset']} COLLATE=utf8mb4_general_ci");
             mysqli_close($con);
         } catch (\Throwable $e) {
@@ -187,7 +187,7 @@ class InstallController extends Controller
     protected function checkConnect(array $config): bool
     {
         try {
-            $con          = mysqli_connect($config['host'] ?? '127.0.0.1', $config['username'] ?? 'root', $config['password'] ?? '');
+            $con          = mysqli_connect($config['host'] ?? '127.0.0.1', $config['username'] ?? 'root', $config['password'] ?? '', null, $config['port'] ?? '');
             $res          = mysqli_query($con, 'select VERSION()');
             $mysqlVersion = mysqli_fetch_row($res);
             mysqli_close($con);
