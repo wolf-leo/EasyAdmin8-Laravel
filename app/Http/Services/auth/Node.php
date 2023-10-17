@@ -27,7 +27,8 @@ class Node
     /**
      * @var string 命名空间前缀
      */
-    protected $baseNamespace;
+    protected       $baseNamespace;
+    protected array $adminConfig;
 
     /**
      * 构造方法
@@ -39,6 +40,7 @@ class Node
     {
         $this->basePath      = $basePath;
         $this->baseNamespace = $baseNamespace;
+        $this->adminConfig   = config('admin');
         return $this;
     }
 
@@ -115,7 +117,7 @@ class Node
         $explodePath = explode(DIRECTORY_SEPARATOR, $path);
         list($list, $temp_list, $dirExplode) = [[], scandir($path), end($explodePath)];
         if ($dirExplode == 'admin') $dirExplode = '';
-        $middleDir = !empty($dirExplode) ? $dirExplode . DIRECTORY_SEPARATOR : '';
+        $middleDir = !empty($dirExplode) ? $dirExplode . "\\" : '';
         foreach ($temp_list as $file) {
             // 排除根目录和没有开启注解的模块
             if ($file == ".." || $file == ".") {
@@ -129,6 +131,9 @@ class Node
                 // 判断是不是控制器
                 $fileExplodeArray = explode('.', $file);
                 if (count($fileExplodeArray) != 2 || end($fileExplodeArray) != 'php') {
+                    continue;
+                }
+                if (in_array(strtolower(explode('Controller', $fileExplodeArray[0])[0] ?? ''), $this->adminConfig['no_auth_controller'])) {
                     continue;
                 }
                 // 根目录下的文件
