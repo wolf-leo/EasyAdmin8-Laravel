@@ -2,9 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Services\annotation\ControllerAnnotation;
 use App\Http\Services\SystemLogService;
 use App\Http\Services\tool\CommonTool;
 use Closure;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\DocParser;
 use Illuminate\Http\Request;
 
 /**
@@ -37,9 +40,28 @@ class SystemLog
             $method = strtolower($request->method());
             $url    = $request->getPathInfo();
             if (in_array($method, ['post', 'put', 'delete'])) {
+                $title = '';
+                try {
+                    $pathInfo    = $request->getPathInfo();
+                    $pathInfoExp = explode('/', $pathInfo);
+                    $pathInfoExp = explode('.', $pathInfoExp[2] ?? '');
+                    $_controller = $pathInfoExp[0] ?? '';
+                    $_action     = ucfirst($pathInfoExp[1] ?? '');
+                    if ($_controller && $_action) {
+                        $className       = "App\Http\Controllers\admin\\{$_controller}\\{$_action}Controller";
+                        $reflectionClass = new \ReflectionClass($className);
+                        $parser          = new DocParser();
+                        $parser->setIgnoreNotImportedAnnotations(true);
+                        $reader               = new AnnotationReader($parser);
+                        $controllerAnnotation = $reader->getClassAnnotation($reflectionClass, ControllerAnnotation::class);
+                        $title                = $controllerAnnotation->title;
+                    }
+                } catch (\Throwable $exception) {
+                }
                 $ip   = CommonTool::getRealIp();
                 $data = [
                     'admin_id'    => request()->session()->get('admin.id'),
+                    'title'       => $title,
                     'url'         => $url,
                     'method'      => $method,
                     'ip'          => $ip,
