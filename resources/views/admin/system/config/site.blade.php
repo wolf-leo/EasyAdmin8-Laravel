@@ -53,6 +53,16 @@
             <tip>填写版权信息。</tip>
         </div>
     </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">默认编辑器</label>
+        <div class="layui-input-block">
+            @foreach($editor_types as $key=>$val)
+                <input type="radio" name="editor_type" lay-filter="editor_type" value="{{$key}}" title="{{$val}}" @if($key==sysconfig('site','editor_type')) checked="" @endif>
+            @endforeach
+            <br>
+            <tip>默认百度编辑器。</tip>
+        </div>
+    </div>
 
     <div class="hr-line"></div>
     <div class="layui-form-item text-center">
