@@ -1,12 +1,20 @@
 {
-    "name": "laravel/laravel",
+    "name": "wolfcode/easyadmin8",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "url": "https://github.com/wolf-leo/EasyAdmin8-Laravel",
+    "description": "基于Laravel和Layui的快速开发的后台管理系统。",
     "keywords": [
         "laravel",
-        "framework"
+        "easyadmin",
+        "admin"
     ],
+    "homepage": "https://easyadmin8.top/",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "wolfcode"
+        }
+    ],
     "require": {
         "php": "^8.1",
         "aliyuncs/oss-sdk-php": "^2.6",
