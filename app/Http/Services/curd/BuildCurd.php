@@ -239,6 +239,12 @@ class BuildCurd
         return $this;
     }
 
+    public function setTablePrefix($prefix): static
+    {
+        $this->tablePrefix = $prefix;
+        return $this;
+    }
+
     /**
      * 设置主表
      * @param $table
@@ -1059,12 +1065,15 @@ class BuildCurd
             $extendNamespace = '\\' . implode('\\', $extendNamespaceArray);
         }
 
+        $samePrefix                 = $this->tablePrefix == config('database.connections.mysql.prefix');
+        $modelTemplate              = $samePrefix ? 'model' : 'model_table';
         $modelValue                 = CommonTool::replaceTemplate(
-            $this->getTemplate("model{$this->DS}model"),
+            $this->getTemplate("model{$this->DS}{$modelTemplate}"),
             [
                 'modelName'      => $this->modelName,
                 'modelNamespace' => "App\Models{$extendNamespace}",
                 'table'          => $this->table,
+                'prefix_table'   => $samePrefix ? "" : $this->tablePrefix,
                 'deleteTime'     => $this->delete ? '"delete_time"' : 'false',
                 'relationList'   => $relationList,
                 'selectList'     => $selectList,

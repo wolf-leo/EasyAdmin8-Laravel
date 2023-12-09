@@ -1,0 +1,15 @@
+<?php
+
+namespace {{modelNamespace}};
+
+class {{modelName}} extends BaseModel
+{
+
+    public function getTable(): string
+    {
+        $this->getConnection()->setTablePrefix('{{prefix_table}}');
+        $this->setTable('{{table}}');
+        return parent::getTable();
+    }
+
+}
