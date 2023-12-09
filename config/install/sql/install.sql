@@ -324,7 +324,7 @@ VALUES ('252', '228', '快捷入口', 'fa fa-list', 'system.quick/index', '', '_
 INSERT INTO `ea_system_menu`
 VALUES ('253', '228', '日志管理', 'fa fa-connectdevelop', 'system.log/index', '', '_self', '0', '1', '', '1589623684', '1589623684', null);
 INSERT INTO `ea_system_menu`
-VALUES ('254', '228', 'CURD可视化', 'fa fa fa-shower', 'system.curd_generate/index', '', '_self', '0', '1', '', '1589623684', '1589623684', null);
+VALUES ('254', '228', 'CURD可视化', 'fa fa fa-shower', 'system.curdGenerate/index', '', '_self', '0', '1', '', '1589623684', '1589623684', null);
 
 -- ----------------------------
 -- Table structure for ea_system_node
@@ -483,11 +483,11 @@ VALUES ('67', 'system.log', '操作日志管理', '1', '1', '1589623188', '15896
 INSERT INTO `ea_system_node`
 VALUES ('68', 'system.log/index', '列表', '2', '1', '1589623188', '1589623188');
 INSERT INTO `ea_system_node`
-VALUES ('69', 'system.curd_generate', 'CURD可视化管理', '1', '1', '1589623188', '1589623188');
+VALUES ('69', 'system.curdGenerate', 'CURD可视化管理', '1', '1', '1589623188', '1589623188');
 INSERT INTO `ea_system_node`
-VALUES ('70', 'system.curd_generate/index', '列表', '2', '1', '1589623188', '1589623188');
+VALUES ('70', 'system.curdGenerate/index', '列表', '2', '1', '1589623188', '1589623188');
 INSERT INTO `ea_system_node`
-VALUES ('71', 'system.curd_generate/save', '操作', '2', '1', '1589623188', '1589623188');
+VALUES ('71', 'system.curdGenerate/save', '操作', '2', '1', '1589623188', '1589623188');
 
 -- ----------------------------
 -- Table structure for ea_system_quick
