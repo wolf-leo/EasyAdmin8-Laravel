@@ -138,8 +138,8 @@ class Node
                 }
                 // 根目录下的文件
                 $className               = str_replace('.php', '', $file);
-                $controllerFormat        = str_replace('\\', '.', $middleDir) . CommonTool::humpToLine(lcfirst($className));
-                $controllerFormat        = str_replace('_controller', '', $controllerFormat);
+                $controllerFormat        = str_replace('\\', '.', $middleDir) . lcfirst($className);
+                $controllerFormat        = str_replace('Controller', '', $controllerFormat);
                 $list[$controllerFormat] = "{$this->baseNamespace}\\{$middleDir}" . $className;
             }
         }
