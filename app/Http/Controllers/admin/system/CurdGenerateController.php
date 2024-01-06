@@ -36,7 +36,7 @@ class CurdGenerateController extends AdminController
         $type      = request()->input('type', '');
         $tb_prefix = request()->input('tb_prefix', '');
         $tb_name   = request()->input('tb_name', '');
-        if (empty($tb_name) || empty($tb_prefix)) return $this->error('参数错误');
+        if (empty($tb_name)) return $this->error('参数错误');
         switch ($type) {
             case "search":
                 try {
