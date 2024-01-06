@@ -46,7 +46,7 @@
             <label class="layui-form-label required">target属性</label>
             <div class="layui-input-block">
                 @foreach(['_self','_blank','_parent','_top'] as $vo)
-                    <input type="radio" name="target" value="{{$vo}}" title="{{$vo}}">
+                    <input type="radio" name="target" value="{{$vo}}" title="{{$vo}}" @if($vo=='_self') checked @endif>
                 @endforeach
             </div>
         </div>
