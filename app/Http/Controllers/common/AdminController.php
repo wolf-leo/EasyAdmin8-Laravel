@@ -68,7 +68,7 @@ class AdminController extends Controller
         $this->controller  = $controller;
         $this->action      = $action;
         $jsBasePath        = ($secondary ? "{$secondary}/" : '') . strtolower($controller);
-        if (str_contains($jsBasePath, '_')) $jsBasePath = Str::studly($jsBasePath);
+        if (str_contains($jsBasePath, '_')) $jsBasePath = lcfirst(Str::studly($jsBasePath));
         $thisControllerJsPath = "admin/js/{$jsBasePath}.js";
         $autoloadJs           = file_exists($thisControllerJsPath);
         $adminModuleName      = $adminConfig['admin_alias_name'];
@@ -110,7 +110,7 @@ class AdminController extends Controller
             } else {
                 $template = 'admin' . $basePath;
             }
-            if (str_contains($template, '_')) $template = Str::studly($template);
+            if (str_contains($template, '_')) $template = lcfirst(Str::studly($template));
         }
         return view($template, $args);
     }
