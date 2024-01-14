@@ -6,6 +6,7 @@ use App\Http\Services\curd\exceptions\FileException;
 use App\Http\Services\curd\exceptions\TableException;
 use App\Http\Services\tool\CommonTool;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 /**
  * 快速构建系统CURD
@@ -578,7 +579,7 @@ class BuildCurd
         $nodeArray   = explode($this->DS, $this->controllerFilename);
         $formatArray = [];
         foreach ($nodeArray as $vo) {
-            $formatArray[] = lcfirst($vo);
+            $formatArray[] = Str::snake(lcfirst($vo));
         }
         $this->controllerUrl = implode('.', $formatArray);
         $this->viewFilename  = implode($this->DS, $formatArray);

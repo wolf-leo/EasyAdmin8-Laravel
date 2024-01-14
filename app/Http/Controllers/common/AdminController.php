@@ -6,7 +6,6 @@ use App\Http\Curd;
 use App\Http\JumpTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class AdminController extends Controller
@@ -58,17 +57,16 @@ class AdminController extends Controller
 
     protected function initialize()
     {
-        $parameters        = request()->route()->parameters ?? [];
-        $this->adminConfig = $adminConfig = config('admin');
-        $this->isDemo      = env('EASYADMIN.IS_DEMO', false);
-        $secondary         = $parameters['secondary'] ?? '';
-        $controller        = $parameters['controller'] ?? 'index';
-        $action            = $parameters['action'] ?? 'index';
-        $this->secondary   = $secondary;
-        $this->controller  = $controller;
-        $this->action      = $action;
-        $jsBasePath        = ($secondary ? "{$secondary}/" : '') . strtolower($controller);
-        if (str_contains($jsBasePath, '_')) $jsBasePath = lcfirst(Str::studly($jsBasePath));
+        $parameters           = request()->route()->parameters ?? [];
+        $this->adminConfig    = $adminConfig = config('admin');
+        $this->isDemo         = env('EASYADMIN.IS_DEMO', false);
+        $secondary            = $parameters['secondary'] ?? '';
+        $controller           = $parameters['controller'] ?? 'index';
+        $action               = $parameters['action'] ?? 'index';
+        $this->secondary      = $secondary;
+        $this->controller     = $controller;
+        $this->action         = $action;
+        $jsBasePath           = ($secondary ? "{$secondary}/" : '') . strtolower($controller);
         $thisControllerJsPath = "admin/js/{$jsBasePath}.js";
         $autoloadJs           = file_exists($thisControllerJsPath);
         $adminModuleName      = $adminConfig['admin_alias_name'];
@@ -110,7 +108,6 @@ class AdminController extends Controller
             } else {
                 $template = 'admin' . $basePath;
             }
-            if (str_contains($template, '_')) $template = lcfirst(Str::studly($template));
         }
         return view($template, $args);
     }
