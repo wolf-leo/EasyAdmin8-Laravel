@@ -6,6 +6,7 @@ use App\Http\Curd;
 use App\Http\JumpTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class AdminController extends Controller
@@ -67,6 +68,7 @@ class AdminController extends Controller
         $this->controller     = $controller;
         $this->action         = $action;
         $jsBasePath           = ($secondary ? "{$secondary}/" : '') . strtolower($controller);
+        $jsBasePath           = Str::studly($jsBasePath);
         $thisControllerJsPath = "admin/js/{$jsBasePath}.js";
         $autoloadJs           = file_exists($thisControllerJsPath);
         $adminModuleName      = $adminConfig['admin_alias_name'];
@@ -108,6 +110,7 @@ class AdminController extends Controller
             } else {
                 $template = 'admin' . $basePath;
             }
+            $template = Str::studly($template);
         }
         return view($template, $args);
     }
@@ -135,7 +138,7 @@ class AdminController extends Controller
                 $excludes[$key] = $val;
                 continue;
             }
-            $op = isset($ops[$key]) && !empty($ops[$key]) ? $ops[$key] : '%*%';
+            $op = !empty($ops[$key]) ? $ops[$key] : '%*%';
 
             switch (strtolower($op)) {
                 case '=':

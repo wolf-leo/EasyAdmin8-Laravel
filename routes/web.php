@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,41 +32,44 @@ Route::middleware([\App\Http\Middleware\SystemLog::class, \App\Http\Middleware\C
         // 后台首页
         Route::get('/', [\App\Http\Controllers\admin\IndexController::class, 'index']);
 
+        $adminNamespace = config('admin.controller_namespace');
+
         // 动态路由 (匹配 secondary/controller.action)
-        Route::match(['get', 'post'], '/{secondary}.{controller}/{action}', function ($secondary, $controller, $action) {
-            $namespace = config('admin.controller_namespace') . $secondary . '\\';
+        Route::match(['get', 'post'], '/{secondary}.{controller}/{action}', function ($secondary, $controller, $action) use ($adminNamespace) {
+            $namespace = $adminNamespace . $secondary . '\\';
             $className = $namespace . ucfirst($controller . "Controller");
+            $className = Str::studly($className);
             if (class_exists($className)) {
-                $tempObj = new $className();
-                if (method_exists($tempObj, $action)) {
-                    return call_user_func([$tempObj, $action]);
+                $obj = new $className();
+                if (method_exists($obj, $action)) {
+                    return call_user_func([$obj, $action]);
                 }
             }
             return abort(404);
         });
 
         // 动态路由 (匹配 controller)
-        Route::match(['get', 'post'], '/{controller}/', function ($controller) {
-            $namespace = config('admin.controller_namespace');
+        Route::match(['get', 'post'], '/{controller}/', function ($controller) use ($adminNamespace) {
+            $namespace = $adminNamespace;
             $className = $namespace . ucfirst($controller . "Controller");
             $action    = 'index';
             if (class_exists($className)) {
-                $tempObj = new $className();
-                if (method_exists($tempObj, $action)) {
-                    return call_user_func([$tempObj, $action]);
+                $obj = new $className();
+                if (method_exists($obj, $action)) {
+                    return call_user_func([$obj, $action]);
                 }
             }
             return abort(404);
         });
 
         // 动态路由 (匹配 controller/action)
-        Route::match(['get', 'post'], '/{controller}/{action}', function ($controller, $action) {
-            $namespace = config('admin.controller_namespace');
+        Route::match(['get', 'post'], '/{controller}/{action}', function ($controller, $action) use ($adminNamespace) {
+            $namespace = $adminNamespace;
             $className = $namespace . ucfirst($controller . "Controller");
             if (class_exists($className)) {
-                $tempObj = new $className();
-                if (method_exists($tempObj, $action)) {
-                    return call_user_func([$tempObj, $action]);
+                $obj = new $className();
+                if (method_exists($obj, $action)) {
+                    return call_user_func([$obj, $action]);
                 }
             }
             return abort(404);
