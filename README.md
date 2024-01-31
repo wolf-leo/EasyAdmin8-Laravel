@@ -53,6 +53,10 @@ location / {
 
 > 参考 [CURD命令大全](CURD.md)
 
+## 常见问题
+
+> 参考 [常见问题](https://easyadmin8.top/guide/question.html)
+
 ## 界面预览
 
 ![EasyAdmin8-01](public/static/common/images/easyadmin8-01.png)
