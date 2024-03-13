@@ -10,7 +10,7 @@
 
 > `EasyAdmin8-Laravel` 在 [`EasyAdmin`](https://gitee.com/zhongshaofa/easyadmin) 的基础上使用 Laravel 10.x 重构，PHP 最低版本要求不低于 8.1
 >
-> 请注意：当前项目采用 `laravel 10.x` 构建，如需要 `laravel 11.x` 请访问 [https://github.com/wolf-leo/EasyAdmin8-Laravel](https://github.com/wolf-leo/EasyAdmin8-Laravel)
+> 请注意：当前项目采用 `laravel 10.x` 构建，如需要 `laravel 11.x` 请在分支中选择 `main`
 >
 > Laravel v10.x 和 layui v2.8.x 的快速开发的后台管理系统。
 >
