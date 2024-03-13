@@ -1,6 +1,7 @@
 {
     "name": "wolfcode/easyadmin8",
     "type": "project",
+    "branch": "10.x",
     "url": "https://github.com/wolf-leo/EasyAdmin8-Laravel",
     "description": "基于Laravel和Layui的快速开发的后台管理系统。",
     "keywords": [
