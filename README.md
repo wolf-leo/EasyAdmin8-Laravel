@@ -10,6 +10,8 @@
 
 > `EasyAdmin8-Laravel` 在 [`EasyAdmin`](https://gitee.com/zhongshaofa/easyadmin) 的基础上使用 Laravel 10.x 重构，PHP 最低版本要求不低于 8.1
 >
+> 请注意：当前项目采用 `laravel 10.x` 构建，如需要 `laravel 11.x` 请访问 [https://github.com/wolf-leo/EasyAdmin8-Laravel](https://github.com/wolf-leo/EasyAdmin8-Laravel)
+>
 > Laravel v10.x 和 layui v2.8.x 的快速开发的后台管理系统。
 >
 > 项目地址：[http://easyadmin8.top](http://easyadmin8.top)
@@ -27,13 +29,13 @@
 ```
 1.下载安装包
 
-  git clone https://github.com/wolf-leo/EasyAdmin8-Laravel
+  git clone -b 10.x https://github.com/wolf-leo/EasyAdmin8-Laravel EasyAdmin8-Laravel-10.x
 
   或者
 
-  git clone https://gitee.com/wolf18/EasyAdmin8-Laravel
+  git clone -b 10.x https://gitee.com/wolf18/EasyAdmin8-Laravel EasyAdmin8-Laravel-10.x
 
-2.安装依赖包（确保 PHP 版本 >= 8.1 且安装 fileinfo 扩展）
+2.安装依赖包（确保 PHP 版本 >= 8.1 如需要本地上传则须装 fileinfo 扩展）
 
   在根目录下 composer install ，如果有报错信息可以使用命令 composer install --ignore-platform-reqs
   
