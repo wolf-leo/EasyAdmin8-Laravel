@@ -70,7 +70,7 @@ class SystemLogService
             $this->detectTable();
             DB::table($this->tableName)->insert($data);
             Db::commit();
-        } catch (\Exception $e) {
+        }catch (\Exception $e) {
             Db::rollback();
             return false;
         }

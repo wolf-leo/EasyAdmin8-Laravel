@@ -60,7 +60,7 @@ class SystemLog
                         $nodeAnnotation       = $reader->getMethodAnnotation($reflectionAction, NodeAnnotation::class);
                         $title                = $controllerAnnotation->title . ' - ' . $nodeAnnotation->title;
                     }
-                } catch (\Throwable $exception) {
+                }catch (\Throwable $exception) {
                 }
                 $ip   = CommonTool::getRealIp();
                 $data = [
