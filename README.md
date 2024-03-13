@@ -35,7 +35,7 @@
 
   git clone https://gitee.com/wolf18/EasyAdmin8-Laravel
 
-2.安装依赖包（确保 PHP 版本 >= 8.1 且安装 fileinfo 扩展）
+2.安装依赖包（确保 PHP 版本 >= 8.2 如需要本地上传则须装 fileinfo 扩展）
 
   在根目录下 composer install ，如果有报错信息可以使用命令 composer install --ignore-platform-reqs
   
