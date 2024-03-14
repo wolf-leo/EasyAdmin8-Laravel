@@ -112,7 +112,7 @@ class UploadService
         $endpoint        = $config['oss_endpoint'];
         $bucket          = $config['oss_bucket'];
         if ($file->isValid()) {
-            $object = $this->setFilePath($file, env('EASYADMIN.OSS_STATIC_PREFIX', 'easyadmin8') . '/');
+            $object = $this->setFilePath($file, config('easyadmin.OSS_STATIC_PREFIX', 'easyadmin8') . '/');
             try {
                 $ossClient       = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
                 $_rs             = $ossClient->putObject($bucket, $object, file_get_contents($file->getRealPath()));
@@ -153,7 +153,7 @@ class UploadService
                     ],
                 ]);
             try {
-                $object   = $this->setFilePath($file, env('EASYADMIN.OSS_STATIC_PREFIX', 'easyadmin8') . '/');
+                $object   = $this->setFilePath($file, config('easyadmin.OSS_STATIC_PREFIX', 'easyadmin8') . '/');
                 $result   = $cosClient->upload(
                     $config['cos_bucket'],         //存储桶名称，由BucketName-Appid 组成，可以在COS控制台查看 https://console.cloud.tencent.com/cos5/bucket
                     $object,                       //此处的 key 为对象键
@@ -193,7 +193,7 @@ class UploadService
         $domain    = $config['qnoss_domain'];
         $auth      = new Auth($accessKey, $secretKey);
         $token     = $auth->uploadToken($bucket);
-        $object    = $this->setFilePath($file, env('EASYADMIN.OSS_STATIC_PREFIX', 'easyadmin8') . '/');
+        $object    = $this->setFilePath($file, config('easyadmin.OSS_STATIC_PREFIX', 'easyadmin8') . '/');
         list($ret, $error) = $uploadMgr->putFile($token, $object, $file->getRealPath());
         if (empty($ret)) return ['code' => 0, 'data' => $error->getResponse()->error ?? '上传失败，请检查七牛云相关参数配置'];
         $url  = $domain . "/" . $ret['key'];

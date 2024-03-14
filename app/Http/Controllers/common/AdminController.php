@@ -59,7 +59,7 @@ class AdminController extends Controller
     {
         $parameters           = request()->route()->parameters ?? [];
         $this->adminConfig    = $adminConfig = config('admin');
-        $this->isDemo         = env('EASYADMIN.IS_DEMO', false);
+        $this->isDemo         = config('easyadmin.IS_DEMO', false);
         $secondary            = $parameters['secondary'] ?? '';
         $controller           = $parameters['controller'] ?? 'index';
         $action               = $parameters['action'] ?? 'index';
@@ -86,7 +86,7 @@ class AdminController extends Controller
             'autoloadJs'           => $autoloadJs,
             'isSuperAdmin'         => $isSuperAdmin,
             'isDemo'               => $this->isDemo,
-            'version'              => env('APP_DEBUG') ? time() : $version,
+            'version'              => config('APP_DEBUG') ? time() : $version,
         ];
         $this->assign($data);
     }

@@ -24,7 +24,7 @@ class LoginController extends AdminController
 
     public function index(): View|JsonResponse
     {
-        $captcha = env('EASYADMIN.CAPTCHA', false);
+        $captcha = config('easyadmin.CAPTCHA', false);
         if (!request()->ajax()) {
             return view('admin.login', compact('captcha'));
         }

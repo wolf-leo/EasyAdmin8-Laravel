@@ -100,7 +100,7 @@ trait Curd
      */
     public function export(): View|bool
     {
-        if (env('EASYADMIN.IS_DEMO', false)) {
+        if (config('easyadmin.IS_DEMO', false)) {
             return $this->error('演示环境下不允许操作');
         }
         list($page, $limit, $where) = $this->buildTableParams();
