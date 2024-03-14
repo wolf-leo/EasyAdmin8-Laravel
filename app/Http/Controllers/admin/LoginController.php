@@ -4,12 +4,12 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\common\AdminController;
 use App\Models\SystemAdmin;
-use Gregwar\Captcha\CaptchaBuilder;
-use Gregwar\Captcha\PhraseBuilder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
+use Webman\Captcha\CaptchaBuilder;
+use Webman\Captcha\PhraseBuilder;
 
 class LoginController extends AdminController
 {
