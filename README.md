@@ -16,7 +16,9 @@
 >
 > 项目地址：[http://easyadmin8.top](http://easyadmin8.top)
 >
-> 演示地址：[http://laravel.easyadmin8.top/admin](http://laravel.easyadmin8.top/admin)
+> 演示地址：
+> - `11.x版本` [http://laravel.easyadmin8.top/admin](http://laravel.easyadmin8.top/admin)
+> - `10.x版本` [http://laravel-10.easyadmin8.top/admin](http://laravel-10.easyadmin8.top/admin)
 >
 >【如果不能访问，可以自行本地搭建预览或参考下方界面预览图】
 
