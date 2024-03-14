@@ -20,7 +20,6 @@
         "php": "^8.1",
         "aliyuncs/oss-sdk-php": "^2.6",
         "doctrine/annotations": "^2.0",
-        "gregwar/captcha-bundle": "^2.2",
         "guzzlehttp/guzzle": "^7.2",
         "jianyan74/php-excel": "^1.0",
         "laravel/framework": "^10.20",
@@ -28,7 +27,8 @@
         "laravel/tinker": "^2.8",
         "phpoffice/phpspreadsheet": "^1.29",
         "qcloud/cos-sdk-v5": "^2.6",
-        "qiniu/php-sdk": "^7.11"
+        "qiniu/php-sdk": "^7.11",
+        "webman/captcha": "^1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
