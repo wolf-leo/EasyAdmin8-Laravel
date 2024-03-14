@@ -45,7 +45,7 @@ class CheckAuth
                 $check = $authService->checkNode($currentNode);
                 if (!$check) return (request()->ajax() || request()->method() == 'POST') ? $this->error('无权限访问') : $this->responseView('无权限访问');
                 // 判断是否为演示环境
-                if (env('EASYADMIN.IS_DEMO', false) && \request()->method() == 'POST') {
+                if (config('easyadmin.IS_DEMO', false) && \request()->method() == 'POST') {
                     return (request()->ajax() || request()->method() == 'POST') ? $this->error('演示环境下不允许修改') : $this->responseView('无权限访问');
                 }
             }

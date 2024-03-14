@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
 
 // 系统首页
 Route::get('/', function () {
-    return redirect('/' . env('EASYADMIN.ADMIN'));
+    return redirect('/' . config('easyadmin.ADMIN'));
 })->middleware([\App\Http\Middleware\CheckInstall::class]);
 
 // 首次安装管理系统
