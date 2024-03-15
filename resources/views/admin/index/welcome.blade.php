@@ -135,6 +135,12 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>Config配置缓存</td>
+                                <td>
+                                    <button type="button" class="layui-btn layui-btn-xs layui-btn-primary">{{$versions['configIsCached']?'已开启':'未开启'}}</button>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>PHP版本</td>
                                 <td>
                                     <button type="button" class="layui-btn layui-btn-xs layui-btn-primary">{{$versions['phpVersion']??''}}</button>
