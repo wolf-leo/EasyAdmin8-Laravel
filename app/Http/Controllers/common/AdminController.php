@@ -86,7 +86,7 @@ class AdminController extends Controller
             'autoloadJs'           => $autoloadJs,
             'isSuperAdmin'         => $isSuperAdmin,
             'isDemo'               => $this->isDemo,
-            'version'              => config('APP_DEBUG') ? time() : $version,
+            'version'              => config('app.debug') ? time() : $version,
         ];
         $this->assign($data);
     }
