@@ -28,7 +28,8 @@ class IndexController extends AdminController
         $mysqlVersion   = DB::select("select VERSION() as version")[0]->version ?? '未知';
         $phpVersion     = phpversion();
         $branch         = json_decode(file_get_contents(base_path() . '/composer.json'))->branch ?? 'main';
-        $versions       = compact('laravelVersion', 'mysqlVersion', 'phpVersion', 'branch');
+        $configIsCached = file_exists(base_path() . '/bootstrap/cache/config.php');
+        $versions       = compact('laravelVersion', 'mysqlVersion', 'phpVersion', 'branch', 'configIsCached');
         $quicks         = SystemQuick::where('status', 1)->select('id', 'title', 'icon', 'href')->orderByDesc('sort')->limit(8)->get()->toArray();
         return $this->fetch('', compact('quicks', 'versions'));
     }
