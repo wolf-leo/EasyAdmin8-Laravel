@@ -28,10 +28,9 @@ class CarbonDate implements CastsAttributes
      * @param string $key
      * @param array $value
      * @param array $attributes
-     * @return string|null
      */
-    public function set($model, $key, $value, $attributes): ?string
+    public function set($model, $key, $value, $attributes)
     {
-        return Carbon::now(config('timezone'))->toDateTimeString();
+        return $value;
     }
 }
