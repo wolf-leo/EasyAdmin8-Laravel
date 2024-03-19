@@ -19,7 +19,8 @@
         "phpoffice/phpspreadsheet": "^1.29",
         "qcloud/cos-sdk-v5": "^2.6",
         "qiniu/php-sdk": "^7.11",
-        "webman/captcha": "^1.0"
+        "webman/captcha": "^1.0",
+        "ext-pdo": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

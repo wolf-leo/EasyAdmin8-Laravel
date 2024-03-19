@@ -22,9 +22,9 @@ class BaseModel extends Model
     public $timestamps = false;
 
     protected $casts = [
-        'create_time' => 'datetime:Y-m-d H:i:s',
-        'update_time' => 'datetime:Y-m-d H:i:s',
-        'delete_time' => 'datetime:Y-m-d H:i:s',
+        'create_time' => 'App\Casts\CarbonDate:Y-m-d H:i:s',
+        'update_time' => 'App\Casts\CarbonDate:Y-m-d H:i:s',
+        'delete_time' => 'App\Casts\CarbonDate:Y-m-d H:i:s',
     ];
 
     public function __construct(array $attributes = [])
