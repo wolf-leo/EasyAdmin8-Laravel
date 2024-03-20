@@ -2,6 +2,7 @@
 
 namespace App\Casts;
 
+use Carbon\CarbonInterface;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -18,7 +19,8 @@ class CarbonDate implements CastsAttributes
      */
     public function get($model, $key, $value, $attributes): ?string
     {
-        return Carbon::now(config('timezone'))->toDateTimeString();
+        if (!is_numeric($value)) return $value;
+        return Carbon::createFromTimestamp($value, config('app.timezone'))->format(CarbonInterface::DEFAULT_TO_STRING_FORMAT);
     }
 
     /**
