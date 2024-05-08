@@ -1334,7 +1334,11 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                                             break;
                                         case 'wangEditor':
                                             var name = $(this).attr("name");
-                                            dataField[name] = window.editor.getHtml()
+                                            try {
+                                                dataField[name] = eval("wangEditor_" + i + ".getHtml()");
+                                            } catch (e) {
+                                                layer.msg(e.message)
+                                            }
                                             break;
                                         default:
                                             var name = $(this).attr("id");
@@ -1494,6 +1498,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
             },
             editor: function () {
                 var editorList = document.querySelectorAll(".editor");
+                let wangEditors = {}
                 if (editorList.length > 0) {
                     $.each(editorList, function (i, v) {
                         switch (window.CONFIG.EDITOR_TYPE) {
@@ -1506,8 +1511,9 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                                 break;
                             case 'wangEditor':
                                 var wangEditor = window.wangEditor;
-                                window.editor = wangEditor.createEditor({
-                                    selector: '#editor_' + $(this).attr("name"),
+                                var wangEditorName = "wangEditor_" + i
+                                wangEditors[wangEditorName] = wangEditor.createEditor({
+                                    selector: '#editor_' + $(this).attr('name'),
                                     html: $(this).text(),
                                     config: {
                                         MENU_CONF: {
@@ -1533,12 +1539,13 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                                         },
                                     }
                                 })
-                                window.toolbar = wangEditor.createToolbar({
+                                let editor = wangEditors.wangEditor_0
+                                window[wangEditorName] = wangEditors[wangEditorName]
+                                wangEditor.createToolbar({
                                     editor,
                                     selector: '#editor_toolbar_' + $(this).attr("name"),
                                     config: {}
                                 })
-
                                 break;
                             default:
                                 let name = $(this).attr("name");
