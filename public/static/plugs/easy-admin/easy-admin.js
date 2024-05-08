@@ -1,4 +1,4 @@
-define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefined) {
+define(["jquery", "tableSelect"], function ($, tableSelect) {
 
     var form = layui.form,
         layer = layui.layer,
@@ -679,7 +679,7 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
                 }
             },
             url: function (data, option) {
-
+                var option = data.LAY_COL || {};
                 try {
                     var value = admin.table.defaultValue(data);
                 } catch (e) {
@@ -701,7 +701,7 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
                 return laytpl('<input type="checkbox" name="' + option.field + '" value="' + data.id + '" lay-skin="switch" lay-text="' + option.tips + '" lay-filter="' + option.filter + '" ' + checked + ' >').render(data);
             },
             price: function (data, option) {
-
+                var option = data.LAY_COL || {};
                 try {
                     var value = admin.table.defaultValue(data);
                 } catch (e) {
@@ -710,7 +710,7 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
                 return '<span>￥' + value + '</span>';
             },
             percent: function (data, option) {
-
+                var option = data.LAY_COL || {};
                 try {
                     var value = admin.table.defaultValue(data);
                 } catch (e) {
@@ -719,7 +719,7 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
                 return '<span>' + value + '%</span>';
             },
             icon: function (data, option) {
-
+                var option = data.LAY_COL || {};
                 try {
                     var value = admin.table.defaultValue(data);
                 } catch (e) {
@@ -728,7 +728,7 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
                 return '<i class="' + value + '"></i>';
             },
             text: function (data, option) {
-
+                var option = data.LAY_COL || {};
                 try {
                     var value = admin.table.defaultValue(data);
                 } catch (e) {
@@ -737,6 +737,7 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
                 return '<span class="line-limit-length">' + value + '</span>';
             },
             value: function (data, option) {
+                var option = data.LAY_COL || {};
                 try {
                     var value = admin.table.defaultValue(data);
                 } catch (e) {
@@ -746,6 +747,7 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
             },
             //时间戳转日期
             date: function (data, option) {
+                var option = data.LAY_COL || {};
                 var field = option.field, value = '';
                 try {
                     value = eval("data." + field);
@@ -1325,21 +1327,25 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
                             // 富文本数据处理
                             if (editorList.length > 0) {
                                 $.each(editorList, function (i, v) {
-                                    if (window.CONFIG.EDITOR_TYPE == 'ueditor') {
-                                        var name = $(this).attr("id");
-                                        dataField[name] = UE.getEditor(name).getContent();
-                                    } else {
-                                        var name = $(this).attr("name");
-                                        dataField[name] = CKEDITOR.instances[name].getData();
+                                    switch (window.CONFIG.EDITOR_TYPE) {
+                                        case 'ckeditor':
+                                            var name = $(this).attr("name");
+                                            dataField[name] = CKEDITOR.instances[name].getData();
+                                            break;
+                                        case 'wangEditor':
+                                            var name = $(this).attr("name");
+                                            dataField[name] = window.editor.getHtml()
+                                            break;
+                                        default:
+                                            var name = $(this).attr("id");
+                                            dataField[name] = UE.getEditor(name).getContent();
                                     }
                                 });
                             }
-
                             if (typeof preposeCallback === 'function') {
                                 dataField = preposeCallback(dataField);
                             }
                             admin.api.form(url, dataField, ok, no, ex, refresh);
-
                             return false;
                         });
                     });
@@ -1487,38 +1493,78 @@ define(["jquery", "tableSelect", "ckeditor"], function ($, tableSelect, undefine
                 }
             },
             editor: function () {
-                CKEDITOR.tools.setCookie('ckinit.csrf_token', init.csrf_token);
                 var editorList = document.querySelectorAll(".editor");
                 if (editorList.length > 0) {
                     $.each(editorList, function (i, v) {
-                        if (window.CONFIG.EDITOR_TYPE == 'ueditor') {
-                            let name = $(this).attr("name");
-                            let content = $(this).data('content')
-                            let editorOption = {
-                                initialFrameWidth: '100%',
-                                initialFrameHeight: 420,
-                                initialContent: content,
-                                toolbars: [["fullscreen", "source", "|", "undo", "redo", "|", "bold", "italic", "underline", "fontborder", "strikethrough",
-                                    "superscript", "subscript", "removeformat", "formatmatch", "autotypeset", "blockquote", "pasteplain", "|",
-                                    "forecolor", "backcolor", "insertorderedlist", "insertunorderedlist", "selectall", "cleardoc", "|",
-                                    "rowspacingtop", "rowspacingbottom", "lineheight", "|", "customstyle", "paragraph", "fontfamily", "fontsize", "|",
-                                    "directionalityltr", "directionalityrtl", "indent", "|", "justifyleft", "justifycenter", "justifyright", "justifyjustify", "|",
-                                    "touppercase", "tolowercase", "|", "link", "unlink", "anchor", "|", "imagenone", "imageleft", "imageright", "imagecenter", "|",
-                                    "insertimage", "emotion", "insertframe", "insertcode", "pagebreak", "template", "background", "formula", "|",
-                                    "horizontal", "date", "time", "spechars", "wordimage", "|",
-                                    "inserttable", "deletetable", "insertparagraphbeforetable", "insertrow", "deleterow", "insertcol", "deletecol", "mergecells", "mergeright", "mergedown", "splittocells", "splittorows", "splittocols", "|",
-                                    "print", "preview", "searchreplace", "help",
-                                ]],
-                            }
-                            setTimeout(function () {
-                                let _UEditor = new baidu.editor.ui.Editor(editorOption);
-                                _UEditor.render(name);
-                            }, 100)
-                        } else {
-                            CKEDITOR.replace($(this).attr("name"), {
-                                height: $(this).height(),
-                                filebrowserImageUploadUrl: admin.url('ajax/upload?type=editor'),
-                            });
+                        switch (window.CONFIG.EDITOR_TYPE) {
+                            case 'ckeditor':
+                                CKEDITOR.tools.setCookie('ckCsrfToken', init.csrf_token);
+                                CKEDITOR.replace($(this).attr("name"), {
+                                    height: $(this).height(),
+                                    filebrowserImageUploadUrl: admin.url('ajax/upload?type=editor'),
+                                });
+                                break;
+                            case 'wangEditor':
+                                var wangEditor = window.wangEditor;
+                                window.editor = wangEditor.createEditor({
+                                    selector: '#editor_' + $(this).attr("name"),
+                                    html: $(this).text(),
+                                    config: {
+                                        MENU_CONF: {
+                                            uploadImage: {
+                                                server: window.CONFIG.ADMIN_UPLOAD_URL,
+                                                fieldName: 'file',
+                                                meta: {
+                                                    _token: init.csrf_token,
+                                                    editor: 'editor',
+                                                },
+                                                async customInsert(res, insertFn) {
+                                                    let code = res.code || 0
+                                                    if (code != '1') {
+                                                        layer.msg(res.msg || '上传失败', {icon: 2});
+                                                        return
+                                                    }
+                                                    let url = res.data?.url || ''
+                                                    let alt = ''
+                                                    let href = ''
+                                                    insertFn(url, alt, href)
+                                                }
+                                            }
+                                        },
+                                    }
+                                })
+                                window.toolbar = wangEditor.createToolbar({
+                                    editor,
+                                    selector: '#editor_toolbar_' + $(this).attr("name"),
+                                    config: {}
+                                })
+
+                                break;
+                            default:
+                                let name = $(this).attr("name");
+                                let content = $(this).data('content')
+                                let editorOption = {
+                                    initialFrameWidth: '100%',
+                                    initialFrameHeight: 420,
+                                    initialContent: content,
+                                    toolbars: [['fullscreen', 'source', '|', 'undo', 'redo', '|',
+                                        'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
+                                        'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+                                        'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
+                                        'directionalityltr', 'directionalityrtl', 'indent', '|',
+                                        'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
+                                        'link', 'unlink', 'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
+                                        'insertimage', 'emotion', 'scrawl', 'insertvideo', 'music', 'attachment', 'map', 'gmap', 'insertframe', 'insertcode', 'webapp', 'pagebreak', 'template', 'background', '|',
+                                        'horizontal', 'date', 'time', 'spechars', 'snapscreen', 'wordimage', '|',
+                                        'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts', '|',
+                                        'print', 'preview', 'searchreplace', 'help', 'drafts']
+                                    ],
+                                }
+                                setTimeout(function () {
+                                    let _UEditor = new baidu.editor.ui.Editor(editorOption);
+                                    _UEditor.render(name);
+                                }, 100)
+                                break;
                         }
                     });
                 }

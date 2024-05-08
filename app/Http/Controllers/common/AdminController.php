@@ -87,6 +87,8 @@ class AdminController extends Controller
             'isSuperAdmin'         => $isSuperAdmin,
             'isDemo'               => $this->isDemo,
             'version'              => config('app.debug') ? time() : $version,
+            'adminUploadUrl'       => __url('ajax/upload', [], false),
+            'adminEditor'          => sysconfig('site', 'editor_type') ?: 'ueditor',
         ];
         $this->assign($data);
     }
@@ -105,7 +107,7 @@ class AdminController extends Controller
             $basePath = ".{$this->controller}.{$this->action}";
             if ($this->secondary) {
                 $template = 'admin.' . $this->secondary . $basePath;
-            } else {
+            }else {
                 $template = 'admin' . $basePath;
             }
         }

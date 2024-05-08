@@ -22,6 +22,7 @@
             IS_SUPER_ADMIN: "{{$isSuperAdmin}}",
             VERSION: "{{$version}}",
             CSRF_TOKEN: '{{ csrf_token() }}',
+            ADMIN_UPLOAD_URL: "{{$adminUploadUrl}}",
             EDITOR_TYPE: "{{sysconfig('site','editor_type')?:'ueditor'}}",
         };
     </script>
@@ -29,6 +30,7 @@
     <script src="/static/plugs/require-2.3.6/require.js?v={{$version}}" charset="utf-8"></script>
     <script src="/static/config-admin.js?v={{$version}}" charset="utf-8"></script>
     <script src="/static/common/js/admin.js?v={{$version}}" charset="utf-8"></script>
+    @include('admin.layout.editor')
 </head>
 <body>
 
