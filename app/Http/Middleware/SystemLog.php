@@ -35,51 +35,48 @@ class SystemLog
         $response = $next($request);
         if (!$request->ajax()) return $response;
         $method = $request->method();
-        if ($method == 'GET') return $response;
         if (!in_array($method, ['POST', 'PUT', 'DELETE'])) return $response;
         $params = $request->input();
         if (isset($params['s'])) unset($params['s']);
         foreach ($params as $key => $val) {
             in_array($key, $this->sensitiveParams) && $params[$key] = "***********";
         }
-        $method = strtolower($request->method());
+        $method = strtolower($method);
         $url    = $request->getPathInfo();
-        if (in_array($method, ['post', 'put', 'delete'])) {
-            $title = '';
-            try {
-                $pathInfo    = $request->getPathInfo();
-                $pathInfoExp = explode('/', $pathInfo);
-                $_action     = end($pathInfoExp) ?? '';
-                $pathInfoExp = explode('.', $pathInfoExp[2] ?? '');
-                $_name       = $pathInfoExp[0] ?? '';
-                $_controller = ucfirst($pathInfoExp[1] ?? '');
-                if ($_name && $_controller) {
-                    $className       = "App\Http\Controllers\admin\\{$_name}\\{$_controller}Controller";
-                    $reflectionClass = new \ReflectionClass($className);
-                    $parser          = new DocParser();
-                    $parser->setIgnoreNotImportedAnnotations(true);
-                    $reader               = new AnnotationReader($parser);
-                    $controllerAnnotation = $reader->getClassAnnotation($reflectionClass, ControllerAnnotation::class);
-                    $reflectionAction     = $reflectionClass->getMethod($_action);
-                    $nodeAnnotation       = $reader->getMethodAnnotation($reflectionAction, NodeAnnotation::class);
-                    $title                = $controllerAnnotation->title . ' - ' . $nodeAnnotation->title;
-                }
-            }catch (\Throwable $exception) {
+        $title  = '';
+        try {
+            $pathInfo    = $request->getPathInfo();
+            $pathInfoExp = explode('/', $pathInfo);
+            $_action     = end($pathInfoExp) ?? '';
+            $pathInfoExp = explode('.', $pathInfoExp[2] ?? '');
+            $_name       = $pathInfoExp[0] ?? '';
+            $_controller = ucfirst($pathInfoExp[1] ?? '');
+            if ($_name && $_controller) {
+                $className       = "App\Http\Controllers\admin\\{$_name}\\{$_controller}Controller";
+                $reflectionClass = new \ReflectionClass($className);
+                $parser          = new DocParser();
+                $parser->setIgnoreNotImportedAnnotations(true);
+                $reader               = new AnnotationReader($parser);
+                $controllerAnnotation = $reader->getClassAnnotation($reflectionClass, ControllerAnnotation::class);
+                $reflectionAction     = $reflectionClass->getMethod($_action);
+                $nodeAnnotation       = $reader->getMethodAnnotation($reflectionAction, NodeAnnotation::class);
+                $title                = $controllerAnnotation->title . ' - ' . $nodeAnnotation->title;
             }
-            $ip   = CommonTool::getRealIp();
-            $data = [
-                'admin_id'    => request()->session()->get('admin.id'),
-                'title'       => $title,
-                'url'         => $url,
-                'method'      => $method,
-                'ip'          => $ip,
-                'content'     => json_encode($params, JSON_UNESCAPED_UNICODE),
-                'response'    => json_encode($response->original, JSON_UNESCAPED_UNICODE),
-                'useragent'   => $request->header('HTTP_USER_AGENT'),
-                'create_time' => time(),
-            ];
-            SystemLogService::instance()->save($data);
+        }catch (\Throwable $exception) {
         }
+        $ip   = CommonTool::getRealIp();
+        $data = [
+            'admin_id'    => request()->session()->get('admin.id'),
+            'title'       => $title,
+            'url'         => $url,
+            'method'      => $method,
+            'ip'          => $ip,
+            'content'     => json_encode($params, JSON_UNESCAPED_UNICODE),
+            'response'    => json_encode($response->original, JSON_UNESCAPED_UNICODE),
+            'useragent'   => $request->header('HTTP_USER_AGENT'),
+            'create_time' => time(),
+        ];
+        SystemLogService::instance()->save($data);
         return $response;
     }
 
