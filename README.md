@@ -12,7 +12,7 @@
 >
 > 请注意：当前项目采用 `laravel 11.x` 构建，如需要 `laravel 10.x` 请在分支中选择 `10.x`
 >
-> Laravel v10.x 和 layui v2.8.x 的快速开发的后台管理系统。
+> Laravel v10.x 和 layui v2.9.x 的快速开发的后台管理系统。
 >
 > 项目地址：[http://easyadmin8.top](http://easyadmin8.top)
 >
@@ -81,7 +81,7 @@ location / {
 
 * [EasyAdmin](http://easyadmin.99php.cn/docs)
 
-* [Layui 2.8.x](https://layui.dev/docs/2.8/)
+* [Layui 2.9.x](https://layui.dev/docs)
 
 * [Layuimini](https://github.com/zhongshaofa/layuimini)
 
