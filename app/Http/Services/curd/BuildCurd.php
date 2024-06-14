@@ -141,7 +141,7 @@ class BuildCurd
      * 复选框字段后缀
      * @var array
      */
-    protected array $checkboxFieldSuffix = [];
+    protected array $checkboxFieldSuffix = ['checkbox'];
 
     /**
      * 单选框字段后缀
@@ -201,6 +201,12 @@ class BuildCurd
      * @var array
      */
     protected array $radioFields = ['radio'];
+
+    /**
+     * 复选字段
+     * @var array
+     */
+    protected array $checkboxFields = ['checkbox'];
 
     /**
      * 富文本字段
