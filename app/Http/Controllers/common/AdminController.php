@@ -88,7 +88,7 @@ class AdminController extends Controller
             'isDemo'               => $this->isDemo,
             'version'              => config('app.debug') ? time() : $version,
             'adminUploadUrl'       => __url('ajax/upload', [], false),
-            'adminEditor'          => sysconfig('site', 'editor_type') ?: 'ueditor',
+            'adminEditor'          => sysconfig('site', 'editor_type') ?: 'wangEditor',
         ];
         $this->assign($data);
     }
