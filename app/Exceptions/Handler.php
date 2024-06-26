@@ -37,8 +37,7 @@ class Handler extends ExceptionHandler
         if (!is_file(base_path() . DIRECTORY_SEPARATOR . '.env')) {
             return $this->error('.env 文件不存在');
         }
-
-        $appKey = config('APP_KEY', '');
+        $appKey = config('app.key', '');
         if (empty($appKey)) {
             return $this->error('请先设置 APP_KEY , 通过命令: php artisan key:generate');
         }
