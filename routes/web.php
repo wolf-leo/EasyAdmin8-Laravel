@@ -26,6 +26,7 @@ Route::controller(\App\Http\Controllers\common\InstallController::class)->group(
 
 // 后台所有路由
 $admin = config('admin.admin_alias_name');
+
 Route::middleware([\App\Http\Middleware\SystemLog::class, \App\Http\Middleware\CheckAuth::class])->group(function () use ($admin) {
     Route::prefix($admin)->group(function () {
 
@@ -47,7 +48,7 @@ Route::middleware([\App\Http\Middleware\SystemLog::class, \App\Http\Middleware\C
                     $args            = [];
                     foreach ($actionMethod->getParameters() as $items) {
                         try {
-                            $args[] = new ($items->getType()->getName());
+                            $args[] = !empty($items->getType()) ? new ($items->getType()->getName()) : request($items->getName(), '');
                         }catch (Throwable $exception) {
                         }
                     }
@@ -70,7 +71,7 @@ Route::middleware([\App\Http\Middleware\SystemLog::class, \App\Http\Middleware\C
                     $args            = [];
                     foreach ($actionMethod->getParameters() as $items) {
                         try {
-                            $args[] = new ($items->getType()->getName());
+                            $args[] = !empty($items->getType()) ? new ($items->getType()->getName()) : request($items->getName(), '');
                         }catch (Throwable $exception) {
                         }
                     }
@@ -92,7 +93,7 @@ Route::middleware([\App\Http\Middleware\SystemLog::class, \App\Http\Middleware\C
                     $args            = [];
                     foreach ($actionMethod->getParameters() as $items) {
                         try {
-                            $args[] = new ($items->getType()->getName());
+                            $args[] = !empty($items->getType()) ? new ($items->getType()->getName()) : request($items->getName(), '');
                         }catch (Throwable $exception) {
                         }
                     }
