@@ -48,7 +48,12 @@ Route::middleware([\App\Http\Middleware\SystemLog::class, \App\Http\Middleware\C
                     $args            = [];
                     foreach ($actionMethod->getParameters() as $items) {
                         try {
-                            $args[] = !empty($items->getType()) ? new ($items->getType()->getName()) : request($items->getName(), '');
+                            if ($items->hasType()) {
+                                $type   = $items->getType()->getName();
+                                $args[] = new $type();
+                            }else {
+                                $args[] = request($items->getName(), '');
+                            }
                         }catch (Throwable $exception) {
                         }
                     }
@@ -71,7 +76,12 @@ Route::middleware([\App\Http\Middleware\SystemLog::class, \App\Http\Middleware\C
                     $args            = [];
                     foreach ($actionMethod->getParameters() as $items) {
                         try {
-                            $args[] = !empty($items->getType()) ? new ($items->getType()->getName()) : request($items->getName(), '');
+                            if ($items->hasType()) {
+                                $type   = $items->getType()->getName();
+                                $args[] = new $type();
+                            }else {
+                                $args[] = request($items->getName(), '');
+                            }
                         }catch (Throwable $exception) {
                         }
                     }
@@ -93,7 +103,12 @@ Route::middleware([\App\Http\Middleware\SystemLog::class, \App\Http\Middleware\C
                     $args            = [];
                     foreach ($actionMethod->getParameters() as $items) {
                         try {
-                            $args[] = !empty($items->getType()) ? new ($items->getType()->getName()) : request($items->getName(), '');
+                            if ($items->hasType()) {
+                                $type   = $items->getType()->getName();
+                                $args[] = new $type();
+                            }else {
+                                $args[] = request($items->getName(), '');
+                            }
                         }catch (Throwable $exception) {
                         }
                     }
