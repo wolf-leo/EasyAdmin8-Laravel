@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
@@ -50,7 +51,7 @@ Route::middleware([\App\Http\Middleware\SystemLog::class, \App\Http\Middleware\C
                         try {
                             if ($items->hasType()) {
                                 $type   = $items->getType()->getName();
-                                $args[] = new $type();
+                                $args[] = str_contains($type, 'App\\') ? new $type() : Container::getInstance()->make($type);
                             }else {
                                 $args[] = request($items->getName(), '');
                             }
@@ -78,7 +79,7 @@ Route::middleware([\App\Http\Middleware\SystemLog::class, \App\Http\Middleware\C
                         try {
                             if ($items->hasType()) {
                                 $type   = $items->getType()->getName();
-                                $args[] = new $type();
+                                $args[] = str_contains($type, 'App\\') ? new $type() : Container::getInstance()->make($type);
                             }else {
                                 $args[] = request($items->getName(), '');
                             }
@@ -105,7 +106,7 @@ Route::middleware([\App\Http\Middleware\SystemLog::class, \App\Http\Middleware\C
                         try {
                             if ($items->hasType()) {
                                 $type   = $items->getType()->getName();
-                                $args[] = new $type();
+                                $args[] = str_contains($type, 'App\\') ? new $type() : Container::getInstance()->make($type);
                             }else {
                                 $args[] = request($items->getName(), '');
                             }
