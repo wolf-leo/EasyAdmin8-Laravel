@@ -1497,9 +1497,9 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                 }
             },
             editor: function () {
-                var editorList = document.querySelectorAll(".editor");
-                let wangEditors = {}
+                let editorList = document.querySelectorAll(".editor");
                 if (editorList.length > 0) {
+                    let wangEditors = {}
                     $.each(editorList, function (i, v) {
                         switch (window.CONFIG.EDITOR_TYPE) {
                             case 'ckeditor':
