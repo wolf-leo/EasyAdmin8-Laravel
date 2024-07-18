@@ -141,13 +141,19 @@ class BuildCurd
      * 复选框字段后缀
      * @var array
      */
-    protected array $checkboxFieldSuffix = [];
+    protected array $checkboxFieldSuffix = ['checkbox'];
 
     /**
      * 单选框字段后缀
      * @var array
      */
-    protected array $radioFieldSuffix = [];
+    protected array $radioFieldSuffix = ['radio'];
+
+    /**
+     * 下拉选择字段后缀
+     * @var array
+     */
+    protected array $selectFieldSuffix = ['select'];
 
     /**
      * 单图片字段后缀
@@ -177,7 +183,7 @@ class BuildCurd
      * 时间字段后缀
      * @var array
      */
-    protected array $dateFieldSuffix = ['time', 'date'];
+    protected array $dateFieldSuffix = ['date', 'time'];
 
     /**
      * 开关组件字段
@@ -189,7 +195,18 @@ class BuildCurd
      * 下拉选择字段
      * @var array
      */
-    protected array $selectFileds = [];
+    protected array $selectFields = ['select'];
+    /**
+     * 单选选择字段
+     * @var array
+     */
+    protected array $radioFields = ['radio'];
+
+    /**
+     * 复选字段
+     * @var array
+     */
+    protected array $checkboxFields = ['checkbox'];
 
     /**
      * 富文本字段
@@ -278,7 +295,7 @@ class BuildCurd
 
             }
             $this->tableComment = $this->table;
-        } catch (\Exception $e) {
+        }catch (\Exception $e) {
             throw new TableException($e->getMessage());
         }
 
@@ -286,11 +303,11 @@ class BuildCurd
         $nodeArray = explode('_', $this->table);
         if (count($nodeArray) == 1) {
             $this->controllerFilename = ucfirst($nodeArray[0]);
-        } else {
+        }else {
             foreach ($nodeArray as $k => $v) {
                 if ($k == 0) {
                     $this->controllerFilename = "{$v}{$this->DS}";
-                } else {
+                }else {
                     $this->controllerFilename .= ucfirst($v);
                 }
             }
@@ -373,8 +390,8 @@ class BuildCurd
                 $this->tableColumns[$foreignKey]['bindRelation']    = end($relationArray);
             }
             $this->relationArray[$relationTable] = $relation;
-            $this->selectFileds[]                = $foreignKey;
-        } catch (\Exception $e) {
+            $this->selectFields[]                = $foreignKey;
+        }catch (\Exception $e) {
             throw new TableException($e->getMessage());
         }
         return $this;
@@ -530,9 +547,9 @@ class BuildCurd
      * @param $array
      * @return $this
      */
-    public function setSelectFileds($array)
+    public function setselectFields($array)
     {
-        $this->selectFileds = array_merge($this->selectFileds, $array);
+        $this->selectFields = array_merge($this->selectFields, $array);
         return $this;
     }
 
@@ -643,8 +660,9 @@ class BuildCurd
         if (!empty($formTypeMatch) && isset($formTypeMatch[0])) {
             $column['comment'] = str_replace($formTypeMatch[0], '', $column['comment']);
             $formType          = trim(str_replace('}', '', str_replace('{', '', $formTypeMatch[0])));
-            if (in_array($formType, $this->formTypeArray)) {
-                $column['formType'] = $formType;
+            $_formType         = $this->checkCommentFormType($formType);
+            if ($_formType) {
+                $column['formType'] = $_formType;
             }
         }
 
@@ -664,7 +682,7 @@ class BuildCurd
                         }
                     }
                     !empty($formatDefine) && $column['define'] = $formatDefine;
-                } else {
+                }else {
                     $column['define'] = $define;
                 }
             }
@@ -887,7 +905,7 @@ class BuildCurd
             }
 
             // 判断下拉选择
-            if (in_array($field, $this->selectFileds)) {
+            if (in_array($field, $this->selectFields)) {
                 $this->tableColumns[$field]['formType'] = 'select';
                 continue;
             }
@@ -955,7 +973,7 @@ class BuildCurd
                 }
 
                 // 判断下拉选择
-                if (in_array($field, $this->selectFileds)) {
+                if (in_array($field, $this->selectFields)) {
                     $this->relationArray[$table]['tableColumns'][$field]['formType'] = 'select';
                     continue;
                 }
@@ -977,7 +995,7 @@ class BuildCurd
         $controllerFile = "{$this->rootDir}{$this->DS}app{$this->DS}Http{$this->DS}Controllers{$this->DS}admin{$this->DS}{$this->controllerFilename}Controller.php";
         if (empty($this->relationArray)) {
             $controllerIndexMethod = '';
-        } else {
+        }else {
             $relationCode = '';
             foreach ($this->relationArray as $key => $val) {
                 $relation     = CommonTool::lineToHump($key);
@@ -1028,7 +1046,7 @@ class BuildCurd
         $modelFile = "{$this->rootDir}{$this->DS}app{$this->DS}Models{$this->DS}{$this->modelFilename}.php";
         if (empty($this->relationArray)) {
             $relationList = '';
-        } else {
+        }else {
             $relationList = '';
             foreach ($this->relationArray as $key => $val) {
                 $relation     = CommonTool::lineToHump($key);
@@ -1142,9 +1160,48 @@ class BuildCurd
             $define       = '';
 
             // 根据formType去获取具体模板
-            if ($val['formType'] == 'editor') {
+            if ($val['formType'] == 'image') {
+                $templateFile = "view{$this->DS}module{$this->DS}image";
+            }elseif ($val['formType'] == 'images') {
+                $templateFile = "view{$this->DS}module{$this->DS}images";
+                $define       = $val['define'] ?? '|';
+            }elseif ($val['formType'] == 'file') {
+                $templateFile = "view{$this->DS}module{$this->DS}file";
+            }elseif ($val['formType'] == 'files') {
+                $templateFile = "view{$this->DS}module{$this->DS}files";
+                $define       = $val['define'] ?? '|';
+            }elseif ($val['formType'] == 'editor') {
                 $templateFile   = "view{$this->DS}module{$this->DS}editor";
                 $val['default'] = '""';
+            }elseif ($val['formType'] == 'date') {
+                $templateFile = "view{$this->DS}module{$this->DS}date";
+                if (!empty($val['define'])) {
+                    $define = $val['define'];
+                }else {
+                    $define = 'datetime';
+                }
+                if (!in_array($define, ['year', 'month', 'date', 'time', 'datetime'])) {
+                    $define = 'datetime';
+                }
+            }elseif ($val['formType'] == 'radio') {
+                $templateFile = "view{$this->DS}module{$this->DS}radio";
+                if (!empty($val['define'])) {
+                    $define = $this->buildRadioView($field, '');
+                }
+            }elseif ($val['formType'] == 'checkbox') {
+                $templateFile = "view{$this->DS}module{$this->DS}checkbox";
+                if (!empty($val['define'])) {
+                    $define = $this->buildCheckboxView($field, '');
+                }
+            }elseif ($val['formType'] == 'select') {
+                $templateFile = "view{$this->DS}module{$this->DS}select";
+                if (isset($val['bindRelation'])) {
+                    $define = $this->buildOptionView($val['bindRelation']);
+                }elseif (!empty($val['define'])) {
+                    $define = $this->buildOptionView($field);
+                }
+            }elseif (in_array($field, ['remark']) || $val['formType'] == 'textarea') {
+                $templateFile = "view{$this->DS}module{$this->DS}textarea";
             }
 
             $addFormList .= CommonTool::replaceTemplate(
@@ -1179,9 +1236,47 @@ class BuildCurd
             $value        = '{{$row[\'' . $field . '\']}}';
 
             // 根据formType去获取具体模板
-            if ($val['formType'] == 'editor') {
+            if ($val['formType'] == 'image') {
+                $templateFile = "view{$this->DS}module{$this->DS}image";
+            }elseif ($val['formType'] == 'images') {
+                $templateFile = "view{$this->DS}module{$this->DS}images";
+            }elseif ($val['formType'] == 'file') {
+                $templateFile = "view{$this->DS}module{$this->DS}file";
+            }elseif ($val['formType'] == 'files') {
+                $templateFile = "view{$this->DS}module{$this->DS}files";
+            }elseif ($val['formType'] == 'editor') {
                 $templateFile = "view{$this->DS}module{$this->DS}editor";
-                $value        = '$row["' . $field . '"]';
+                $value        = '$row[\'' . $field . '\']';
+            }elseif ($val['formType'] == 'date') {
+                $templateFile = "view{$this->DS}module{$this->DS}date";
+                if (!empty($val['define'])) {
+                    $define = $val['define'];
+                }else {
+                    $define = 'datetime';
+                }
+                if (!in_array($define, ['year', 'month', 'date', 'time', 'datetime'])) {
+                    $define = 'datetime';
+                }
+            }elseif ($val['formType'] == 'radio') {
+                $templateFile = "view{$this->DS}module{$this->DS}radio";
+                if (!empty($val['define'])) {
+                    $define = $this->buildRadioView($field, '@if($row["' . $field . '"]==$k)checked=""@endif');
+                }
+            }elseif ($val['formType'] == 'checkbox') {
+                $templateFile = "view{$this->DS}module{$this->DS}checkbox";
+                if (!empty($val['define'])) {
+                    $define = $this->buildCheckboxView($field, '@if($row["' . $field . '"]==$k)checked=""@endif');
+                }
+            }elseif ($val['formType'] == 'select') {
+                $templateFile = "view{$this->DS}module{$this->DS}select";
+                if (isset($val['bindRelation'])) {
+                    $define = $this->buildOptionView($val['bindRelation'], '@if($row["' . $field . '"]==$k)selected=""@endif');
+                }elseif (!empty($val['define'])) {
+                    $define = $this->buildOptionView($field, '@if($row["' . $field . '"]==$k)selected=""@endif');
+                }
+            }elseif (in_array($field, ['remark']) || $val['formType'] == 'textarea') {
+                $templateFile = "view{$this->DS}module{$this->DS}textarea";
+                $value        = '{{$row[\'' . $field . '\']}}';
             }
 
             $editFormList .= CommonTool::replaceTemplate(
@@ -1218,33 +1313,33 @@ class BuildCurd
 
             if ($val['formType'] == 'image') {
                 $templateValue = "{field: '{$field}', title: '{$val['comment']}', templet: ea.table.image}";
-            } elseif ($val['formType'] == 'images') {
+            }elseif ($val['formType'] == 'images') {
                 continue;
-            } elseif ($val['formType'] == 'file') {
+            }elseif ($val['formType'] == 'file') {
                 $templateValue = "{field: '{$field}', title: '{$val['comment']}', templet: ea.table.url}";
-            } elseif ($val['formType'] == 'files') {
+            }elseif ($val['formType'] == 'files') {
                 continue;
-            } elseif ($val['formType'] == 'editor') {
+            }elseif ($val['formType'] == 'editor') {
                 continue;
-            } elseif (in_array($field, $this->switchFields)) {
+            }elseif (in_array($field, $this->switchFields)) {
                 if (isset($val['define']) && !empty($val['define'])) {
                     $values        = json_encode($val['define'], JSON_UNESCAPED_UNICODE);
                     $templateValue = "{field: '{$field}', search: 'select', selectList: {$values}, title: '{$val['comment']}', templet: ea.table.switch}";
-                } else {
+                }else {
                     $templateValue = "{field: '{$field}', title: '{$val['comment']}', templet: ea.table.switch}";
                 }
-            } elseif (in_array($val['formType'], ['select', 'checkbox', 'radio', 'switch'])) {
+            }elseif (in_array($val['formType'], ['select', 'checkbox', 'radio', 'switch'])) {
                 if (isset($val['define']) && !empty($val['define'])) {
                     $values        = json_encode($val['define'], JSON_UNESCAPED_UNICODE);
                     $templateValue = "{field: '{$field}', search: 'select', selectList: {$values}, title: '{$val['comment']}'}";
-                } else {
+                }else {
                     $templateValue = "{field: '{$field}', title: '{$val['comment']}'}";
                 }
-            } elseif (in_array($field, ['remark'])) {
+            }elseif (in_array($field, ['remark'])) {
                 $templateValue = "{field: '{$field}', title: '{$val['comment']}', templet: ea.table.text}";
-            } elseif (in_array($field, $this->sortFields)) {
+            }elseif (in_array($field, $this->sortFields)) {
                 $templateValue = "{field: '{$field}', title: '{$val['comment']}', edit: 'text'}";
-            } else {
+            }else {
                 $templateValue = "{field: '{$field}', title: '{$val['comment']}'}";
             }
 
@@ -1257,23 +1352,23 @@ class BuildCurd
             foreach ($tableVal['tableColumns'] as $field => $val) {
                 if ($val['formType'] == 'image') {
                     $templateValue = "{field: '{$table}.{$field}', title: '{$val['comment']}', templet: ea.table.image}";
-                } elseif ($val['formType'] == 'images') {
+                }elseif ($val['formType'] == 'images') {
                     continue;
-                } elseif ($val['formType'] == 'file') {
+                }elseif ($val['formType'] == 'file') {
                     $templateValue = "{field: '{$table}.{$field}', title: '{$val['comment']}', templet: ea.table.url}";
-                } elseif ($val['formType'] == 'files') {
+                }elseif ($val['formType'] == 'files') {
                     continue;
-                } elseif ($val['formType'] == 'editor') {
+                }elseif ($val['formType'] == 'editor') {
                     continue;
-                } elseif ($val['formType'] == 'select') {
+                }elseif ($val['formType'] == 'select') {
                     $templateValue = "{field: '{$table}.{$field}', title: '{$val['comment']}'}";
-                } elseif (in_array($field, ['remark'])) {
+                }elseif (in_array($field, ['remark'])) {
                     $templateValue = "{field: '{$table}.{$field}', title: '{$val['comment']}', templet: ea.table.text}";
-                } elseif (in_array($field, $this->switchFields)) {
+                }elseif (in_array($field, $this->switchFields)) {
                     $templateValue = "{field: '{$table}.{$field}', title: '{$val['comment']}', templet: ea.table.switch}";
-                } elseif (in_array($field, $this->sortFields)) {
+                }elseif (in_array($field, $this->sortFields)) {
                     $templateValue = "{field: '{$table}.{$field}', title: '{$val['comment']}', edit: 'text'}";
-                } else {
+                }else {
                     $templateValue = "{field: '{$table}.{$field}', title: '{$val['comment']}'}";
                 }
 
@@ -1359,7 +1454,7 @@ class BuildCurd
     protected function checkContain($string, $array): bool
     {
         foreach ($array as $vo) {
-            if (str_starts_with($string, $vo)) {
+            if (str_starts_with($vo, $string)) {
                 return true;
             }
         }
@@ -1386,4 +1481,22 @@ class BuildCurd
         return file_get_contents("{$this->dir}{$this->DS}templates{$this->DS}{$name}.code");
     }
 
+    /**
+     * 检测字段注释归类的类型
+     * @param string $formType
+     * @return string|null
+     */
+    protected function checkCommentFormType(string $formType = ''): ?string
+    {
+        $classProperties = get_class_vars(get_class($this));
+        foreach ($classProperties as $property => $classProperty) {
+            if (empty($property)) continue;
+            if (str_ends_with($property, 'FieldSuffix')) {
+                if (in_array($formType, $this->$property)) {
+                    return $this->$property[0] ?? '';
+                }
+            }
+        }
+        return '';
+    }
 }

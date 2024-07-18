@@ -154,12 +154,25 @@ class AjaxController extends AdminController
             "imageManagerUrlPrefix"   => "",
             "imageManagerInsertAlign" => "none",
             "imageManagerAllowFiles"  => $upload_allow_ext,
+            // 上传 video
+            "videoActionName"         => "video",
+            "videoFieldName"          => "file",
+            "videoUrlPrefix"          => "",
+            "videoMaxSize"            => $upload_allow_size,
+            "videoAllowFiles"         => $upload_allow_ext,
+            // 上传 附件
+            "fileActionName"          => "attachment",
+            "fileFieldName"           => "file",
+            "fileMaxSize"             => $upload_allow_size,
+            "fileAllowFiles"          => $upload_allow_ext,
         ];
         $action      = request()->input('action', '');
         $file        = request()->file('file');
         $upload_type = $uploadConfig['upload_type'];
         switch ($action) {
             case 'image':
+            case 'attachment':
+            case 'video':
                 if ($this->isDemo) return json(['state' => '演示环境下不允许修改']);
                 try {
                     $upload = UploadService::instance()->setConfig($uploadConfig)->$upload_type($file);

@@ -69,14 +69,11 @@ class LoginController extends AdminController
         $chars   = '0123456789';
         $phrase  = new PhraseBuilder($length, $chars);
         $builder = new CaptchaBuilder(null, $phrase);
-        // 生成验证码
         $builder->build();
-        // 将验证码的值存储到session中
-        request()->session()->put('captcha', strtolower($builder->getPhrase()));
-        // 获得验证码图片二进制数据
+        session()->put('captcha', strtolower($builder->getPhrase()));
         $img_content = $builder->get();
-        // 输出验证码二进制数据
         return response($img_content, 200, ['Content-Type' => 'image/jpeg']);
+
     }
 
     public function out(): Response|JsonResponse
