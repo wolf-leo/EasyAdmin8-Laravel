@@ -64,7 +64,7 @@ class SystemLog
             }
         }catch (\Throwable $exception) {
         }
-        $ip   = CommonTool::getRealIp();
+        $ip   = $request->ip();
         $data = [
             'admin_id'    => request()->session()->get('admin.id'),
             'title'       => $title,
