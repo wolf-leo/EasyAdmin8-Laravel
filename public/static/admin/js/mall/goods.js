@@ -12,7 +12,7 @@ define(["jquery", "easy-admin"], function ($, ea) {
         stock_url: 'mall.goods/stock',
     };
 
-    var Controller = {
+    return {
 
         index: function () {
             ea.table.render({
@@ -77,5 +77,4 @@ define(["jquery", "easy-admin"], function ($, ea) {
             ea.listen();
         },
     };
-    return Controller;
 });

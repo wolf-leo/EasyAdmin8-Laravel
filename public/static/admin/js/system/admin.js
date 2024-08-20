@@ -12,7 +12,7 @@ define(["jquery", "easy-admin"], function ($, ea) {
         password_url: 'system.admin/password',
     };
 
-    var Controller = {
+    return {
 
         index: function () {
 
@@ -60,5 +60,4 @@ define(["jquery", "easy-admin"], function ($, ea) {
             ea.listen();
         }
     };
-    return Controller;
 });

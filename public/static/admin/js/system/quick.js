@@ -14,7 +14,7 @@ define(["jquery", "easy-admin", "iconPickerFa", "autocomplete"], function ($, ea
         modify_url: 'system.quick/modify',
     };
 
-    var Controller = {
+    return {
 
         index: function () {
             ea.table.render({
@@ -86,5 +86,4 @@ define(["jquery", "easy-admin", "iconPickerFa", "autocomplete"], function ($, ea
             ea.listen();
         },
     };
-    return Controller;
 });

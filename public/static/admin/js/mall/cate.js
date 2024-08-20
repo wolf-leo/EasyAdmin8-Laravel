@@ -11,7 +11,7 @@ define(["jquery", "easy-admin"], function ($, ea) {
         modify_url: 'mall.cate/modify',
     };
 
-    var Controller = {
+    return {
 
         index: function () {
             ea.table.render({
@@ -38,5 +38,4 @@ define(["jquery", "easy-admin"], function ($, ea) {
             ea.listen();
         },
     };
-    return Controller;
 });

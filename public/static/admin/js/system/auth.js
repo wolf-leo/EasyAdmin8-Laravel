@@ -12,7 +12,7 @@ define(["jquery", "easy-admin"], function ($, ea) {
         authorizes_url: 'system.auth/authorizes',
     };
 
-    var Controller = {
+    return {
 
         index: function () {
             ea.table.render({
@@ -86,5 +86,4 @@ define(["jquery", "easy-admin"], function ($, ea) {
 
         }
     };
-    return Controller;
 });

@@ -8,7 +8,7 @@ define(["jquery", "easy-admin"], function ($, ea) {
         export_url: 'system.log/export',
     };
 
-    var Controller = {
+    return {
         index: function () {
             var util = layui.util;
             ea.table.render({
@@ -55,5 +55,4 @@ define(["jquery", "easy-admin"], function ($, ea) {
             ea.listen();
         },
     };
-    return Controller;
 });
