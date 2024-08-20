@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <div class="layui-form-item" v-if="upload_type == 'oss'" v-cloak>
+    <div class="layui-form-item oss layui-hide upload_type">
         <label class="layui-form-label required">公钥信息</label>
         <div class="layui-input-block">
             <input type="text" name="oss_access_key_id" class="layui-input" lay-verify="required" lay-reqtext="请输入公钥信息" placeholder="请输入公钥信息" value="{{sysconfig('upload','oss_access_key_id')}}">
@@ -33,7 +33,7 @@
         </div>
     </div>
 
-    <div class="layui-form-item" v-if="upload_type == 'oss'" v-cloak>
+    <div class="layui-form-item oss layui-hide upload_type">
         <label class="layui-form-label required">私钥信息</label>
         <div class="layui-input-block">
             <input type="text" name="oss_access_key_secret" class="layui-input" lay-verify="required" lay-reqtext="请输入私钥信息" placeholder="请输入私钥信息" value="{{sysconfig('upload','oss_access_key_secret')}}">
@@ -41,7 +41,7 @@
         </div>
     </div>
 
-    <div class="layui-form-item" v-if="upload_type == 'oss'" v-cloak>
+    <div class="layui-form-item oss layui-hide upload_type">
         <label class="layui-form-label required">数据中心</label>
         <div class="layui-input-block">
             <input type="text" name="oss_endpoint" class="layui-input" lay-verify="required" lay-reqtext="请输入数据中心" placeholder="请输入数据中心" value="{{sysconfig('upload','oss_endpoint')}}">
@@ -49,7 +49,7 @@
         </div>
     </div>
 
-    <div class="layui-form-item" v-if="upload_type == 'oss'" v-cloak>
+    <div class="layui-form-item oss layui-hide upload_type">
         <label class="layui-form-label required">空间名称</label>
         <div class="layui-input-block">
             <input type="text" name="oss_bucket" class="layui-input" lay-verify="required" lay-reqtext="请输入空间名称" placeholder="请输入空间名称" value="{{sysconfig('upload','oss_bucket')}}">
@@ -57,7 +57,7 @@
         </div>
     </div>
 
-    <div class="layui-form-item" v-if="upload_type == 'oss'" v-cloak>
+    <div class="layui-form-item oss layui-hide upload_type">
         <label class="layui-form-label required">访问域名</label>
         <div class="layui-input-block">
             <input type="text" name="oss_domain" class="layui-input" lay-verify="required" lay-reqtext="请输入访问域名" placeholder="请输入访问域名" value="{{sysconfig('upload','oss_domain')}}">
@@ -65,7 +65,7 @@
         </div>
     </div>
 
-    <div class="layui-form-item" v-if="upload_type == 'cos'" v-cloak>
+    <div class="layui-form-item cos layui-hide upload_type">
         <label class="layui-form-label required">公钥信息</label>
         <div class="layui-input-block">
             <input type="text" name="cos_secret_id" class="layui-input" lay-verify="required" lay-reqtext="请输入公钥信息" placeholder="请输入公钥信息" value="{{sysconfig('upload','cos_secret_id')}}">
@@ -73,7 +73,7 @@
         </div>
     </div>
 
-    <div class="layui-form-item" v-if="upload_type == 'cos'" v-cloak>
+    <div class="layui-form-item cos layui-hide upload_type">
         <label class="layui-form-label required">私钥信息</label>
         <div class="layui-input-block">
             <input type="text" name="cos_secret_key" class="layui-input" lay-verify="required" lay-reqtext="请输入私钥信息" placeholder="请输入私钥信息" value="{{sysconfig('upload','cos_secret_key')}}">
@@ -81,7 +81,7 @@
         </div>
     </div>
 
-    <div class="layui-form-item" v-if="upload_type == 'cos'" v-cloak>
+    <div class="layui-form-item cos layui-hide upload_type">
         <label class="layui-form-label required">存储桶地域</label>
         <div class="layui-input-block">
             <input type="text" name="cos_region" class="layui-input" lay-verify="required" lay-reqtext="请输入存储桶地域" placeholder="请输入存储桶地域" value="{{sysconfig('upload','cos_region')}}">
@@ -89,7 +89,7 @@
         </div>
     </div>
 
-    <div class="layui-form-item" v-if="upload_type == 'cos'" v-cloak>
+    <div class="layui-form-item cos layui-hide upload_type">
         <label class="layui-form-label required">存储桶名称</label>
         <div class="layui-input-block">
             <input type="text" name="cos_bucket" class="layui-input" lay-verify="required" lay-reqtext="请输入存储桶名称" placeholder="请输入存储桶名称" value="{{sysconfig('upload','cos_bucket')}}">
@@ -97,7 +97,7 @@
         </div>
     </div>
 
-    <div class="layui-form-item" v-if="upload_type == 'qnoss'" v-cloak>
+    <div class="layui-form-item qnoss layui-hide upload_type">
         <label class="layui-form-label required">公钥信息</label>
         <div class="layui-input-block">
             <input type="text" name="qnoss_access_key" class="layui-input" lay-verify="required" lay-reqtext="请输入公钥信息" placeholder="请输入公钥信息" value="{{sysconfig('upload','qnoss_access_key')}}">
@@ -105,7 +105,7 @@
         </div>
     </div>
 
-    <div class="layui-form-item" v-if="upload_type == 'qnoss'" v-cloak>
+    <div class="layui-form-item qnoss layui-hide upload_type">
         <label class="layui-form-label required">私钥信息</label>
         <div class="layui-input-block">
             <input type="text" name="qnoss_secret_key" class="layui-input" lay-verify="required" lay-reqtext="请输入私钥信息" placeholder="请输入私钥信息" value="{{sysconfig('upload','qnoss_secret_key')}}">
@@ -113,7 +113,7 @@
         </div>
     </div>
 
-    <div class="layui-form-item" v-if="upload_type == 'qnoss'" v-cloak>
+    <div class="layui-form-item qnoss layui-hide upload_type">
         <label class="layui-form-label required">存储空间</label>
         <div class="layui-input-block">
             <input type="text" name="qnoss_bucket" class="layui-input" lay-verify="required" lay-reqtext="请输入存储桶地域" placeholder="请输入存储桶地域" value="{{sysconfig('upload','qnoss_bucket')}}">
@@ -121,7 +121,7 @@
         </div>
     </div>
 
-    <div class="layui-form-item" v-if="upload_type == 'qnoss'" v-cloak>
+    <div class="layui-form-item qnoss layui-hide upload_type">
         <label class="layui-form-label required">访问域名</label>
         <div class="layui-input-block">
             <input type="text" name="qnoss_domain" class="layui-input" lay-verify="required" lay-reqtext="请输入访问域名" placeholder="请输入访问域名" value="{{sysconfig('upload','qnoss_domain')}}">

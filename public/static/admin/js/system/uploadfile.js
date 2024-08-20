@@ -11,7 +11,7 @@ define(["jquery", "easy-admin"], function ($, ea) {
         export_url: 'system.uploadfile/export',
     };
 
-    var Controller = {
+    return {
 
         index: function () {
             ea.table.render({
@@ -39,5 +39,4 @@ define(["jquery", "easy-admin"], function ($, ea) {
             ea.listen();
         },
     };
-    return Controller;
 });

@@ -2,7 +2,7 @@ define(["jquery", "easy-admin", "vue"], function ($, ea, Vue) {
 
     var form = layui.form;
 
-    var Controller = {
+    return {
         index: function () {
             var _group = 'site'
             var element = layui.element;
@@ -10,15 +10,14 @@ define(["jquery", "easy-admin", "vue"], function ($, ea, Vue) {
                 _group = $(this).data('group')
             });
 
-            var app = new Vue({
-                el: '#app',
-                data: {
-                    upload_type: upload_type
-                }
-            });
+            let _upload_type = upload_type || 'local'
+            $('.upload_type').addClass('layui-hide')
+            $('.' + _upload_type).removeClass('layui-hide')
 
             form.on("radio(upload_type)", function (data) {
-                app.upload_type = this.value;
+                _upload_type = this.value;
+                $('.upload_type').addClass('layui-hide')
+                $('.' + _upload_type).removeClass('layui-hide')
             });
 
             form.on("submit", function (data) {
@@ -28,5 +27,4 @@ define(["jquery", "easy-admin", "vue"], function ($, ea, Vue) {
             ea.listen();
         }
     };
-    return Controller;
 });
