@@ -5,6 +5,6 @@ namespace {{modelNamespace}};
 class {{modelName}} extends BaseModel
 {
 
-    {{selectList}}
+    public array $notes = {{selectArrays}};
 
 }

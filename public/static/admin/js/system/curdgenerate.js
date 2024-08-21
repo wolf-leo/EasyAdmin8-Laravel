@@ -9,6 +9,63 @@ define(["jquery", "easy-admin", "miniTab"], function ($, ea, miniTab) {
 
     return {
         index: function () {
+
+            let element = layui.element;
+            element.on('tab(curd-hash)', function (obj) {
+                let id = obj.id
+                let _html = `
+<div style="padding: 50px 25px;">
+<fieldset class="layui-elem-field">
+  <legend>提示</legend>
+  <div class="layui-field-box">
+  <p><a class="layui-font-blue" target="_blank" rel="nofollow" href="https://edocs.easyadmin8.top/curd/command.html">命令可查询文档</a></p>
+  </div>
+</fieldset>
+<form class="layui-form layui-form-pane" action="">
+  <div class="layui-form-item">
+    <div class="layui-input-group" style="width: 100%;">
+      <div class="layui-input-split layui-input-prefix" style="width: 100px;">
+          php think curd
+      </div>
+        <input type="text" class="layui-input" name="command" placeholder="在这里输入命令参数" lay-verify="required"/>
+    </div>
+  </div>
+  <div class="layui-form-item">
+        <button class="layui-btn layui-btn-fluid layui-bg-cyan" type="button" lay-submit="system.CurdGenerate/save?type=console" lay-filter="curd-console-submit">一键执行</button>
+  </div>
+</form>
+</div>
+`
+                if (id == '2') {
+                    layer.open({
+                        title: '命令行一键生成 CRUD/CRUD',
+                        type: 1,
+                        shade: 0.3,
+                        shadeClose: false,
+                        area: ['42%', 'auto'],
+                        content: _html,
+                        success: function () {
+                            form.on('submit(curd-console-submit)', function (data) {
+                                let field = data.field
+                                let url = $(this).attr('lay-submit')
+                                let options = {url: ea.url(url), data: field}
+                                ea.msg.confirm('确认执行该操作？<br>如果命令行中存在强制覆盖或者删除将会马上执行！', function () {
+                                    ea.request.post(options, function (rs) {
+                                        let msg = rs.msg || '未知~'
+                                        layer.msg(msg.replace(/\n/g, '<br>'), {shade: 0.3, shadeClose: true})
+                                        let code = rs?.code || '-1'
+                                        if (code != '1') return
+                                    })
+                                })
+                            })
+                        },
+                        end: function () {
+                            element.tabChange('curd-hash', '1');
+                        }
+                    })
+                }
+            });
+
             miniTab.listen();
             let createStatus = false
             let tb_prefix
@@ -22,6 +79,27 @@ define(["jquery", "easy-admin", "miniTab"], function ($, ea, miniTab) {
                     $('.tableShow').removeClass('layui-hide')
                     $('.table-text').text(field.tb_prefix + field.tb_name)
                     let _data = res.data
+
+                    let fieldsHtml = ``
+                    $.each(_data.list, function (i, v) {
+                        if (v.Key != 'PRI') fieldsHtml += `
+<div class="input_tag">
+<input lay-skin="tag" class="checkbox_${v.Field}" type="checkbox"
+title="${v.Field} (${v.Type})" value="${v.Field}" lay-filter="checkbox-filter" />
+</div>
+`
+                    })
+                    $('.table_fields').html(fieldsHtml)
+                    form.render('checkbox')
+
+                    form.on('checkbox(checkbox-filter)', function (data) {
+                        let _checked = data.elem.checked
+                        $.each($(`.checkbox_${data.value}`), function (i, v) {
+                            if (i > 0) $(this).prop('checked', false);
+                        })
+                        $(data.elem).prop('checked', _checked);
+                    });
+
                     table.render({
                         elem: '#currentTable', cols: [
                             [
@@ -47,7 +125,19 @@ define(["jquery", "easy-admin", "miniTab"], function ($, ea, miniTab) {
                         return
                     }
                     let url = $(this).attr('lay-submit')
-                    let options = {url: url, prefix: true, data: {tb_prefix: tb_prefix, tb_name: tb_name}}
+                    let fields = {}
+                    $.each($('.table_fields'), function (i, v) {
+                        let _name = $(this).data('name')
+                        let _inputs = {}
+                        $.each($(v).find('.input_tag'), function (i, v) {
+                            let checkedVal = $(this).find('input:checked').val()
+                            if (checkedVal) {
+                                _inputs[i] = checkedVal
+                            }
+                        })
+                        fields[_name] = _inputs
+                    })
+                    let options = {url: url, prefix: true, data: {tb_prefix: tb_prefix, tb_name: tb_name, tb_fields: fields}}
                     layer.confirm('确定要自动生成【' + table + '】对应的CURD?', function (index) {
                         ea.request.post(options, function (res) {
                             createStatus = true
@@ -93,6 +183,8 @@ define(["jquery", "easy-admin", "miniTab"], function ($, ea, miniTab) {
                             ea.msg.success(res.msg)
                             $('.table-text').text('')
                             $('.file-list').empty()
+                            $('.table_fields').empty()
+                            $('.tableShow').addClass('layui-hide')
                             createStatus = false
                         })
                     })

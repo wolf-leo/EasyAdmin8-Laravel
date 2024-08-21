@@ -9,4 +9,9 @@
         </table>
     </div>
 </div>
+
+<script>
+{{notesScript}}
+</script>
+
 @include('admin.layout.foot')

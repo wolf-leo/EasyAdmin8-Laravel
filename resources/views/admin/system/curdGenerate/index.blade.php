@@ -1,4 +1,10 @@
 @include('admin.layout.head')
+<style>
+    .table_fields .input_tag {
+        margin-bottom: 5px;
+        display: inline-flex;
+    }
+</style>
 <div class="layuimini-container">
     <div class="layuimini-main" id="app">
 
@@ -9,7 +15,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">数据库表前缀</label>
                     <div class="layui-input-block">
-                        <input type="text" name="tb_prefix" class="layui-input" placeholder="请输入" value="{{env('DB_PREFIX','')}}">
+                        <input type="text" name="tb_prefix" class="layui-input" placeholder="请输入" value="{{config('database.connections.mysql.prefix','')}}">
                         <tip>可为空，为空则不带前缀</tip>
                     </div>
                 </div>
@@ -34,6 +40,62 @@
             <blockquote class="layui-elem-quote layui-quote-nm">
                 数据表：<span class="table-text"></span>
             </blockquote>
+            <div class="layui-card-body">
+                <fieldset class="layui-elem-field">
+                    <legend class="layui-font-16">设置忽略字段</legend>
+                    <div class="layui-field-box">
+                        <div class="table_fields layui-form" data-name="ignore"></div>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field">
+                    <legend class="layui-font-16">设置下拉字段</legend>
+                    <div class="layui-field-box">
+                        <div class="table_fields layui-form" data-name="select"></div>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field">
+                    <legend class="layui-font-16">设置单选字段</legend>
+                    <div class="layui-field-box">
+                        <div class="table_fields layui-form" data-name="radio"></div>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field">
+                    <legend class="layui-font-16">设置多选字段</legend>
+                    <div class="layui-field-box">
+                        <div class="table_fields layui-form" data-name="checkbox"></div>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field">
+                    <legend class="layui-font-16">设置单选图片字段</legend>
+                    <div class="layui-field-box">
+                        <div class="table_fields layui-form" data-name="image"></div>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field">
+                    <legend class="layui-font-16">设置多选图片字段</legend>
+                    <div class="layui-field-box">
+                        <div class="table_fields layui-form" data-name="images"></div>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field">
+                    <legend class="layui-font-16">设置日期（Y-m-d）字段</legend>
+                    <div class="layui-field-box">
+                        <div class="table_fields layui-form" data-name="date"></div>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field">
+                    <legend class="layui-font-16">设置日期时间（Y-m-d H:i:s）字段</legend>
+                    <div class="layui-field-box">
+                        <div class="table_fields layui-form" data-name="datetime"></div>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field">
+                    <legend class="layui-font-16">设置编辑器字段</legend>
+                    <div class="layui-field-box">
+                        <div class="table_fields layui-form" data-name="editor"></div>
+                    </div>
+                </fieldset>
+            </div>
             <div class="layui-btn-container">
                 <form class="layui-form layuimini-form">
                     <button type="button" class="layui-btn layui-bg-cyan" lay-filter="add" lay-submit="system.CurdGenerate/save?type=add">自动生成CURD</button>

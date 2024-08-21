@@ -186,10 +186,16 @@ class BuildCurd
     protected array $dateFieldSuffix = ['date', 'time'];
 
     /**
+     * 日期时间字段后缀
+     * @var array
+     */
+    protected array $datetimeFieldSuffix = ['datetime'];
+
+    /**
      * 开关组件字段
      * @var array
      */
-    protected array $switchFields = ['status'];
+    protected array $switchFields = [];
 
     /**
      * 下拉选择字段
@@ -330,12 +336,12 @@ class BuildCurd
      * @param $foreignKey
      * @param null $primaryKey
      * @param null $modelFilename
-     * @param array $onlyShowFileds
+     * @param array $onlyShowFields
      * @param null $bindSelectField
      * @return $this
      * @throws TableException
      */
-    public function setRelation($relationTable, $foreignKey, $primaryKey = null, $modelFilename = null, $onlyShowFileds = [], $bindSelectField = null)
+    public function setRelation($relationTable, $foreignKey, $primaryKey = null, $modelFilename = null, $onlyShowFields = [], $bindSelectField = null)
     {
         if (!isset($this->tableColumns[$foreignKey])) {
             throw new TableException("主表不存在外键字段：{$foreignKey}");
@@ -344,17 +350,17 @@ class BuildCurd
             $modelFilename = str_replace('/', $this->DS, $modelFilename);
         }
         try {
-            $colums       = Db::query("SHOW FULL COLUMNS FROM {$this->tablePrefix}{$relationTable}");
-            $formatColums = [];
-            $delete       = false;
-            if (!empty($bindSelectField) && !in_array($bindSelectField, array_column($colums, 'Field'))) {
+            $columns       = Db::select("SHOW FULL COLUMNS FROM {$this->tablePrefix}{$relationTable}");
+            $formatColumns = [];
+            $delete        = false;
+            if (!empty($bindSelectField) && !in_array($bindSelectField, array_column($columns, 'Field'))) {
                 throw new TableException("关联表{$relationTable}不存在该字段: {$bindSelectField}");
             }
-            foreach ($colums as $vo) {
+            foreach ($columns as $vo) {
                 if (empty($primaryKey) && $vo['Key'] == 'PRI') {
                     $primaryKey = $vo['Field'];
                 }
-                if (!empty($onlyShowFileds) && !in_array($vo['Field'], $onlyShowFileds)) {
+                if (!empty($onlyShowFields) && !in_array($vo['Field'], $onlyShowFields)) {
                     continue;
                 }
                 $colum = [
@@ -365,7 +371,7 @@ class BuildCurd
 
                 $this->buildColumn($colum);
 
-                $formatColums[$vo['Field']] = $colum;
+                $formatColumns[$vo['Field']] = $colum;
                 if ($vo['Field'] == 'delete_time') {
                     $delete = true;
                 }
@@ -382,7 +388,7 @@ class BuildCurd
                 'primaryKey'      => $primaryKey,
                 'bindSelectField' => $bindSelectField,
                 'delete'          => $delete,
-                'tableColumns'    => $formatColums,
+                'tableColumns'    => $formatColumns,
             ];
             if (!empty($bindSelectField)) {
                 $relationArray                                      = explode('\\', $modelFilename);
@@ -402,7 +408,7 @@ class BuildCurd
      * @param $controllerFilename
      * @return $this
      */
-    public function setControllerFilename($controllerFilename)
+    public function setControllerFilename($controllerFilename): static
     {
         $this->controllerFilename = str_replace('/', $this->DS, $controllerFilename);
         $this->buildViewJsUrl();
@@ -414,7 +420,7 @@ class BuildCurd
      * @param $modelFilename
      * @return $this
      */
-    public function setModelFilename($modelFilename)
+    public function setModelFilename($modelFilename): static
     {
         $this->modelFilename = str_replace('/', $this->DS, $modelFilename);
         $this->buildViewJsUrl();
@@ -426,7 +432,7 @@ class BuildCurd
      * @param $fields
      * @return $this
      */
-    public function setFields($fields)
+    public function setFields($fields): static
     {
         $this->fields = $fields;
         return $this;
@@ -437,7 +443,7 @@ class BuildCurd
      * @param $delete
      * @return $this
      */
-    public function setDelete($delete)
+    public function setDelete($delete): static
     {
         $this->delete = $delete;
         return $this;
@@ -448,7 +454,7 @@ class BuildCurd
      * @param $force
      * @return $this
      */
-    public function setForce($force)
+    public function setForce($force): static
     {
         $this->force = $force;
         return $this;
@@ -457,44 +463,48 @@ class BuildCurd
     /**
      * 设置复选框字段后缀
      * @param $array
+     * @param bool $replace
      * @return $this
      */
-    public function setCheckboxFieldSuffix($array)
+    public function setCheckboxFieldSuffix($array, bool $replace = false): static
     {
-        $this->checkboxFieldSuffix = array_merge($this->checkboxFieldSuffix, $array);
+        $this->checkboxFieldSuffix = $replace ? $array : array_merge($this->checkboxFieldSuffix, $array);
         return $this;
     }
 
     /**
      * 设置单选框字段后缀
      * @param $array
+     * @param bool $replace
      * @return $this
      */
-    public function setRadioFieldSuffix($array)
+    public function setRadioFieldSuffix($array, bool $replace = false): static
     {
-        $this->radioFieldSuffix = array_merge($this->radioFieldSuffix, $array);
+        $this->radioFieldSuffix = $replace ? $array : array_merge($this->radioFieldSuffix, $array);
         return $this;
     }
 
     /**
      * 设置单图片字段后缀
      * @param $array
+     * @param bool $replace
      * @return $this
      */
-    public function setImageFieldSuffix($array)
+    public function setImageFieldSuffix($array, bool $replace = false): static
     {
-        $this->imageFieldSuffix = array_merge($this->imageFieldSuffix, $array);
+        $this->imageFieldSuffix = $replace ? $array : array_merge($this->imageFieldSuffix, $array);
         return $this;
     }
 
     /**
      * 设置多图片字段后缀
      * @param $array
+     * @param bool $replace
      * @return $this
      */
-    public function setImagesFieldSuffix($array)
+    public function setImagesFieldSuffix($array, bool $replace = false): static
     {
-        $this->imagesFieldSuffix = array_merge($this->imagesFieldSuffix, $array);
+        $this->imagesFieldSuffix = $replace ? $array : array_merge($this->imagesFieldSuffix, $array);
         return $this;
     }
 
@@ -503,7 +513,7 @@ class BuildCurd
      * @param $array
      * @return $this
      */
-    public function setFileFieldSuffix($array)
+    public function setFileFieldSuffix($array): static
     {
         $this->fileFieldSuffix = array_merge($this->fileFieldSuffix, $array);
         return $this;
@@ -512,66 +522,90 @@ class BuildCurd
     /**
      * 设置多文件字段后缀
      * @param $array
+     * @param bool $replace
      * @return $this
      */
-    public function setFilesFieldSuffix($array)
+    public function setFilesFieldSuffix($array, bool $replace = false): static
     {
-        $this->filesFieldSuffix = array_merge($this->filesFieldSuffix, $array);
+        $this->filesFieldSuffix = $replace ? $array : array_merge($this->filesFieldSuffix, $array);
         return $this;
     }
 
     /**
      * 设置时间字段后缀
      * @param $array
+     * @param bool $replace
      * @return $this
      */
-    public function setDateFieldSuffix($array)
+    public function setDateFieldSuffix($array, bool $replace = false): static
     {
-        $this->dateFieldSuffix = array_merge($this->dateFieldSuffix, $array);
+        $this->dateFieldSuffix = $replace ? $array : array_merge($this->dateFieldSuffix, $array);
+        return $this;
+    }
+
+    /**
+     * 设置日期时间字段后缀
+     * @param $array
+     * @param bool $replace
+     * @return $this
+     */
+    public function setDatetimeFieldSuffix($array, bool $replace = false): static
+    {
+        $this->datetimeFieldSuffix = $replace ? $array : array_merge($this->datetimeFieldSuffix, $array);
         return $this;
     }
 
     /**
      * 设置开关字段
      * @param $array
+     * @param bool $replace
      * @return $this
      */
-    public function setSwitchFields($array)
+    public function setSwitchFields($array, bool $replace = false): static
     {
-        $this->switchFields = array_merge($this->switchFields, $array);
+        $this->switchFields = $replace ? $array : array_merge($this->switchFields, $array);
         return $this;
     }
 
     /**
      * 设置下拉选择字段
      * @param $array
+     * @param bool $replace
      * @return $this
      */
-    public function setselectFields($array)
+    public function setSelectFields($array, bool $replace = false): static
     {
-        $this->selectFields = array_merge($this->selectFields, $array);
+        $this->selectFields = $replace ? $array : array_merge($this->selectFields, $array);
         return $this;
     }
 
     /**
      * 设置排序字段
      * @param $array
+     * @param bool $replace
      * @return $this
      */
-    public function setSortFields($array)
+    public function setSortFields($array, bool $replace = false): static
     {
-        $this->sortFields = array_merge($this->sortFields, $array);
+        $this->sortFields = $replace ? $array : array_merge($this->sortFields, $array);
         return $this;
     }
 
     /**
      * 设置忽略字段
      * @param $array
+     * @param bool $replace
      * @return $this
      */
-    public function setIgnoreFields($array)
+    public function setIgnoreFields($array, bool $replace = false): static
     {
-        $this->ignoreFields = array_merge($this->ignoreFields, $array);
+        $this->ignoreFields = $replace ? $array : array_merge($this->ignoreFields, $array);
+        return $this;
+    }
+
+    public function setEditorFields($array, $replace = false): static
+    {
+        $this->editorFields = $replace ? $array : array_merge($this->editorFields, $array);
         return $this;
     }
 
@@ -579,7 +613,7 @@ class BuildCurd
      * 获取相关的文件
      * @return array
      */
-    public function getFileList()
+    public function getFileList(): array
     {
         return $this->fileList;
     }
@@ -617,7 +651,7 @@ class BuildCurd
      * 构建字段
      * @return $this
      */
-    protected function buildStructure()
+    protected function buildStructure(): static
     {
         foreach ($this->tableColumns as $key => $val) {
 
@@ -654,6 +688,8 @@ class BuildCurd
     {
 
         $string = $column['comment'];
+
+        $column['define'] = json_encode([1 => '系统自动生成A', 2 => '请自行修改B'], JSON_UNESCAPED_UNICODE);
 
         // 处理定义类型
         preg_match('/{[\s\S]*?}/i', $string, $formTypeMatch);
@@ -761,14 +797,14 @@ class BuildCurd
      * @param string $select
      * @return mixed
      */
-    protected function buildOptionView($field, $select = ''): mixed
+    protected function buildOptionView($field, string $select = ''): mixed
     {
-        $field      = CommonTool::lineToHump(ucfirst($field));
-        $name       = "get{$field}List";
+        //        $field      = CommonTool::lineToHump(ucfirst($field));
+        //        $name       = "get{$field}List";
         $optionCode = CommonTool::replaceTemplate(
             $this->getTemplate("view{$this->DS}module{$this->DS}option"),
             [
-                'name'   => $name,
+                'name'   => "notes['$field']",
                 'select' => $select,
             ]);
         return $optionCode;
@@ -780,15 +816,15 @@ class BuildCurd
      * @param string $select
      * @return mixed
      */
-    protected function buildRadioView($field, $select = ''): mixed
+    protected function buildRadioView($field, string $select = ''): mixed
     {
-        $formatField = CommonTool::lineToHump(ucfirst($field));
-        $name        = "get{$formatField}List";
-        $optionCode  = CommonTool::replaceTemplate(
+        //        $formatField = CommonTool::lineToHump(ucfirst($field));
+        //        $name        = "get{$formatField}List";
+        $optionCode = CommonTool::replaceTemplate(
             $this->getTemplate("view{$this->DS}module{$this->DS}radioInput"),
             [
                 'field'  => $field,
-                'name'   => $name,
+                'name'   => "notes['$field']",
                 'select' => $select,
             ]);
         return $optionCode;
@@ -800,15 +836,15 @@ class BuildCurd
      * @param string $select
      * @return mixed
      */
-    protected function buildCheckboxView($field, $select = ''): mixed
+    protected function buildCheckboxView($field, string $select = ''): mixed
     {
-        $formatField = CommonTool::lineToHump(ucfirst($field));
-        $name        = "get{$formatField}List";
-        $optionCode  = CommonTool::replaceTemplate(
+        //        $formatField = CommonTool::lineToHump(ucfirst($field));
+        //        $name        = "get{$formatField}List";
+        $optionCode = CommonTool::replaceTemplate(
             $this->getTemplate("view{$this->DS}module{$this->DS}checkboxInput"),
             [
                 'field'  => $field,
-                'name'   => $name,
+                'name'   => "notes['$field']",
                 'select' => $select,
             ]);
         return $optionCode;
@@ -855,10 +891,7 @@ class BuildCurd
                 continue;
             }
 
-            // 判断是否已初始化
-            if (isset($this->tableColumns[$field]['formType'])) {
-                continue;
-            }
+            $this->tableColumns[$field]['formType'] = $this->tableColumns[$field]['formType'] ?? 'text';
 
             // 判断图片
             if ($this->checkContain($field, $this->imageFieldSuffix)) {
@@ -880,9 +913,25 @@ class BuildCurd
                 continue;
             }
 
-            // 判断时间
+            // 判断日期
             if ($this->checkContain($field, $this->dateFieldSuffix)) {
                 $this->tableColumns[$field]['formType'] = 'date';
+                continue;
+            }
+
+            // 判断日期时间
+            if ($this->checkContain($field, $this->datetimeFieldSuffix)) {
+                $this->tableColumns[$field]['formType'] = 'datetime';
+                continue;
+            }
+
+            if (in_array($field, $this->radioFields) || $this->checkContain($field, $this->radioFieldSuffix)) {
+                $this->tableColumns[$field]['formType'] = 'radio';
+                continue;
+            }
+
+            if (in_array($field, $this->checkboxFields) || $this->checkContain($field, $this->checkboxFieldSuffix)) {
+                $this->tableColumns[$field]['formType'] = 'checkbox';
                 continue;
             }
 
@@ -891,6 +940,7 @@ class BuildCurd
                 $this->tableColumns[$field]['formType'] = 'switch';
                 continue;
             }
+
 
             // 判断富文本
             if (in_array($field, $this->editorFields) || in_array($val['type'], ['text', 'tinytext', 'mediumtext', 'longtext'])) {
@@ -910,7 +960,6 @@ class BuildCurd
                 continue;
             }
 
-            $this->tableColumns[$field]['formType'] = 'text';
         }
 
         // 关联表
@@ -1008,17 +1057,18 @@ class BuildCurd
                 ]);
         }
         $selectList = '';
-        foreach ($this->relationArray as $relation) {
-            if (!empty($relation['bindSelectField'])) {
-                $relationArray = explode('\\', $relation['modelFilename']);
-                $selectList    .= $this->buildSelectController(end($relationArray));
-            }
-        }
-        foreach ($this->tableColumns as $field => $val) {
-            if (isset($val['formType']) && in_array($val['formType'], ['select', 'switch', 'radio', 'checkbox']) && isset($val['define'])) {
-                $selectList .= $this->buildSelectController($field);
-            }
-        }
+        //        foreach ($this->relationArray as $relation) {
+        //            if (!empty($relation['bindSelectField'])) {
+        //                $relationArray = explode('\\', $relation['modelFilename']);
+        //                $selectList    .= $this->buildSelectController(end($relationArray));
+        //            }
+        //        }
+
+        //        foreach ($this->tableColumns as $field => $val) {
+        //            if (isset($val['formType']) && in_array($val['formType'], ['select', 'switch', 'radio', 'checkbox']) && isset($val['define'])) {
+        //                $selectList .= $this->buildSelectController($field);
+        //            }
+        //        }
 
         $modelFilenameExtend = str_replace($this->DS, '\\', $this->modelFilename);
 
@@ -1068,12 +1118,12 @@ class BuildCurd
                 $selectList .= $this->buildRelationSelectModel($relation['modelFilename'], $relation['bindSelectField']);
             }
         }
+        $selectArrays = [];
         foreach ($this->tableColumns as $field => $val) {
             if (isset($val['formType']) && in_array($val['formType'], ['select', 'switch', 'radio', 'checkbox']) && isset($val['define'])) {
-                $selectList .= $this->buildSelectModel($field, $val['define']);
+                $selectArrays += [$field => is_array($val['define']) ? $val['define'] : json_decode($val['define'], true)];
             }
         }
-
         $extendNamespaceArray = explode($this->DS, $this->modelFilename);
         $extendNamespace      = null;
         if (count($extendNamespaceArray) > 1) {
@@ -1092,7 +1142,8 @@ class BuildCurd
                 'prefix_table'   => $samePrefix ? "" : $this->tablePrefix,
                 'deleteTime'     => $this->delete ? '"delete_time"' : 'false',
                 'relationList'   => $relationList,
-                'selectList'     => $selectList,
+                //                'selectList'     => $selectList,
+                'selectArrays'   => CommonTool::replaceArrayString(var_export($selectArrays, true)),
             ]);
         $this->fileList[$modelFile] = $modelValue;
 
@@ -1143,6 +1194,7 @@ class BuildCurd
             $this->getTemplate("view{$this->DS}index"),
             [
                 'controllerUrl' => $this->controllerUrl,
+                'notesScript'   => $this->formatNotesScript(),
             ]);
         $this->fileList[$viewIndexFile] = $viewIndexValue;
 
@@ -1175,23 +1227,19 @@ class BuildCurd
                 $val['default'] = '""';
             }elseif ($val['formType'] == 'date') {
                 $templateFile = "view{$this->DS}module{$this->DS}date";
-                if (!empty($val['define'])) {
-                    $define = $val['define'];
-                }else {
-                    $define = 'datetime';
-                }
-                if (!in_array($define, ['year', 'month', 'date', 'time', 'datetime'])) {
-                    $define = 'datetime';
-                }
+                $define       = 'date';
+            }elseif ($val['formType'] == 'datetime') {
+                $templateFile = "view{$this->DS}module{$this->DS}date";
+                $define       = 'datetime';
             }elseif ($val['formType'] == 'radio') {
                 $templateFile = "view{$this->DS}module{$this->DS}radio";
                 if (!empty($val['define'])) {
-                    $define = $this->buildRadioView($field, '');
+                    $define = $this->buildRadioView($field);
                 }
             }elseif ($val['formType'] == 'checkbox') {
                 $templateFile = "view{$this->DS}module{$this->DS}checkbox";
                 if (!empty($val['define'])) {
-                    $define = $this->buildCheckboxView($field, '');
+                    $define = $this->buildCheckboxView($field);
                 }
             }elseif ($val['formType'] == 'select') {
                 $templateFile = "view{$this->DS}module{$this->DS}select";
@@ -1249,14 +1297,10 @@ class BuildCurd
                 $value        = '$row[\'' . $field . '\']';
             }elseif ($val['formType'] == 'date') {
                 $templateFile = "view{$this->DS}module{$this->DS}date";
-                if (!empty($val['define'])) {
-                    $define = $val['define'];
-                }else {
-                    $define = 'datetime';
-                }
-                if (!in_array($define, ['year', 'month', 'date', 'time', 'datetime'])) {
-                    $define = 'datetime';
-                }
+                $define       = 'date';
+            }elseif ($val['formType'] == 'datetime') {
+                $templateFile = "view{$this->DS}module{$this->DS}date";
+                $define       = 'datetime';
             }elseif ($val['formType'] == 'radio') {
                 $templateFile = "view{$this->DS}module{$this->DS}radio";
                 if (!empty($val['define'])) {
@@ -1276,7 +1320,6 @@ class BuildCurd
                 }
             }elseif (in_array($field, ['remark']) || $val['formType'] == 'textarea') {
                 $templateFile = "view{$this->DS}module{$this->DS}textarea";
-                $value        = '{{$row[\'' . $field . '\']}}';
             }
 
             $editFormList .= CommonTool::replaceTemplate(
@@ -1322,16 +1365,14 @@ class BuildCurd
             }elseif ($val['formType'] == 'editor') {
                 continue;
             }elseif (in_array($field, $this->switchFields)) {
-                if (isset($val['define']) && !empty($val['define'])) {
-                    $values        = json_encode($val['define'], JSON_UNESCAPED_UNICODE);
-                    $templateValue = "{field: '{$field}', search: 'select', selectList: {$values}, title: '{$val['comment']}', templet: ea.table.switch}";
+                if (!empty($val['define'])) {
+                    $templateValue = "{field: '{$field}', search: 'select', selectList: notes?.{$field} || {}, title: '{$val['comment']}', templet: ea.table.switch}";
                 }else {
                     $templateValue = "{field: '{$field}', title: '{$val['comment']}', templet: ea.table.switch}";
                 }
             }elseif (in_array($val['formType'], ['select', 'checkbox', 'radio', 'switch'])) {
-                if (isset($val['define']) && !empty($val['define'])) {
-                    $values        = json_encode($val['define'], JSON_UNESCAPED_UNICODE);
-                    $templateValue = "{field: '{$field}', search: 'select', selectList: {$values}, title: '{$val['comment']}'}";
+                if (!empty($val['define'])) {
+                    $templateValue = "{field: '{$field}', search: 'select', selectList: notes?.{$field} || {}, title: '{$val['comment']}'}";
                 }else {
                     $templateValue = "{field: '{$field}', title: '{$val['comment']}'}";
                 }
@@ -1391,6 +1432,7 @@ class BuildCurd
     /**
      * 检测文件
      * @return $this
+     * @throws FileException
      */
     protected function check(): static
     {
@@ -1409,6 +1451,7 @@ class BuildCurd
     /**
      * 开始生成
      * @return array
+     * @throws FileException
      */
     public function create(): array
     {
@@ -1457,6 +1500,9 @@ class BuildCurd
             if (str_starts_with($vo, $string)) {
                 return true;
             }
+            if (str_ends_with($vo, $string)) {
+                return true;
+            }
         }
         return false;
     }
@@ -1498,5 +1544,10 @@ class BuildCurd
             }
         }
         return '';
+    }
+
+    protected function formatNotesScript(): string
+    {
+        return '    let notes = JSON.parse(\'{!! json_encode($notes,256) !!}\');';
     }
 }
