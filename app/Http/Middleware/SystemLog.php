@@ -65,6 +65,8 @@ class SystemLog
         }catch (\Throwable $exception) {
         }
         $ip   = $request->ip();
+        $_response = json_encode($response->original, JSON_UNESCAPED_UNICODE);
+        $_response = mb_substr($_response, 0, 3000, 'utf-8');
         $data = [
             'admin_id'    => request()->session()->get('admin.id'),
             'title'       => $title,
@@ -72,7 +74,7 @@ class SystemLog
             'method'      => $method,
             'ip'          => $ip,
             'content'     => json_encode($params, JSON_UNESCAPED_UNICODE),
-            'response'    => json_encode($response->original, JSON_UNESCAPED_UNICODE),
+            'response' => $_response,
             'useragent'   => $request->header('HTTP_USER_AGENT'),
             'create_time' => time(),
         ];
