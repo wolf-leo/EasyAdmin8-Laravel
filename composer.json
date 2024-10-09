@@ -10,6 +10,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-pdo": "*",
         "aliyuncs/oss-sdk-php": "^2.6",
         "doctrine/annotations": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
@@ -20,7 +21,7 @@
         "qcloud/cos-sdk-v5": "^2.6",
         "qiniu/php-sdk": "^7.11",
         "webman/captcha": "^1.0",
-        "ext-pdo": "*"
+        "wolf-leo/phplogviewer": "^0.08.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
