@@ -92,8 +92,6 @@ class LogController extends AdminController
      */
     public function record()
     {
-        Log::error('123');
-        Log::warning('223');
         return (new \Wolfcode\PhpLogviewer\laravel\LogViewer())->fetch();
     }
 }
