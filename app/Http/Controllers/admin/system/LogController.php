@@ -36,7 +36,7 @@ class LogController extends AdminController
         try {
             $count = $this->model->setMonth($month)->where($where)->count();
             $list  = $this->model->setMonth($month)->where($where)->orderByDesc($this->order)->with(['admin'])->paginate($limit)->items();
-        } catch (\PDOException|\Exception $exception) {
+        }catch (\PDOException|\Exception $exception) {
             $count = 0;
             $list  = [];
         }
@@ -73,7 +73,7 @@ class LogController extends AdminController
         if (empty($month)) $month = date('Ym');
         try {
             $list = $this->model->setMonth($month)->where($where)->orderByDesc('id')->limit(100000)->get();
-        } catch (\PDOException|\Exception $exception) {
+        }catch (\PDOException|\Exception $exception) {
             return $this->error($exception->getMessage());
         }
         if (empty($list)) return $this->error('暂无数据');
@@ -81,9 +81,16 @@ class LogController extends AdminController
         $fileName = time();
         try {
             return Excel::exportData($list, $header, $fileName, 'xlsx');
-        } catch (Exception|\PhpOffice\PhpSpreadsheet\Exception$e) {
+        }catch (Exception|\PhpOffice\PhpSpreadsheet\Exception$e) {
             return $this->error($e->getMessage());
         }
     }
 
+    /**
+     * @NodeAnnotation(title="框架日志")
+     */
+    public function record()
+    {
+        return (new \Wolfcode\PhpLogviewer\laravel\LogViewer())->fetch();
+    }
 }
