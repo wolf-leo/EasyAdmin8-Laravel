@@ -1,4 +1,4 @@
-define(["easy-admin"], function (ea) {
+define(["jquery", "easy-admin"], function ($, ea) {
 
     var Controller = {
         index: function () {
@@ -6,7 +6,7 @@ define(["easy-admin"], function (ea) {
             if (top.location !== self.location) {
                 top.location = self.location;
             }
-            
+
             $(function () {
 
                 if (backgroundUrl) {
