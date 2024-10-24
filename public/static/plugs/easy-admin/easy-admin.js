@@ -1533,6 +1533,9 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                                                 meta: {
                                                     editor: 'editor',
                                                 },
+                                                headers: {
+                                                    'X-CSRF-TOKEN': init.csrf_token,
+                                                },
                                                 async customInsert(res, insertFn) {
                                                     let code = res.code || 0
                                                     if (code != '1') {
