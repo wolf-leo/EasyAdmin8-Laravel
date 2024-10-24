@@ -1251,6 +1251,7 @@
   // } else {
   //   window.ZeroClipboard = ZeroClipboard;
   // }
+    window.ZeroClipboard = ZeroClipboard;
 })(function() {
   return this;
 }());
