@@ -6,6 +6,7 @@ use App\Http\Curd;
 use App\Http\JumpTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class AdminController extends Controller
@@ -151,6 +152,9 @@ class AdminController extends Controller
                     break;
                 case '%*':
                     $where[] = [$key, 'LIKE', "%{$val}"];
+                    break;
+                case 'in':
+                    $where[] = [DB::raw("$key IN ($val)"), 1];
                     break;
                 case 'range':
                     [$beginTime, $endTime] = explode(' - ', $val);
