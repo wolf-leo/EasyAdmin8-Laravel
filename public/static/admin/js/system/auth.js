@@ -12,7 +12,7 @@ define(["jquery", "easy-admin"], function ($, ea) {
         authorizes_url: 'system.auth/authorizes',
     };
 
-    var Controller = {
+    return {
 
         index: function () {
             ea.table.render({
@@ -53,38 +53,54 @@ define(["jquery", "easy-admin"], function ($, ea) {
             ea.listen();
         },
         authorizes: function () {
-            var tree = layui.tree;
 
-            ea.request.get(
-                {
-                    url: window.location.href,
-                }, function (res) {
+            let setting = {
+                check: {
+                    enable: true,
+                    chkStyle: "checkbox",
+                },
+                view: {
+                    showIcon: true,
+                    showLine: true,
+                    selectedMulti: false,
+                    dblClickExpand: false
+                }, callback: {
+                    onClick: function (e, treeId, treeNode, clickFlag) {
+                        treeObj.checkNode(treeNode, !treeNode.checked, true);
+                    }
+                }
+            };
+            let treeObj
+            let treeData = []
+            ea.request.get({url: window.location.href}, function (res) {
                     res.data = res.data || [];
-                    tree.render({
-                        elem: '#node_ids',
-                        data: res.data,
-                        showCheckbox: true,
-                        id: 'nodeDataId',
-                    });
+                    $.each(res.data, function (index, value) {
+                        treeData[index] = []
+                        treeData[index].id = value.id
+                        treeData[index].name = value.title
+                        treeData[index].pId = 0
+                        treeData[index].open = true
+                        let children = value.children
+                        treeData[index]['children'] = []
+                        $.each(children, function (idx, val) {
+                            treeData[index]['children'].push({id: val.id, name: val.title, checked: val.checked, pId: value.id})
+                        })
+                    })
+                    $.fn.zTree.init($("#tree"), setting, treeData);
+                    treeObj = $.fn.zTree.getZTreeObj("tree");
                 }
             );
 
             ea.listen(function (data) {
-                var checkedData = tree.getChecked('nodeDataId');
-                var ids = [];
-                $.each(checkedData, function (i, v) {
-                    ids.push(v.id);
-                    if (v.children !== undefined && v.children.length > 0) {
-                        $.each(v.children, function (ii, vv) {
-                            ids.push(vv.id);
-                        });
-                    }
-                });
+                let checkedData = treeObj.getCheckedNodes();
+                let ids = []
+                for (var i = 0; i < checkedData.length; i++) {
+                    ids.push(checkedData[i].id)
+                }
                 data.node = JSON.stringify(ids);
                 return data;
             });
 
         }
     };
-    return Controller;
 });
