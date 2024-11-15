@@ -57,6 +57,7 @@
         // 服务器统一请求头信息，会在所有请求中带上该信息
         serverHeaders: {
             // 'Authorization': 'Bearer xxx'
+            'X-Csrf-Token': window.CONFIG.CSRF_TOKEN
         },
         // 服务器返回参数统一转换方法，可以在这里统一处理返回参数
         serverResponsePrepare: function (res) {
@@ -192,7 +193,7 @@
         // file 文件对象
         // callback 回调函数，需要在上传完成后调用 callback.success、callback.error、callback.progress
         // option 上传配置，其他一些未来扩展配置
-        , uploadServiceUpload: function(type, file, callback, option ) {
+        , uploadServiceUpload: function (type, file, callback, option) {
             console.log('uploadServiceUpload', type, file, callback, option);
             // var i = 0;
             // var call = function(){
