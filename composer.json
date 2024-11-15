@@ -21,7 +21,8 @@
         "qcloud/cos-sdk-v5": "^2.6",
         "qiniu/php-sdk": "^7.11",
         "webman/captcha": "^1.0",
-        "wolf-leo/phplogviewer": "^0.11.0"
+        "wolf-leo/phplogviewer": "^0.11.3",
+        "wolfcode/authenticator": "^0.0.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
