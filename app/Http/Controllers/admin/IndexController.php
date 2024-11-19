@@ -6,6 +6,7 @@ use App\Http\Controllers\common\AdminController;
 use App\Models\SystemAdmin;
 use App\Models\SystemQuick;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Js;
@@ -48,13 +49,19 @@ class IndexController extends AdminController
         if (request()->ajax()) {
             if ($this->isDemo) return $this->error('演示环境下不允许修改');
             try {
+                $login_type = request()->post('login_type', 1);
+                if ($login_type == 2) {
+                    $ga_secret = (new SystemAdmin())->where('id', $id)->value('ga_secret');
+                    if (empty($ga_secret)) return $this->error('请先绑定谷歌验证器');
+                }
                 $save = updateFields($model, $row);
-            }catch (Exception $e) {
+            }catch (\PDOException $e) {
                 return $this->error('保存失败:' . $e->getMessage());
             }
             return $save ? $this->success('保存成功') : $this->error('保存失败');
         }
-        $this->assign(compact('row'));
+        $notes = (new SystemAdmin())->notes;
+        $this->assign(compact('row', 'notes'));
         return $this->fetch();
     }
 
@@ -97,4 +104,37 @@ class IndexController extends AdminController
         $this->assign(compact('row'));
         return $this->fetch();
     }
+
+    /**
+     * 设置谷歌验证码
+     * @param Request $request
+     * @return JsonResponse|View
+     */
+    public function set2fa(Request $request): JsonResponse|View
+    {
+        $id  = session('admin.id');
+        $row = (new SystemAdmin())->select(['id', 'ga_secret', 'login_type'])->find($id);
+        if (!$row) return $this->error('用户信息不存在');
+        // You can see: https://gitee.com/wolf-code/authenticator
+        $ga = new \Wolfcode\Authenticator\google\PHPGangstaGoogleAuthenticator();
+        if (!$request->ajax()) {
+            $old_secret = $row->ga_secret;
+            $secret     = $ga->createSecret(32);
+            $ga_title   = $this->isDemo ? 'EasyAdmin8-Laravel演示环境' : '可自定义修改显示标题';
+            $dataUri    = $ga->getQRCode($ga_title, $secret)->getDataUri();
+            $this->assign(compact('row', 'dataUri', 'old_secret', 'secret'));
+            return $this->fetch();
+        }
+        if ($this->isDemo) return $this->error('演示环境下不允许修改');
+        $post      = $request->post();
+        $ga_secret = $post['ga_secret'] ?? '';
+        $ga_code   = $post['ga_code'] ?? '';
+        if (empty($ga_code)) return $this->error('请输入验证码');
+        if (!$ga->verifyCode($ga_secret, $ga_code)) return $this->error('验证码错误');
+        $row->ga_secret  = $ga_secret;
+        $row->login_type = 2;
+        $row->save();
+        return $this->success('操作成功');
+    }
+
 }
