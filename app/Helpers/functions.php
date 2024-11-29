@@ -160,4 +160,21 @@ if (!function_exists('updateFields')) {
             default    => "<div class='wangEditor_div'><textarea name='{$name}' rows='20' class='layui-textarea editor layui-hide'>{$detail}</textarea><div id='editor_toolbar_{$name}'></div><div id='editor_{$name}' style='height: 300px'></div></div>",
         };
     }
+
+    /**
+     * @param string|null $key
+     * @param array $replace
+     * @param string|null $locale
+     * @return string|null
+     */
+    function ea_trans(?string $key, array $replace = [], ?string $locale = null): ?string
+    {
+        $_key = !str_starts_with($key, 'messages.') ? 'messages.' . $key : $key;
+        try {
+            $translation = __($_key, $replace, $locale);
+        }catch (\TypeError $exception) {
+            $translation = explode('messages.', $key)[1] ?? '';
+        }
+        return $translation ?: $key;
+    }
 }

@@ -28,6 +28,11 @@ Route::controller(\App\Http\Controllers\common\InstallController::class)->group(
 // 后台所有路由
 $admin = config('admin.admin_alias_name');
 
+Route::get($admin . '/language/{lang}', function ($lang) {
+    Session::put('locale', $lang);
+    return back();
+})->name('language.switch');
+
 Route::middleware([\App\Http\Middleware\SystemLog::class, \App\Http\Middleware\CheckAuth::class])->group(function () use ($admin) {
     Route::prefix($admin)->group(function () {
 

@@ -7,7 +7,7 @@
                 <div class="layui-row layui-col-space10">
                     <div class="layui-col-md6 ">
                         <div class="layui-card">
-                            <div class="layui-card-header"><i class="fa fa-warning icon"></i>数据统计</div>
+                            <div class="layui-card-header"><i class="fa fa-warning icon"></i>{{ __('messages.data_statistics') }}</div>
                             <div class="layui-card-body">
                                 <div class="welcome-module">
                                     <div class="layui-row layui-col-space10">
@@ -16,7 +16,7 @@
                                                 <div class="layui-card-body">
                                                     <span class="layui-badge layui-bg-cyan pull-right ">实时</span>
                                                     <div class="panel-content">
-                                                        <h5>用户统计</h5>
+                                                        <h5>{{ ea_trans('user_statistics') }}</h5>
                                                         <h1>1234</h1>
                                                         <h6>当前分类总记录数</h6>
                                                     </div>
@@ -28,7 +28,7 @@
                                                 <div class="layui-card-body">
                                                     <span class="layui-badge layui-bg-purple pull-right ">实时</span>
                                                     <div class="panel-content">
-                                                        <h5>商品统计</h5>
+                                                        <h5>{{ ea_trans('product_statistics') }}</h5>
                                                         <h1>1234</h1>
                                                         <h6>当前分类总记录数</h6>
                                                     </div>
@@ -40,7 +40,7 @@
                                                 <div class="layui-card-body ">
                                                     <span class="layui-badge layui-bg-orange pull-right ">实时</span>
                                                     <div class="panel-content">
-                                                        <h5>浏览统计</h5>
+                                                        <h5>{{ ea_trans('browse_statistics') }}</h5>
                                                         <h1>1234</h1>
                                                         <h6>当前分类总记录数</h6>
                                                     </div>
@@ -75,18 +75,18 @@
                                             <div class="swiper-wrapper">
                                                 @foreach($quicks as $value)
 
-                                                <div class="swiper-slide">
-                                                    @foreach($value as $vo)
+                                                    <div class="swiper-slide">
+                                                        @foreach($value as $vo)
 
-                                                    <div class="layui-col-xs3 layuimini-qiuck-module">
-                                                        <a layuimini-content-href="{{__url($vo['href'])}}" data-title="{{$vo['title']}}">
-                                                            <i class="{{$vo['icon']}}"></i>
-                                                            <cite>{{$vo['title']}}</cite>
-                                                        </a>
+                                                            <div class="layui-col-xs3 layuimini-qiuck-module">
+                                                                <a layuimini-content-href="{{__url($vo['href'])}}" data-title="{{$vo['title']}}">
+                                                                    <i class="{{$vo['icon']}}"></i>
+                                                                    <cite>{{$vo['title']}}</cite>
+                                                                </a>
+                                                            </div>
+                                                        @endforeach
+
                                                     </div>
-                                                    @endforeach
-
-                                                </div>
                                                 @endforeach
 
                                             </div>
