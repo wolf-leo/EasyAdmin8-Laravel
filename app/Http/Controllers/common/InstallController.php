@@ -21,9 +21,9 @@ class InstallController extends Controller
         if (is_file($installPath . DIRECTORY_SEPARATOR . 'lock' . DIRECTORY_SEPARATOR . 'install.lock')) {
             $isInstall = true;
             $errorInfo = '已安装系统，如需重新安装请删除文件：/config/install/lock/install.lock，或者删除 /install 路由';
-        } elseif (version_compare(phpversion(), '8.1.0', '<')) {
+        }elseif (version_compare(phpversion(), '8.1.0', '<')) {
             $errorInfo = 'PHP版本不能小于8.1.0';
-        } elseif (!extension_loaded("PDO")) {
+        }elseif (!extension_loaded("PDO")) {
             $errorInfo = '当前未开启PDO，无法进行安装';
         }
         if (!$request->ajax()) {
@@ -58,9 +58,9 @@ class InstallController extends Controller
 
         if (strlen($adminUrl) < 2) {
             $validateError = '后台的地址不能小于2位数';
-        } elseif (strlen($password) < 5) {
+        }elseif (strlen($password) < 5) {
             $validateError = '管理员密码不能小于5位数';
-        } elseif (strlen($username) < 4) {
+        }elseif (strlen($username) < 4) {
             $validateError = '管理员账号不能小于4位数';
         }
         if (!empty($validateError)) return $this->error($validateError);
@@ -76,7 +76,7 @@ class InstallController extends Controller
         ];
         try {
             Config::set("database.connections.mysql", $config);
-        } catch (\Throwable|Exception $exception) {
+        }catch (\Throwable|Exception $exception) {
             return $this->error($exception->getMessage());
         }
         // 检测数据库连接
@@ -110,7 +110,7 @@ class InstallController extends Controller
             !is_dir($installPath) && @mkdir($installPath);
             !is_dir($installPath . 'lock' . DIRECTORY_SEPARATOR) && @mkdir($installPath . 'lock' . DIRECTORY_SEPARATOR);
             @file_put_contents($installPath . 'lock' . DIRECTORY_SEPARATOR . 'install.lock', date('Y-m-d H:i:s'));
-        } catch (\Exception $e) {
+        }catch (\Exception $e) {
             $data = [
                 'code' => 0,
                 'msg'  => "系统安装失败：" . $e->getMessage(),
@@ -160,11 +160,11 @@ class InstallController extends Controller
 
     protected function createDatabase($database, $config): bool
     {
+        $dsn = $this->pdoDsn($config);
         try {
-            $con = mysqli_connect($config['host'] ?? '127.0.0.1', $config['username'] ?? 'root', $config['password'] ?? '', null, $config['port'] ?? '');
-            mysqli_query($con, "CREATE DATABASE IF NOT EXISTS `{$database}` DEFAULT CHARACTER SET {$config['charset']} COLLATE=utf8mb4_general_ci");
-            mysqli_close($con);
-        } catch (\Throwable $e) {
+            $pdo = new \PDO($dsn, $config['username'] ?? 'root', $config['password'] ?? '');
+            $pdo->query("CREATE DATABASE IF NOT EXISTS `{$database}` DEFAULT CHARACTER SET {$config['charset']} COLLATE=utf8mb4_general_ci");
+        }catch (\Throwable $e) {
             return false;
         }
         return true;
@@ -174,24 +174,23 @@ class InstallController extends Controller
     {
         try {
             $check = DB::select("SELECT * FROM information_schema.schemata WHERE schema_name='{$database}'");
-        } catch (\Throwable $exception) {
+        }catch (\Throwable $exception) {
             $check = false;
         }
         if (empty($check)) {
             return false;
-        } else {
+        }else {
             return true;
         }
     }
 
     protected function checkConnect(array $config): bool
     {
+        $dsn = $this->pdoDsn($config);
         try {
-            $con          = mysqli_connect($config['host'] ?? '127.0.0.1', $config['username'] ?? 'root', $config['password'] ?? '', null, $config['port'] ?? '');
-            $res          = mysqli_query($con, 'select VERSION()');
-            $mysqlVersion = mysqli_fetch_row($res);
-            mysqli_close($con);
-            $_version = $mysqlVersion[0] ?? 0;
+            $pdo      = new \PDO($dsn, $config['username'] ?? 'root', $config['password'] ?? '');
+            $res      = $pdo->query('select VERSION()');
+            $_version = $res->fetch()[0] ?? 0;
             if (version_compare($_version, '5.7.0', '<')) {
                 $data = [
                     'code' => 0,
@@ -199,7 +198,7 @@ class InstallController extends Controller
                 ];
                 die(json_encode($data));
             }
-        } catch (\Throwable $e) {
+        }catch (\Throwable $e) {
             $data = [
                 'code' => 0,
                 'msg'  => $e->getMessage()
@@ -207,5 +206,20 @@ class InstallController extends Controller
             die(json_encode($data));
         }
         return true;
+    }
+
+    /**
+     * @param array $config
+     * @param bool $needDatabase
+     * @return string
+     */
+    protected function pdoDsn(array $config, bool $needDatabase = false): string
+    {
+        $host     = $config['host'] ?? '127.0.0.1';
+        $database = $config['database'] ?? '';
+        $port     = $config['port'] ?? '3306';
+        $charset  = $config['charset'] ?? 'utf8mb4';
+        if ($needDatabase) return "mysql:host=$host;port=$port;dbname=$database;charset=$charset";
+        return "mysql:host=$host;port=$port;charset=$charset";
     }
 }
