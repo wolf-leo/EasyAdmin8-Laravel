@@ -50,7 +50,7 @@
                     </li>
                     <li class="layui-nav-item layuimini-setting">
                         <a href="javascript:;">
-                            {{config('admin.locale')[session('locale',env('APP_LOCALE'))]}}
+                            {{config('admin.locale')[session('locale',config('app.locale'))]}}
                         </a>
                         <dl class="layui-nav-child">
                             @foreach(config('admin.locale') as $key=>$value)
