@@ -15,6 +15,12 @@ use Illuminate\View\View;
 class GoodsController extends AdminController
 {
 
+    /**
+     * 过滤不需要生成的权限节点 默认 CURD 中会自动生成部分节点 可以在此处过滤
+     * @var array[]
+     */
+    protected array $ignoreNode = ['export'];
+
     public function initialize()
     {
         parent::initialize();
@@ -53,7 +59,7 @@ class GoodsController extends AdminController
                 $params['total_stock'] = $row->total_stock + $post['stock'];
                 $params['stock']       = $row->stock + $post['stock'];
                 $save                  = updateFields($this->model, $row, $params);
-            } catch (\Exception $e) {
+            }catch (\Exception $e) {
                 return $this->error('保存失败');
             }
             return $save ? $this->success('保存成功') : $this->error('保存失败');

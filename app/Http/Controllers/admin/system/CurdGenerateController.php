@@ -29,7 +29,7 @@ class CurdGenerateController extends AdminController
     }
 
     /**
-     * @NodeAnnotation(title="列表")
+     * @NodeAnnotation(title="保存")
      */
     public function save(): Response|JsonResponse|View
     {

@@ -66,6 +66,12 @@ class Node
                 $actionList      = [];
                 // 遍历读取所有方法的注释的参数信息
                 foreach ($methods as $method) {
+
+                    // 忽略的节点
+                    $properties = $reflectionClass->getDefaultProperties();
+                    $ignoreNode = $properties['ignoreNode'] ?? [];
+                    if (!empty($ignoreNode)) if (in_array($method->name, $ignoreNode)) continue;
+
                     // 读取NodeAnnotation的注解
                     $nodeAnnotation = $reader->getMethodAnnotation($method, NodeAnnotation::class);
                     if (!empty($nodeAnnotation)) {
@@ -127,7 +133,7 @@ class Node
                 // 子文件夹，进行递归
                 $childFiles = $this->readControllerFiles($path . DIRECTORY_SEPARATOR . $file);
                 $list       = array_merge($childFiles, $list);
-            } else {
+            }else {
                 // 判断是不是控制器
                 $fileExplodeArray = explode('.', $file);
                 if (count($fileExplodeArray) != 2 || end($fileExplodeArray) != 'php') {
