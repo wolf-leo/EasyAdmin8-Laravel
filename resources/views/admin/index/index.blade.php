@@ -10,7 +10,7 @@
 
             <div class="layuimini-header-content">
                 <a>
-                    <div class="layuimini-tool"><i title="展开" class="fa fa-outdent" data-side-fold="1"></i></div>
+                    <div class="layuimini-tool"><i class="fa fa-outdent" data-side-fold="1"></i></div>
                 </a>
 
                 <!--电脑端头部菜单-->
@@ -20,7 +20,7 @@
                 <!--手机端头部菜单-->
                 <ul class="layui-nav layui-layout-left layuimini-header-menu layuimini-mobile-show">
                     <li class="layui-nav-item">
-                        <a href="javascript:;"><i class="fa fa-list-ul"></i> 选择模块</a>
+                        <a href="javascript:;"><i class="fa fa-list-ul"></i> {{ea_trans('select module',false)}}</a>
                         <dl class="layui-nav-child layuimini-menu-header-mobile">
                         </dl>
                     </li>
@@ -40,13 +40,25 @@
                         <a href="http://easyadmin8.top" target="_blank"><i class="fa fa-home"></i></a>
                     </li>
                     <li class="layui-nav-item" lay-unselect>
-                        <a href="javascript:;" data-refresh="刷新"><i class="fa fa-refresh"></i></a>
+                        <a href="javascript:;" data-refresh="{{ea_trans('refresh',false)}}"><i class="fa fa-refresh"></i></a>
                     </li>
                     <li class="layui-nav-item" lay-unselect>
-                        <a href="javascript:;" data-clear="清理" class="layuimini-clear"><i class="fa fa-trash-o"></i></a>
+                        <a href="javascript:;" data-clear="{{ea_trans('clean',false)}}" class="layuimini-clear"><i class="fa fa-trash-o"></i></a>
                     </li>
                     <li class="layui-nav-item mobile layui-hide-xs" lay-unselect>
                         <a href="javascript:;" data-check-screen="full"><i class="fa fa-arrows-alt"></i></a>
+                    </li>
+                    <li class="layui-nav-item layuimini-setting">
+                        <a href="javascript:;">
+                            {{config('admin.locale')[session('locale',getenv('APP_LOCALE'))]}}
+                        </a>
+                        <dl class="layui-nav-child">
+                            @foreach(config('admin.locale') as $key=>$value)
+                                <dd>
+                                    <a href='{{__url("language/$key")}}'><i class="fa fa-globe"></i> {{$value}}</a>
+                                </dd>
+                            @endforeach
+                        </dl>
                     </li>
                     <li class="layui-nav-item layuimini-setting">
                         <a href="javascript:;">
@@ -56,21 +68,21 @@
                         </a>
                         <dl class="layui-nav-child">
                             <dd>
-                                <a href="javascript:;" layuimini-content-href="{{__url('index/editAdmin')}}" data-title="基本资料" data-icon="fa fa-gears">基本资料<span class="layui-badge-dot"></span></a>
+                                <a href="javascript:;" layuimini-content-href="{{__url('index/editAdmin')}}" data-title="{{ea_trans('basic information')}}" data-icon="fa fa-gears">{{ea_trans('basic information')}}<span class="layui-badge-dot"></span></a>
                             </dd>
                             <dd>
-                                <a href="javascript:;" layuimini-content-href="{{__url('index/editPassword')}}" data-title="修改密码" data-icon="fa fa-gears">修改密码</a>
+                                <a href="javascript:;" layuimini-content-href="{{__url('index/editPassword')}}" data-title="{{ea_trans('change password')}}" data-icon="fa fa-gears">{{ea_trans('change password')}}</a>
                             </dd>
                             <dd>
                                 <hr>
                             </dd>
                             <dd>
-                                <a href="javascript:;" class="login-out">退出登录</a>
+                                <a href="javascript:;" class="login-out">{{ea_trans('logout')}}</a>
                             </dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item layuimini-select-bgcolor" lay-unselect>
-                        <a href="javascript:;" data-bgcolor="配色方案"><i class="fa fa-ellipsis-v"></i></a>
+                        <a href="javascript:;" data-bgcolor="{{ea_trans('color scheme')}}"><i class="fa fa-ellipsis-v"></i></a>
                     </li>
                 </ul>
             </div>
@@ -104,9 +116,9 @@
                             <li class="layui-nav-item">
                                 <a href="javascript:;"><span class="layui-nav-more"></span></a>
                                 <dl class="layui-nav-child">
-                                    <dd><a href="javascript:;" layuimini-tab-close="current">关 闭 当 前</a></dd>
-                                    <dd><a href="javascript:;" layuimini-tab-close="other">关 闭 其 他</a></dd>
-                                    <dd><a href="javascript:;" layuimini-tab-close="all">关 闭 全 部</a></dd>
+                                    <dd><a href="javascript:;" layuimini-tab-close="current">{{ea_trans('close current')}}</a></dd>
+                                    <dd><a href="javascript:;" layuimini-tab-close="other">{{ea_trans('close else')}}</a></dd>
+                                    <dd><a href="javascript:;" layuimini-tab-close="all">{{ea_trans('close all')}}</a></dd>
                                 </dl>
                             </li>
                         </ul>

@@ -8,7 +8,7 @@ use App\Http\Services\annotation\ControllerAnnotation;
 use App\Models\MallCate;
 
 /**
- * @ControllerAnnotation(title="商品分类管理")
+ * @ControllerAnnotation(title="category management")
  */
 class CateController extends AdminController
 {

@@ -13,7 +13,7 @@ use App\Http\Services\annotation\NodeAnnotation;
 use App\Http\Services\annotation\ControllerAnnotation;
 
 /**
- * @ControllerAnnotation(title="菜单管理")
+ * @ControllerAnnotation(title="menu management")
  */
 class MenuController extends AdminController
 {
@@ -24,14 +24,14 @@ class MenuController extends AdminController
     }
 
     /**
-     * @NodeAnnotation(title="添加")
+     * @NodeAnnotation(title="add")
      */
     public function add(): View|JsonResponse
     {
         $id     = request()->input('id');
         $homeId = $this->model->where(['pid' => HOME_PID,])->value('id');
         if ($id == $homeId) {
-            return $this->error('首页不能添加子菜单');
+            return $this->error(ea_trans('Homepage cannot add submenus'));
         }
         if (request()->ajax()) {
             $post      = request()->post();
@@ -42,24 +42,24 @@ class MenuController extends AdminController
                 'target' => 'required',
             ];
             $validator = Validator::make($post, $rules, [
-                'pid'    => '上级菜单不能为空',
-                'title'  => '菜单名称不能为空',
-                'icon'   => '菜单图标不能为空',
-                'target' => 'target属性不能为空',
+                'pid'    => 'pid' . ea_trans('Cannot be empty', false),
+                'title'  => 'title' . ea_trans('Cannot be empty', false),
+                'icon'   => 'icon' . ea_trans('Cannot be empty', false),
+                'target' => 'target' . ea_trans('Cannot be empty', false),
             ]);
             if ($validator->fails()) {
                 return $this->error($validator->errors()->first());
             }
             try {
                 $save = insertFields($this->model);
-            } catch (\Exception $e) {
-                return $this->error('保存失败');
+            }catch (\Exception $e) {
+                return $this->error(ea_trans('operation failed', false));
             }
             if (!empty($save)) {
                 TriggerService::updateMenu();
-                return $this->success('保存成功');
-            } else {
-                return $this->error('保存失败');
+                return $this->success(ea_trans('operation successful', false));
+            }else {
+                return $this->error(ea_trans('operation failed', false));
             }
         }
         $pidMenuList = $this->model->getPidMenuList();
@@ -68,13 +68,13 @@ class MenuController extends AdminController
     }
 
     /**
-     * @NodeAnnotation(title="编辑")
+     * @NodeAnnotation(title="edit")
      */
     public function edit(): View|JsonResponse
     {
         $id  = request()->input('id');
         $row = $this->model->find($id);
-        if (empty($row)) return $this->error('数据不存在');
+        if (empty($row)) return $this->error(ea_trans('data does not exist', false));
         if (request()->ajax()) {
             $post      = request()->post();
             $rules     = [
@@ -83,9 +83,9 @@ class MenuController extends AdminController
                 'icon'  => 'required',
             ];
             $validator = Validator::make($post, $rules, [
-                'pid'   => '上级菜单不能为空',
-                'title' => '菜单名称不能为空',
-                'icon'  => '菜单图标不能为空',
+                'pid'   => 'pid' . ea_trans('Cannot be empty', false),
+                'title' => 'title' . ea_trans('Cannot be empty', false),
+                'icon'  => 'icon' . ea_trans('Cannot be empty', false),
             ]);
             if ($validator->fails()) {
                 return $this->error($validator->errors()->first());
@@ -94,14 +94,14 @@ class MenuController extends AdminController
             if ($row->pid == HOME_PID) $params['pid'] = HOME_PID;
             try {
                 $save = updateFields($this->model, $row, $params);
-            } catch (\Exception $e) {
-                return $this->error('保存失败');
+            }catch (\Exception $e) {
+                return $this->error(ea_trans('operation failed', false));
             }
             if (!empty($save)) {
                 TriggerService::updateMenu();
-                return $this->success('保存成功');
-            } else {
-                return $this->error('保存失败');
+                return $this->success(ea_trans('operation successful', false));
+            }else {
+                return $this->error(ea_trans('operation failed', false));
             }
         }
         $pidMenuList = $this->model->getPidMenuList();
@@ -110,7 +110,7 @@ class MenuController extends AdminController
     }
 
     /**
-     * @NodeAnnotation(title="属性修改")
+     * @NodeAnnotation(title="modify")
      */
     public function modify(): JsonResponse
     {
@@ -121,33 +121,33 @@ class MenuController extends AdminController
             'value' => 'required',
         ];
         $validator = Validator::make($post, $rules, [
-            'id'    => 'ID不能为空',
-            'field' => '字段不能为空',
-            'value' => '值不能为空',
+            'id'    => 'id' . ea_trans('Cannot be empty', false),
+            'field' => 'field' . ea_trans('Cannot be empty', false),
+            'value' => 'value' . ea_trans('Cannot be empty', false),
         ]);
         if ($validator->fails()) {
             return $this->error($validator->errors()->first());
         }
         $row = $this->model->find($post['id']);
         if (empty($row)) {
-            return $this->error('数据不存在');
+            return $this->error(ea_trans('data does not exist', false));
         }
         $homeId = $this->model->where(['pid' => HOME_PID])->value('id');
         if ($post['id'] == $homeId && $post['field'] == 'status') {
-            return $this->error('首页状态不允许关闭');
+            return $this->error(ea_trans('Homepage status does not allow closing'));
         }
         try {
             foreach ($post as $key => $item) if ($key == 'field') $row->$item = $post['value'];
             $row->save();
-        } catch (\Exception $e) {
+        }catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
         TriggerService::updateMenu();
-        return $this->success('保存成功');
+        return $this->success(ea_trans('operation successful', false));
     }
 
     /**
-     * @NodeAnnotation(title="删除")
+     * @NodeAnnotation(title="delete")
      */
     public function delete(): JsonResponse
     {
@@ -155,31 +155,31 @@ class MenuController extends AdminController
         $id = request()->input('id');
         if (!is_array($id)) $id = (array)$id;
         $row = $this->model->whereIn('id', $id)->get()->toArray();
-        if (empty($row)) return $this->error('数据不存在');
+        if (empty($row)) return $this->error(ea_trans('data does not exist', false));
         try {
             $save = $this->model->whereIn('id', $id)->delete();
-        } catch (\PDOException | \Exception $e) {
-            return $this->error('删除失败:' . $e->getMessage());
+        }catch (\PDOException|\Exception $e) {
+            return $this->error(ea_trans('operation failed', false) . ':' . $e->getMessage());
         }
         if ($save) {
             TriggerService::updateMenu();
-            return $this->success('删除成功');
-        } else {
-            return $this->error('删除失败');
+            return $this->success(ea_trans('operation successful', false));
+        }else {
+            return $this->error(ea_trans('operation failed', false));
         }
     }
 
     /**
-     * @NodeAnnotation(title="添加菜单提示")
+     * @NodeAnnotation(title="Add menu prompt")
      */
     public function getMenuTips(): JsonResponse
     {
         $node = request()->input('keywords');
         $list = SystemNode::where('node', 'Like', "%{$node}%")->limit(10)->select('node', 'title')->get()->toArray();
         return json([
-                        'code'    => 0,
-                        'content' => $list,
-                        'type'    => 'success',
-                    ]);
+            'code'    => 0,
+            'content' => $list,
+            'type'    => 'success',
+        ]);
     }
 }

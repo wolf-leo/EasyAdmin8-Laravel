@@ -10,7 +10,7 @@ use App\Http\Services\annotation\NodeAnnotation;
 use App\Http\Services\annotation\ControllerAnnotation;
 
 /**
- * @ControllerAnnotation(title="上传文件管理")
+ * @ControllerAnnotation(title="Upload file management")
  */
 class UploadfileController extends AdminController
 {

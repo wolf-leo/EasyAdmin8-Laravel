@@ -3,43 +3,43 @@
     <form id="app-form" class="layui-form layuimini-form" autocomplete="off">
         @if($old_secret)
             <div class="layui-card">
-                <div class="layui-card-header">提示</div>
+                <div class="layui-card-header">{{ea_trans('prompt',false)}}</div>
                 <div class="layui-card-body">
-                    当前账号已经绑定过了 谷歌验证码 ，如果重新保存将替换
+                    {{ea_trans('reminder information')}}
                 </div>
             </div>
         @endif
         <div class="layui-form-item">
-            <label class="layui-form-label required">验证秘钥</label>
+            <label class="layui-form-label required">{{ea_trans('verify key')}}</label>
             <div class="layui-input-block">
                 <input type="text" name="ga_secret" class="layui-input" value="{{$secret}}" readonly disabled>
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label required">二维码</label>
+            <label class="layui-form-label required">{{ea_trans('qrcode')}}</label>
             <div class="layui-input-block">
-                <img src="{{$dataUri}}" alt="二维码" style="width: 200px;height: 200px">
+                <img src="{{$dataUri}}" alt="{{ea_trans('qrcode')}}" style="width: 200px;height: 200px">
                 <div class="layui-text layui-font-cyan layui-font-12">
-                    使用&nbsp;
+                    {{ea_trans('use')}}&nbsp;
                     <a href="https://2fas.com" target="_blank"><span class="layui-text layui-font-blue">2FAS</span></a>
-                    &nbsp;或者&nbsp;
+                    &nbsp;{{ea_trans('or')}}&nbsp;&nbsp;
                     <a href="https://cn.bing.com/search?q=Google+Authenticator" target="_blank"><span class="layui-text layui-font-blue">Google Authenticator</span></a>
-                    &nbsp;APP 扫描二维码 后 输入验证码 进行绑定
+                    &nbsp;{{ea_trans('reminder information2')}}
                 </div>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label required">谷歌验证码</label>
+            <label class="layui-form-label required">{{ea_trans('ga_code')}}</label>
             <div class="layui-input-block">
-                <input type="text" name="ga_code" class="layui-input" maxlength="6" lay-verify="required" placeholder="扫描二维码，输入验证码" value="">
+                <input type="text" name="ga_code" class="layui-input" maxlength="6" lay-verify="required" placeholder="{{ea_trans('scan and enter the code')}}" value="">
             </div>
         </div>
         <div class=" hr-line">
         </div>
         <div class="layui-form-item text-center">
-            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit>确认</button>
-            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit>{{ea_trans('confirm',false)}}</button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">{{ea_trans('reset',false)}}</button>
         </div>
 
     </form>

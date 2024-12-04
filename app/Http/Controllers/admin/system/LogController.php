@@ -15,7 +15,7 @@ use jianyan\excel\Excel;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
 
 /**
- * @ControllerAnnotation(title="操作日志管理")
+ * @ControllerAnnotation(title="Operation log management")
  */
 class LogController extends AdminController
 {
@@ -26,7 +26,7 @@ class LogController extends AdminController
     }
 
     /**
-     * @NodeAnnotation(title="列表")
+     * @NodeAnnotation(title="list")
      */
     public function index(): View|JsonResponse
     {
@@ -51,12 +51,12 @@ class LogController extends AdminController
     }
 
     /**
-     * @NodeAnnotation(title="导出")
+     * @NodeAnnotation(title="export")
      */
     public function export(): View|bool
     {
         if (config('easyadmin.IS_DEMO', false)) {
-            return $this->error('演示环境下不允许操作');
+            return $this->error(ea_trans('Modification is not allowed in the demonstration environment', false));
         }
         [$page, $limit, $where, $excludeFields] = $this->buildTableParams(['month']);
         $tableName = $this->model->getTable();
@@ -77,7 +77,7 @@ class LogController extends AdminController
         }catch (\PDOException|\Exception $exception) {
             return $this->error($exception->getMessage());
         }
-        if (empty($list)) return $this->error('暂无数据');
+        if (empty($list)) return $this->error(ea_trans('No data available', false));
         $list     = $list->toArray();
         $fileName = time();
         try {

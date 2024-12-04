@@ -21,7 +21,7 @@ trait Curd
 {
 
     /**
-     * @NodeAnnotation(title="列表")
+     * @NodeAnnotation(title="list")
      */
     public function index(): View|JsonResponse
     {
@@ -42,43 +42,43 @@ trait Curd
     }
 
     /**
-     * @NodeAnnotation(title="添加")
+     * @NodeAnnotation(title="add")
      */
     public function add(): View|JsonResponse
     {
         if (request()->ajax()) {
             try {
                 $save = insertFields($this->model);
-            } catch (\Exception $e) {
-                return $this->error('保存失败:' . $e->getMessage());
+            }catch (\Exception $e) {
+                return $this->error(ea_trans('operation failed', false) . ':' . $e->getMessage());
             }
-            return $save ? $this->success('保存成功') : $this->error('保存失败');
+            return $save ? $this->success(ea_trans('operation successful', false)) : $this->error(ea_trans('operation failed', false));
         }
         return $this->fetch();
     }
 
     /**
-     * @NodeAnnotation(title="编辑")
+     * @NodeAnnotation(title="edit")
      */
     public function edit(): View|JsonResponse
     {
         $id  = (int)request()->input('id');
         $row = $this->model->find($id);
-        if (empty($row)) return $this->error('数据不存在');
+        if (empty($row)) return $this->error(ea_trans('data does not exist', false));
         if (request()->ajax()) {
             try {
                 $save = updateFields($this->model, $row);
-            } catch (\PDOException|\Exception $e) {
-                return $this->error('保存失败:' . $e->getMessage());
+            }catch (\PDOException|\Exception $e) {
+                return $this->error(ea_trans('operation failed', false) . ':' . $e->getMessage());
             }
-            return $save ? $this->success('保存成功') : $this->error('保存失败');
+            return $save ? $this->success(ea_trans('operation successful', false)) : $this->error(ea_trans('operation failed', false));
         }
         $this->assign(compact('row'));
         return $this->fetch();
     }
 
     /**
-     * @NodeAnnotation(title="删除")
+     * @NodeAnnotation(title="delete")
      */
     public function delete(): JsonResponse
     {
@@ -86,22 +86,22 @@ trait Curd
         $id = request()->input('id');
         if (!is_array($id)) $id = (array)$id;
         $row = $this->model->whereIn('id', $id)->get()->toArray();
-        if (empty($row)) return $this->error('数据不存在');
+        if (empty($row)) return $this->error(ea_trans('data does not exist', false));
         try {
             $save = $this->model->whereIn('id', $id)->delete();
-        } catch (\PDOException|\Exception $e) {
-            return $this->error('删除失败:' . $e->getMessage());
+        }catch (\PDOException|\Exception $e) {
+            return $this->error(ea_trans('operation failed', false) . ':' . $e->getMessage());
         }
-        return $save ? $this->success('删除成功') : $this->error('删除失败');
+        return $save ? $this->success(ea_trans('operation successful', false)) : $this->error(ea_trans('operation failed', false));
     }
 
     /**
-     * @NodeAnnotation(title="导出")
+     * @NodeAnnotation(title="export")
      */
     public function export(): View|bool
     {
         if (config('easyadmin.IS_DEMO', false)) {
-            return $this->error('演示环境下不允许操作');
+            return $this->error(ea_trans('Modification is not allowed in the demonstration environment', false));
         }
         list($page, $limit, $where) = $this->buildTableParams();
         $tableName = $this->model->getTable();
@@ -116,18 +116,18 @@ trait Curd
             }
         }
         $list = $this->model->where($where)->limit(100000)->orderByDesc('id')->get();
-        if (empty($list)) return $this->error('暂无数据');
+        if (empty($list)) return $this->error(ea_trans('No data available', false));
         $list     = $list->toArray();
         $fileName = time();
         try {
             return Excel::exportData($list, $header, $fileName, 'xlsx');
-        } catch (Exception|\PhpOffice\PhpSpreadsheet\Exception$e) {
+        }catch (Exception|\PhpOffice\PhpSpreadsheet\Exception$e) {
             return $this->error($e->getMessage());
         }
     }
 
     /**
-     * @NodeAnnotation(title="属性修改")
+     * @NodeAnnotation(title="modify")
      */
     public function modify(): JsonResponse
     {
@@ -139,24 +139,24 @@ trait Curd
             'value' => 'required',
         ];
         $validator = Validator::make($post, $rules, [
-            'id'    => 'ID不能为空',
-            'field' => '字段不能为空',
-            'value' => '值不能为空',
+            'id'    => 'ID' . ea_trans('Cannot be empty', false),
+            'field' => 'field' . ea_trans('Cannot be empty', false),
+            'value' => 'value' . ea_trans('Cannot be empty', false),
         ]);
         if ($validator->fails()) {
             return $this->error($validator->errors()->first());
         }
         $row = $this->model->find($post['id']);
         if (empty($row)) {
-            return $this->error('数据不存在');
+            return $this->error(ea_trans('data does not exist', false));
         }
         try {
             foreach ($post as $key => $item) if ($key == 'field') $row->$item = $post['value'];
             $row->save();
-        } catch (\PDOException|\Exception $e) {
-            return $this->error("操作失败:" . $e->getMessage());
+        }catch (\PDOException|\Exception $e) {
+            return $this->error(ea_trans('operation failed', false) . ":" . $e->getMessage());
         }
-        return $this->success('保存成功');
+        return $this->success(ea_trans('operation successful', false));
     }
 
 }

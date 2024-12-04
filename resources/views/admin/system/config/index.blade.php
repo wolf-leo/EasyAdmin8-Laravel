@@ -3,9 +3,9 @@
     <div class="layuimini-main" id="app">
         <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
             <ul class="layui-tab-title">
-                <li class="layui-this" data-group="site">网站设置</li>
-                <li data-group="logo">LOGO配置</li>
-                <li data-group="upload">上传配置</li>
+                <li class="layui-this" data-group="site">{{ea_trans('Site Setting',true,'common')}}</li>
+                <li data-group="logo">{{ea_trans('Logo Setting',true,'common')}}</li>
+                <li data-group="upload">{{ea_trans('Upload Setting',true,'common')}}</li>
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">

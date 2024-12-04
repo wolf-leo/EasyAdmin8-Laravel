@@ -23,7 +23,8 @@
             VERSION: "{{$version}}",
             CSRF_TOKEN: '{{ csrf_token() }}',
             ADMIN_UPLOAD_URL: "{{$adminUploadUrl}}",
-            EDITOR_TYPE: "{{sysconfig('site','editor_type')?:'ueditor'}}",
+            EDITOR_TYPE: "{{$adminEditor}}",
+            JS_TRANS: JSON.parse('{!! json_encode($jsTrans,256) !!}'),
         };
     </script>
     <script src="/static/plugs/xmSelect/xm-select.js" charset="utf-8"></script>

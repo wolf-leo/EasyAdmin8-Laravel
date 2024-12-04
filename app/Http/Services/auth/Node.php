@@ -8,7 +8,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\DocParser;
 use App\Http\Services\annotation\ControllerAnnotation;
 use App\Http\Services\annotation\NodeAnnotation;
-use App\Http\Services\tool\CommonTool;
+use Illuminate\Support\Facades\App;
 use ReflectionException;
 
 /**
@@ -66,14 +66,21 @@ class Node
                 $actionList      = [];
                 // 遍历读取所有方法的注释的参数信息
                 foreach ($methods as $method) {
+
+                    // 忽略的节点
+                    $properties = $reflectionClass->getDefaultProperties();
+                    $ignoreNode = $properties['ignoreNode'] ?? [];
+                    if (!empty($ignoreNode)) if (in_array($method->name, $ignoreNode)) continue;
+
                     // 读取NodeAnnotation的注解
                     $nodeAnnotation = $reader->getMethodAnnotation($method, NodeAnnotation::class);
                     if (!empty($nodeAnnotation)) {
                         $actionTitle  = !empty($nodeAnnotation->title) ? $nodeAnnotation->title : null;
                         $actionAuth   = !empty($nodeAnnotation->auth) ? $nodeAnnotation->auth : false;
+                        $actionNode   = $controllerFormat . '/' . $method->name;
                         $actionList[] = [
-                            'node'    => $controllerFormat . '/' . $method->name,
-                            'title'   => $actionTitle,
+                            'node'    => $actionNode,
+                            'title'   => $this->transTitle($actionTitle, $actionNode),
                             'is_auth' => $actionAuth,
                             'type'    => 2,
                         ];
@@ -87,7 +94,7 @@ class Node
                     $controllerAuth       = !empty($controllerAnnotation) && !empty($controllerAnnotation->auth) ? $controllerAnnotation->auth : false;
                     $nodeList[]           = [
                         'node'    => $controllerFormat,
-                        'title'   => $controllerTitle,
+                        'title'   => $this->transTitle($controllerTitle, $controllerFormat),
                         'is_auth' => $controllerAuth,
                         'type'    => 1,
                     ];
@@ -127,7 +134,7 @@ class Node
                 // 子文件夹，进行递归
                 $childFiles = $this->readControllerFiles($path . DIRECTORY_SEPARATOR . $file);
                 $list       = array_merge($childFiles, $list);
-            } else {
+            }else {
                 // 判断是不是控制器
                 $fileExplodeArray = explode('.', $file);
                 if (count($fileExplodeArray) != 2 || end($fileExplodeArray) != 'php') {
@@ -146,4 +153,26 @@ class Node
         return $list;
     }
 
+    /**
+     * @param string|null $title
+     * @param string|null $node
+     * @return string|null
+     */
+    protected function transTitle(?string $title, ?string $node): ?string
+    {
+        $node   = str_replace('/', '.', $node);
+        $key    = $node;
+        $_title = ea_trans($key, false);
+        if ($_title == $key) {
+            $nodeArr = explode('.', $node);
+            if (count($nodeArr) > 2) array_pop($nodeArr);
+            $nodeArr[] = 'common';
+            $key       = implode('.', $nodeArr) . '.' . $title;
+            $_title    = ea_trans($key, false);
+            if ($_title == $key) {
+                $_title = ea_trans($title, false);
+            }
+        }
+        return $_title;
+    }
 }

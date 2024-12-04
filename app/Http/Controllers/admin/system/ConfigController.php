@@ -11,7 +11,7 @@ use App\Http\Services\annotation\NodeAnnotation;
 use App\Http\Services\annotation\ControllerAnnotation;
 
 /**
- * @ControllerAnnotation(title="系统配置管理")
+ * @ControllerAnnotation(title="System Configuration Management")
  */
 class ConfigController extends AdminController
 {
@@ -26,7 +26,7 @@ class ConfigController extends AdminController
     }
 
     /**
-     * @NodeAnnotation(title="列表")
+     * @NodeAnnotation(title="list")
      */
     public function index(): View
     {
@@ -34,7 +34,7 @@ class ConfigController extends AdminController
     }
 
     /**
-     * @NodeAnnotation(title="保存")
+     * @NodeAnnotation(title="save")
      */
     public function save(): JsonResponse
     {
@@ -43,7 +43,7 @@ class ConfigController extends AdminController
         $notAddFields = ['_token', 'file', 'group'];
         try {
             $group = $post['group'] ?? '';
-            if (empty($group)) return $this->error('保存失败');
+            if (empty($group)) return $this->error(ea_trans('operation failed', false));
             if ($group == 'upload') {
                 $upload_types = config('admin.upload_types');
                 // 兼容旧版本
@@ -53,7 +53,7 @@ class ConfigController extends AdminController
                 if (in_array($key, $notAddFields)) continue;
                 if ($this->model->where('name', $key)->count()) {
                     $this->model->where('name', $key)->update(['value' => $val,]);
-                } else {
+                }else {
                     $this->model->insert(
                         [
                             'name'  => $key,
@@ -63,10 +63,10 @@ class ConfigController extends AdminController
                 }
             }
             TriggerService::updateSysconfig();
-        } catch (\Exception $e) {
-            return $this->error('保存失败:' . $e->getMessage());
+        }catch (\Exception $e) {
+            return $this->error(ea_trans('operation failed', false) . ':' . $e->getMessage());
         }
-        return $this->success('保存成功');
+        return $this->success(ea_trans('operation successful', false));
     }
 
 }

@@ -18,14 +18,14 @@ define(["jquery", "easy-admin"], function ($, ea) {
                 init: init,
                 cols: [[
                     {type: "checkbox"},
-                    {field: 'id', width: 80, title: 'ID', searchOp: '='},
-                    {field: 'sort', width: 80, title: '排序', edit: 'text'},
-                    {field: 'title', minWidth: 80, title: '分类名称'},
-                    {field: 'image', minWidth: 80, title: '分类图片', search: false, templet: ea.table.image},
-                    {field: 'remark', minWidth: 80, title: '备注信息'},
-                    {field: 'status', title: '状态', width: 85, search: 'select', selectList: {0: '禁用', 1: '启用'}, templet: ea.table.switch},
-                    {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range'},
-                    {width: 250, title: '操作', templet: ea.table.tool}
+                    {field: 'id', width: 100, title: 'ID', searchOp: '='},
+                    {field: 'sort', width: 100, title: __('sort'), edit: 'text'},
+                    {field: 'title', minWidth: 100, title: __('cate name')},
+                    {field: 'image', minWidth: 100, title: __('cate name'), search: false, templet: ea.table.image},
+                    {field: 'remark', minWidth: 100, title: __('remark')},
+                    {field: 'status', title: __('status'), width: 120, search: 'select', selectList: {0: __('disable'), 1: __('enable')}, templet: ea.table.switch},
+                    {field: 'create_time', minWidth: 100, title: __('create time'), search: 'range'},
+                    {width: 250, title: __('operate'), templet: ea.table.tool}
                 ]],
             });
 

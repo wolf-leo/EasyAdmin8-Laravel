@@ -30,7 +30,7 @@ class LoginController extends AdminController
         }
         if ($captcha) {
             if (strtolower(request()->post('captcha')) !== request()->session()->get('captcha')) {
-                return $this->error('图片验证码错误');
+                return $this->error(ea_trans('Image verification code error'));
             }
         }
         $post      = \request()->post();
@@ -40,23 +40,23 @@ class LoginController extends AdminController
             'keep_login' => 'required',
         ];
         $validator = Validator::make($post, $rules, [
-            'username' => '用户名不能为空',
-            'password' => '密码不能为空或格式错误',
+            'username' => 'username' . ea_trans('Cannot be empty', false),
+            'password' => 'password' . ea_trans('Cannot be empty or formatted incorrectly', false),
         ]);
         if ($validator->fails()) {
             return $this->error($validator->errors()->first());
         }
         $admin = SystemAdmin::where(['username' => $post['username']])->first();
         if (empty($admin) || password($post['password']) != $admin->password) {
-            return $this->error('用户名或密码有误');
+            return $this->error(ea_trans('Incorrect username or password'));
         }
         if ($admin->status == 0) {
-            return $this->error('账号已被禁用');
+            return $this->error(ea_trans('Account has been disabled'));
         }
         if ($admin->login_type == 2) {
-            if (empty($post['ga_code'])) return $this->error('请输入谷歌验证码', ['is_ga_code' => true]);
+            if (empty($post['ga_code'])) return $this->error(ea_trans('Please enter the Google verification code'), ['is_ga_code' => true]);
             $ga = new \Wolfcode\Authenticator\google\PHPGangstaGoogleAuthenticator();
-            if (!$ga->verifyCode($admin->ga_secret, $post['ga_code'])) return $this->error('谷歌验证码错误');;
+            if (!$ga->verifyCode($admin->ga_secret, $post['ga_code'])) return $this->error(ea_trans('Google captcha error'));;
         }
         $admin->login_num   += 1;
         $admin->update_time = time();
@@ -65,7 +65,7 @@ class LoginController extends AdminController
         unset($admin['password']);
         $admin['expire_time'] = $post['keep_login'] == 1 ? true : time() + 7200;
         session(compact('admin'));
-        return $this->success('登录成功', [], __url());
+        return $this->success(ea_trans('Login succeeded'), [], __url());
     }
 
     public function captcha(): Response
@@ -84,6 +84,6 @@ class LoginController extends AdminController
     public function out(): Response|JsonResponse
     {
         \request()->session()->forget('admin');
-        return $this->success('退出登录成功', [], __url('/login'));
+        return $this->success(ea_trans('operation successful', false), [], __url('/login'));
     }
 }

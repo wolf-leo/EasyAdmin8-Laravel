@@ -12,7 +12,7 @@ use App\Http\Services\annotation\NodeAnnotation;
 use App\Http\Services\annotation\ControllerAnnotation;
 
 /**
- * @ControllerAnnotation(title="角色权限管理")
+ * @ControllerAnnotation(title="Role permission management")
  */
 class AuthController extends AdminController
 {
@@ -23,13 +23,13 @@ class AuthController extends AdminController
     }
 
     /**
-     * @NodeAnnotation(title="授权")
+     * @NodeAnnotation(title="Authorize")
      */
     public function authorizes(): View|JsonResponse
     {
         $id  = request()->input('id');
         $row = $this->model->find($id);
-        if (empty($row)) return $this->error('数据不存在');
+        if (empty($row)) return $this->error(ea_trans('data does not exist', false));
         if (request()->ajax()) {
             $list = $this->model->getAuthorizeNodeListByAdminId($id);
             return $this->success('获取成功', $list);
@@ -39,7 +39,7 @@ class AuthController extends AdminController
     }
 
     /**
-     * @NodeAnnotation(title="授权保存")
+     * @NodeAnnotation(title="Authorization Save")
      */
     public function saveAuthorize(): JsonResponse
     {
@@ -48,7 +48,7 @@ class AuthController extends AdminController
         $node = request()->post('node', "[]");
         $node = json_decode($node, true);
         $row  = $this->model->find($id);
-        if (empty($row)) return $this->error('数据不存在');
+        if (empty($row)) return $this->error(ea_trans('data does not exist', false));
         try {
             $authNode = new SystemAuthNode();
             $authNode->where('auth_id', $id)->delete();
@@ -63,9 +63,9 @@ class AuthController extends AdminController
                 $authNode->addAll($saveAll);
             }
             TriggerService::updateMenu();
-        } catch (\Exception $e) {
-            return $this->error('保存失败:' . $e->getMessage());
+        }catch (\Exception $e) {
+            return $this->error(ea_trans('operation failed', false) . ':' . $e->getMessage());
         }
-        return $this->success('保存成功');
+        return $this->success(ea_trans('operation successful', false));
     }
 }

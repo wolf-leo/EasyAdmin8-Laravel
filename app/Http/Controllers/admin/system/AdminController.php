@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 /**
- * @ControllerAnnotation(title="管理员管理")
+ * @ControllerAnnotation(title="Administrator management")
  */
 class AdminController extends Controller
 {
@@ -25,7 +25,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @NodeAnnotation(title="添加")
+     * @NodeAnnotation(title="add")
      */
     public function add(): View|JsonResponse
     {
@@ -37,22 +37,22 @@ class AdminController extends Controller
             $params['password'] = password($post['password']);
             try {
                 $save = insertFields($this->model, $params);
-            } catch (\Exception $e) {
-                return $this->error('保存失败:' . $e->getMessage());
+            }catch (\Exception $e) {
+                return $this->error(ea_trans('operation failed', false) . ':' . $e->getMessage());
             }
-            return $save ? $this->success('保存成功') : $this->error('保存失败');
+            return $save ? $this->success(ea_trans('operation successful', false)) : $this->error(ea_trans('operation failed', false));
         }
         return $this->fetch();
     }
 
     /**
-     * @NodeAnnotation(title="编辑")
+     * @NodeAnnotation(title="edit")
      */
     public function edit(): View|JsonResponse
     {
         $id  = request()->input('id');
         $row = $this->model->find($id);
-        if (empty($row)) return $this->error('数据不存在');
+        if (empty($row)) return $this->error(ea_trans('data does not exist', false));
         if (request()->ajax()) {
             $post               = request()->post();
             $authIds            = request()->post('auth_ids', []);
@@ -61,10 +61,10 @@ class AdminController extends Controller
             try {
                 $save = updateFields($this->model, $row, $params);
                 TriggerService::updateMenu(session('admin.id'));
-            } catch (\Exception $e) {
-                return $this->error('保存失败:' . $e->getMessage());
+            }catch (\Exception $e) {
+                return $this->error(ea_trans('operation failed', false) . ':' . $e->getMessage());
             }
-            return $save ? $this->success('保存成功') : $this->error('保存失败');
+            return $save ? $this->success(ea_trans('operation successful', false)) : $this->error(ea_trans('operation failed', false));
         }
         $row->auth_ids = explode(',', $row->auth_ids ?: '');
         $this->assign(compact('row'));
@@ -72,13 +72,13 @@ class AdminController extends Controller
     }
 
     /**
-     * @NodeAnnotation(title="修改密码")
+     * @NodeAnnotation(title="change password")
      */
     public function password(): View|JsonResponse
     {
         $id  = request()->input('id');
         $row = $this->model->find($id);
-        if (empty($row)) return $this->error('数据不存在');
+        if (empty($row)) return $this->error(ea_trans('data does not exist', false));
         if (request()->ajax()) {
             $post      = request()->post();
             $rules     = [
@@ -86,21 +86,21 @@ class AdminController extends Controller
                 'password_again' => 'required',
             ];
             $validator = Validator::make($post, $rules, [
-                'password'       => '密码不能为空或格式错误',
-                'password_again' => '确认密码不能为空或格式错误',
+                'password'       => 'password' . ea_trans('Cannot be empty or formatted incorrectly', false),
+                'password_again' => 'password_again' . ea_trans('Cannot be empty or formatted incorrectly', false),
             ]);
             if ($validator->fails()) {
                 return $this->error($validator->errors()->first());
             }
             if ($post['password'] != $post['password_again']) {
-                return $this->error('两次密码输入不一致');
+                return $this->error(ea_trans('passwords do not match'));
             }
             try {
                 $save = $this->model->where('id', $id)->update(['password' => password($post['password'])]);
-            } catch (\Exception $e) {
-                return $this->error('保存失败');
+            }catch (\Exception $e) {
+                return $this->error(ea_trans('operation failed', false));
             }
-            return $save ? $this->success('保存成功') : $this->error('保存失败');
+            return $save ? $this->success(ea_trans('operation successful', false)) : $this->error(ea_trans('operation failed', false));
         }
         $this->assign(compact('row'));
         return $this->fetch();

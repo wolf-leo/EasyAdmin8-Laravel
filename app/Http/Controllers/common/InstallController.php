@@ -13,6 +13,16 @@ class InstallController extends Controller
 {
     use JumpTrait;
 
+    protected array $trans = [];
+
+    public function initialize()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->trans = __('messages.install');
+            return $next($request);
+        });
+    }
+
     public function index(Request $request): View|JsonResponse
     {
         $isInstall   = false;
@@ -20,11 +30,11 @@ class InstallController extends Controller
         $errorInfo   = null;
         if (is_file($installPath . DIRECTORY_SEPARATOR . 'lock' . DIRECTORY_SEPARATOR . 'install.lock')) {
             $isInstall = true;
-            $errorInfo = '已安装系统，如需重新安装请删除文件：/config/install/lock/install.lock，或者删除 /install 路由';
+            $errorInfo = $this->trans['information 3'];
         }elseif (version_compare(phpversion(), '8.1.0', '<')) {
-            $errorInfo = 'PHP版本不能小于8.1.0';
+            $errorInfo = $this->trans['PHP Tips'];
         }elseif (!extension_loaded("PDO")) {
-            $errorInfo = '当前未开启PDO，无法进行安装';
+            $errorInfo = $this->trans['PDO Tips'];
         }
         if (!$request->ajax()) {
             $currentHost = ($_SERVER['SERVER_PORT'] == 443 ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . '/';
@@ -33,7 +43,7 @@ class InstallController extends Controller
         }
         if ($errorInfo) return $this->error($errorInfo);
         $envFile = base_path() . DIRECTORY_SEPARATOR . '.env';
-        if (!is_file($envFile)) return $this->error('.env 配置文件不存在');
+        if (!is_file($envFile)) return $this->error($this->trans['ENV Tips']);
         $charset = 'utf8mb4';
 
         $post       = $request->post();
@@ -52,16 +62,16 @@ class InstallController extends Controller
         // 判断是否有特殊字符
         $check = preg_match('/[0-9a-zA-Z]+$/', $adminUrl, $matches);
         if (!$check) {
-            $validateError = '后台地址不能含有特殊字符, 只能包含字母或数字。';
+            $validateError = $this->trans['validateError 1'];
             return $this->error($validateError);
         }
 
         if (strlen($adminUrl) < 2) {
-            $validateError = '后台的地址不能小于2位数';
+            $validateError = $this->trans['validateError 2'];
         }elseif (strlen($password) < 5) {
-            $validateError = '管理员密码不能小于5位数';
+            $validateError = $this->trans['validateError 3'];
         }elseif (strlen($username) < 4) {
-            $validateError = '管理员账号不能小于4位数';
+            $validateError = $this->trans['validateError 4'];
         }
         if (!empty($validateError)) return $this->error($validateError);
         $config = [
@@ -82,13 +92,13 @@ class InstallController extends Controller
         // 检测数据库连接
         $this->checkConnect($config);
         // 检测数据库是否存在
-        if (!$cover && $this->checkDatabase($database)) return $this->error('数据库已存在，请选择覆盖安装或者修改数据库名');
+        if (!$cover && $this->checkDatabase($database)) return $this->error($this->trans['databaseError 1']);
         // 创建数据库
         $this->createDatabase($database, $config);
 
         // 导入sql语句等等
         $this->install($username, $password, array_merge($config, ['database' => $database]), $adminUrl);
-        return $this->success('系统安装成功，正在跳转登录页面');
+        return $this->success($this->trans['System installation successful']);
     }
 
     protected function install($username, $password, $config): bool|string
@@ -194,7 +204,7 @@ class InstallController extends Controller
             if (version_compare($_version, '5.7.0', '<')) {
                 $data = [
                     'code' => 0,
-                    'msg'  => 'mysql版本最低要求 5.7.x',
+                    'msg'  => $this->trans['databaseError 2']
                 ];
                 die(json_encode($data));
             }

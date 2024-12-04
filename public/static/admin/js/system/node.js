@@ -19,8 +19,8 @@ define(["jquery", "easy-admin"], function ($, ea) {
                 page: false,
                 toolbar: ['refresh',
                     [{
-                        text: '更新节点',
-                        title: '确定更新新节点？',
+                        text: __('Update nodes'),
+                        title: __('Confirm to update the new node'),
                         url: 'system.node/refreshNode?force=0',
                         method: 'request',
                         auth: 'refresh',
@@ -28,8 +28,8 @@ define(["jquery", "easy-admin"], function ($, ea) {
                         icon: 'fa fa-hourglass',
                         extend: 'data-table="' + init.table_render_id + '"',
                     }, {
-                        text: '强制更新节点',
-                        title: '该操作会覆盖已存在的节点信息。<br>确定强制更新节点？',
+                        text: __('Force update of nodes'),
+                        title: __('Force update prompt'),
                         url: 'system.node/refreshNode?force=1',
                         method: 'request',
                         auth: 'refresh',
@@ -38,8 +38,8 @@ define(["jquery", "easy-admin"], function ($, ea) {
                         extend: 'data-table="' + init.table_render_id + '"',
                     }, {
 
-                        text: '清除失效节点',
-                        title: '确定清除失效节点？',
+                        text: __('Clear invalid nodes'),
+                        title: __('Are you sure to clear the failed nodes'),
                         url: 'system.node/clearNode',
                         method: 'request',
                         auth: 'clear',
@@ -49,10 +49,10 @@ define(["jquery", "easy-admin"], function ($, ea) {
                     }
                     ]],
                 cols: [[
-                    {field: 'node', minWidth: 200, align: 'left', title: '系统节点'},
-                    {field: 'title', minWidth: 80, title: '节点名称 <i class="table-edit-tips color-red">*</i>', edit: 'text'},
-                    {field: 'update_time', minWidth: 80, title: '更新时间', search: 'range'},
-                    {field: 'is_auth', title: '节点控制', width: 85, search: 'select', selectList: {0: '禁用', 1: '启用'}, templet: ea.table.switch},
+                    {field: 'node', minWidth: 200, align: 'left', title: __('node')},
+                    {field: 'title', minWidth: 80, title: __('title') + ' <i class="table-edit-tips color-red">*</i>', edit: 'text'},
+                    {field: 'update_time', minWidth: 80, title: __('update time'), search: 'range'},
+                    {field: 'is_auth', title: __('auth'), width: 85, search: 'select', selectList: {0: __('disable'), 1: __('enable')}, templet: ea.table.switch},
                 ]],
             });
 

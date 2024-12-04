@@ -19,14 +19,14 @@ define(["jquery", "easy-admin"], function ($, ea) {
                 cols: [[
                     {type: "checkbox"},
                     {field: 'id', width: 80, title: 'ID', searchOp: '='},
-                    {field: 'upload_type', minWidth: 80, title: '存储位置', search: 'select', selectList: upload_types},
-                    {field: 'url', minWidth: 80, search: false, title: '图片信息', templet: ea.table.image},
-                    {field: 'url', minWidth: 120, title: '保存地址', templet: ea.table.url},
-                    {field: 'original_name', minWidth: 80, title: '文件原名'},
-                    {field: 'mime_type', minWidth: 80, title: 'mime类型'},
-                    {field: 'file_ext', minWidth: 80, title: '文件后缀'},
-                    {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range'},
-                    {width: 250, title: '操作', templet: ea.table.tool, operat: ['delete']}
+                    {field: 'upload_type', minWidth: 80, title: __('location'), search: 'select', selectList: upload_types},
+                    {field: 'url', minWidth: 80, search: false, title: __('information'), templet: ea.table.image},
+                    {field: 'url', minWidth: 120, title: __('address'), templet: ea.table.url},
+                    {field: 'original_name', minWidth: 80, title: __('filename')},
+                    {field: 'mime_type', minWidth: 80, title: __('mime type')},
+                    {field: 'file_ext', minWidth: 80, title: __('extension')},
+                    {field: 'create_time', minWidth: 80, title: __('create time'), search: 'range'},
+                    {width: 250, title: __('operate'), templet: ea.table.tool, operat: ['delete']}
                 ]],
             });
 

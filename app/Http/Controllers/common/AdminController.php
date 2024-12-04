@@ -90,6 +90,7 @@ class AdminController extends Controller
             'version'              => config('app.debug') ? time() : $version,
             'adminUploadUrl'       => __url('ajax/upload', [], false),
             'adminEditor'          => sysconfig('site', 'editor_type') ?: 'wangEditor',
+            'jsTrans'              => __("messages.{$adminConfig['admin_alias_name']}.js") + ea_trans('', true, 'common'),
         ];
         $this->assign($data);
     }

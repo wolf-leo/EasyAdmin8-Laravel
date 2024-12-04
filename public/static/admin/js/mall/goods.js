@@ -17,9 +17,12 @@ define(["jquery", "easy-admin"], function ($, ea) {
         index: function () {
             ea.table.render({
                 init: init,
+                css: [
+                    '.layui-table-cell{height: 50px; line-height: 40px;}',
+                ].join(''),
                 toolbar: ['refresh',
                     [{
-                        text: '添加',
+                        text: __('add'),
                         url: init.add_url,
                         method: 'open',
                         auth: 'add',
@@ -30,39 +33,44 @@ define(["jquery", "easy-admin"], function ($, ea) {
                 cols: [[
                     {type: "checkbox"},
                     {field: 'id', width: 80, title: 'ID', searchOp: '='},
-                    {field: 'sort', width: 80, title: '排序', edit: 'text'},
-                    {field: 'cate.title', minWidth: 80, title: '商品分类'},
-                    {field: 'title', minWidth: 80, title: '商品名称'},
-                    {field: 'logo', minWidth: 80, title: '分类图片', search: false, templet: ea.table.image},
-                    {field: 'market_price', width: 100, title: '市场价', templet: ea.table.price},
-                    {field: 'discount_price', width: 100, title: '折扣价', templet: ea.table.price},
-                    {field: 'total_stock', width: 100, title: '库存统计'},
-                    {field: 'stock', width: 100, title: '剩余库存'},
-                    {field: 'virtual_sales', width: 100, title: '虚拟销量'},
-                    {field: 'sales', width: 80, title: '销量'},
-                    {field: 'status', title: '状态', width: 85, selectList: {0: '禁用', 1: '启用'}, templet: ea.table.switch},
+                    {field: 'sort', width: 100, title: __('sort'), edit: 'text'},
+                    {field: 'cate.title', minWidth: 120, title: __('goods cate')},
+                    {field: 'title', minWidth: 120, title: __('goods name')},
+                    {field: 'logo', minWidth: 120, title: __('goods image'), search: false, templet: ea.table.image},
+                    {field: 'market_price', width: 100, title: __('goods price'), templet: ea.table.price},
+                    {field: 'discount_price', width: 100, title: __('goods discounted price'), templet: ea.table.price},
+                    {field: 'total_stock', width: 100, title: __('inventory statistics')},
+                    {field: 'stock', width: 100, title: __('remaining inventory')},
+                    {field: 'virtual_sales', width: 100, title: __('Virtual sales')},
+                    {field: 'sales', width: 100, title: __('sales volume')},
+                    {field: 'status', title: __('status'), width: 120, selectList: {0: __('disable'), 1: __('enable')}, templet: ea.table.switch},
                     // 演示多选，实际数据库并无 status2 字段，搜索后会报错
                     {
-                        field: 'status2', title: '演示多选', width: 105, search: 'xmSelect', selectList: {1: '模拟选项1', 2: '模拟选项2', 3: '模拟选项3', 4: '模拟选项4', 5: '模拟选项5'},
+                        field: 'status2', title: __('multiple choice'), width: 105, search: 'xmSelect', selectList: {1: 'demo1', 2: 'demo2', 3: 'demo3', 4: 'demo4', 5: 'demo5'},
                         searchOp: 'in', templet: function (res) {
                             // 根据自己实际项目进行输出
-                            return res?.status2 || '模拟数据'
+                            return res?.status2 || 'demo'
                         }
                     },
-                    {field: 'create_time', minWidth: 80, title: '创建时间', search: 'range'},
+                    {field: 'create_time', minWidth: 100, title: __('create time'), search: 'range'},
                     {
                         width: 250,
-                        title: '操作',
+                        fixed: 'right',
+                        title: __('operate'),
                         templet: ea.table.tool,
                         operat: [
                             [{
-                                text: '编辑',
+                                templet: function (d) {
+                                    return `<button type="button" class="layui-btn layui-btn-xs">templet ${d.id}</button>`
+                                }
+                            }, {
+                                text: __('edit'),
                                 url: init.edit_url,
                                 method: 'open',
                                 auth: 'edit',
                                 class: 'layui-btn layui-btn-xs layui-btn-success',
                             }, {
-                                text: '入库',
+                                text: __('stock'),
                                 url: init.stock_url,
                                 method: 'open',
                                 auth: 'stock',

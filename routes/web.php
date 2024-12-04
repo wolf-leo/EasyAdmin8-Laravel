@@ -22,18 +22,27 @@ Route::get('/', function () {
 
 // 首次安装管理系统
 Route::controller(\App\Http\Controllers\common\InstallController::class)->group(function () {
-    Route::match(['get', 'post'], '/install', 'index');
+    Route::match(['get', 'post'], '/install', 'index')->middleware(\App\Http\Middleware\SetLocale::class);
 });
 
 // 后台所有路由
 $admin = config('admin.admin_alias_name');
 
 Route::get($admin . '/language/{lang}', function ($lang) {
-    Session::put('locale', $lang);
+    \Illuminate\Support\Facades\Session::put('locale', $lang);
     return back();
 })->name('language.switch');
 
-Route::middleware([\App\Http\Middleware\SystemLog::class, \App\Http\Middleware\CheckAuth::class])->group(function () use ($admin) {
+Route::get('/install/language/{lang}', function ($lang) {
+    \Illuminate\Support\Facades\Session::put('locale', $lang);
+    return back();
+});
+
+Route::middleware([
+    \App\Http\Middleware\SetLocale::class,
+    \App\Http\Middleware\SystemLog::class,
+    \App\Http\Middleware\CheckAuth::class,
+])->group(function () use ($admin) {
     Route::prefix($admin)->group(function () {
 
         // 后台首页

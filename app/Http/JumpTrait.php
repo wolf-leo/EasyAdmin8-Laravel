@@ -17,11 +17,12 @@ trait JumpTrait
      * @param int $wait 跳转等待时间
      * @return Response|JsonResponse|View
      */
-    protected function success(string $msg = '操作成功', array $data = [], string $url = null, int $wait = 3): Response|JsonResponse|View
+    protected function success(string $msg = '', array $data = [], string $url = null, int $wait = 3): Response|JsonResponse|View
     {
+        if (empty($msg)) $msg = ea_trans('operation successful');
         if (is_null($url) && isset($_SERVER["HTTP_REFERER"])) {
             $url = $_SERVER["HTTP_REFERER"];
-        } elseif ($url) {
+        }elseif ($url) {
             $url = (strpos($url, '://') || str_starts_with($url, '/')) ? $url : app('route')->buildUrl($url)->__toString();
         }
         if (empty($url)) $url = __url();
@@ -44,11 +45,12 @@ trait JumpTrait
      * @param int $wait
      * @return Response|JsonResponse|View
      */
-    public function error(string $msg = '操作失败', array $data = [], string $url = null, int $wait = 3): Response|JsonResponse|View
+    public function error(string $msg = '', array $data = [], string $url = null, int $wait = 3): Response|JsonResponse|View
     {
+        if (empty($msg)) $msg = ea_trans('operation failed');
         if (is_null($url)) {
             $url = request()->ajax() ? '' : 'javascript:history.back(-1);';
-        } elseif ($url) {
+        }elseif ($url) {
             $url = (strpos($url, '://') || str_starts_with($url, '/')) ? $url : "";
         }
         $result = [
@@ -70,11 +72,12 @@ trait JumpTrait
      * @param int $wait
      * @return Response
      */
-    public function responseView(string $msg = '操作失败', array $data = [], string $url = null, int $wait = 3): Response
+    public function responseView(string $msg = '', array $data = [], string $url = null, int $wait = 3): Response
     {
+        if (empty($msg)) $msg = ea_trans('operation failed');
         if (is_null($url)) {
             $url = request()->ajax() ? '' : 'javascript:history.back(-1);';
-        } elseif ($url) {
+        }elseif ($url) {
             $url = (strpos($url, '://') || str_starts_with($url, '/')) ? $url : "";
         }
         $result = [

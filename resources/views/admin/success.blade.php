@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>跳转提示</title>
+    <title>{{ea_trans('jump prompt',false)}}</title>
     <style>
         * {
             box-sizing: border-box;
@@ -137,11 +137,11 @@
     </div>
     <h1>{{strip_tags($msg)}}</h1>
     <p class="jump">
-        页面将在 <span id="wait">{{$wait}}</span> 秒后自动跳转
+        <span id="wait">{{$wait}}</span> {{ea_trans('seconds',false)}}
     </p>
     <p class="clearfix">
-        <a href="#" onClick="javascript :history.back(-1);" class="btn btn-grey">返回上一页</a>
-        <a id="href" href="{{$url}}" class="btn btn-primary">立即跳转</a>
+        <a href="#" onClick="javascript :history.back(-1);" class="btn btn-grey">{{ea_trans('back',false)}}</a>
+        <a id="href" href="{{$url}}" class="btn btn-primary">{{ea_trans('jump now',false)}}</a>
     </p>
 </div>
 <script type="text/javascript">

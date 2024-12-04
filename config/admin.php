@@ -6,6 +6,11 @@ return [
     // 超级管理员ID
     'super_admin_id'       => 1,
 
+    // 多语言
+    'locale'         => [
+        'zh' => '中文', 'en' => 'English',
+    ],
+
     // 后台别名 默认后台访问路径
     'admin_alias_name'     => config('easyadmin.ADMIN', env('EASYADMIN.ADMIN', 'admin')),
 

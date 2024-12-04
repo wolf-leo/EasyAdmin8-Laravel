@@ -45,7 +45,7 @@ class AjaxController extends AdminController
     public function clearCache(): JsonResponse
     {
         Cache::flush();
-        return $this->success('清理缓存成功');
+        return $this->success(ea_trans('Successfully cleared cache', true, 'common'));
     }
 
     /**
@@ -54,7 +54,7 @@ class AjaxController extends AdminController
      */
     public function upload(): View|JsonResponse
     {
-        if ($this->isDemo) return $this->error('演示环境下不允许修改');
+        if ($this->isDemo) return $this->error(ea_trans('Modification is not allowed in the demonstration environment', false));
         if (request()->method() != 'POST') return $this->error();
         $type         = request()->input('type', '');
         $data         = [
@@ -68,37 +68,37 @@ class AjaxController extends AdminController
             'file'        => 'required',
         ];
         $validator = Validator::make($data, $rules, [
-            'upload_type' => '指定上传类型有误',
-            'file'        => '文件不能为空',
+            'upload_type' => ea_trans('The specified upload type is incorrect'),
+            'file'        => ea_trans('The file cannot be empty'),
         ]);
         if ($validator->fails()) {
             return $this->error($validator->errors()->first());
         }
         $file = $type == 'editor' ? request()->upload : request()->file;
         if (!in_array($file->extension(), explode(',', $uploadConfig['upload_allow_ext']))) {
-            return $this->error('上传文件类型不在允许范围');
+            return $this->error(ea_trans('File format is incorrect', true, 'common'));
         }
         if ($file->getSize() > $uploadConfig['upload_allow_size']) {
-            return $this->error('文件大小超过预设值');
+            return $this->error(ea_trans('File size exceeds the limit', true, 'common'));
         }
         $upload_type = $uploadConfig['upload_type'];
         try {
             $upload = UploadService::instance()->setConfig($uploadConfig)->$upload_type($file, $type);
-        } catch (\Exception $e) {
+        }catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
         $code = $upload['code'] ?? 0;
         if ($code == 0) {
             return $this->error($upload['data'] ?? '');
-        } else {
+        }else {
             return $type == 'editor' ? json(
                 [
-                    'error'    => ['message' => '上传成功', 'number' => 201,],
+                    'error'    => ['message' => ea_trans('Upload successful', true, 'common'), 'number' => 201,],
                     'fileName' => '',
                     'uploaded' => 1,
                     'url'      => $upload['data']['url'] ?? '',
                 ]
-            ) : $this->success('上传成功', $upload['data'] ?? '');
+            ) : $this->success(ea_trans('Upload successful', true, 'common'), $upload['data'] ?? '');
         }
     }
 
@@ -173,16 +173,16 @@ class AjaxController extends AdminController
             case 'image':
             case 'attachment':
             case 'video':
-                if ($this->isDemo) return json(['state' => '演示环境下不允许修改']);
+                if ($this->isDemo) return json(['state' => ea_trans('Modification is not allowed in the demonstration environment', false)]);
                 try {
                     $upload = UploadService::instance()->setConfig($uploadConfig)->$upload_type($file);
                     $code   = $upload['code'] ?? 0;
                     if ($code == 0) {
-                        return json(['state' => $upload['data'] ?? '上传错误信息']);
-                    } else {
+                        return json(['state' => $upload['data'] ?? 'error']);
+                    }else {
                         return json(['state' => 'SUCCESS', 'url' => $upload['data']['url'] ?? '']);
                     }
-                } catch (\Exception $e) {
+                }catch (\Exception $e) {
                     return $this->error($e->getMessage());
                 }
             case 'listImage':

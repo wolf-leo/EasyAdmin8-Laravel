@@ -3,37 +3,37 @@
     <form id="app-form" class="layui-form layuimini-form">
 
         <div class="layui-form-item">
-            <label class="layui-form-label">商品标题</label>
+            <label class="layui-form-label">{{ea_trans('goods name',true,'common')}}</label>
             <div class="layui-input-block">
                 <input type="text" class="layui-input layui-disabled" disabled value="{{$row['title']}}" readonly>
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">库存统计</label>
+            <label class="layui-form-label">{{ea_trans('inventory statistics',true,'common')}}</label>
             <div class="layui-input-block">
                 <input type="text" class="layui-input layui-disabled" disabled value="{{$row['total_stock']}}" readonly>
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">剩余库存</label>
+            <label class="layui-form-label">{{ea_trans('remaining inventory',true,'common')}}</label>
             <div class="layui-input-block">
                 <input type="text" class="layui-input layui-disabled" disabled value="{{$row['stock']}}" readonly>
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">入库数量</label>
+            <label class="layui-form-label">{{ea_trans('inventory quantity',true,'common')}}</label>
             <div class="layui-input-block">
-                <input type="number" name="stock" class="layui-input" lay-verify="required" placeholder="请输入入库数量" value="0">
+                <input type="number" name="stock" class="layui-input" lay-verify="required" placeholder="{{ea_trans('please enter',false)}}" value="0">
             </div>
         </div>
 
         <div class="hr-line"></div>
         <div class="layui-form-item text-center">
-            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit>确认</button>
-            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit>{{ea_trans('confirm',false)}}</button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">{{ea_trans('reset',false)}}</button>
         </div>
 
     </form>

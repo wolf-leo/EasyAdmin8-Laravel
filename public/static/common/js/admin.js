@@ -9,7 +9,7 @@
 function getRangeShortcuts() {
     return [
         {
-            text: "今天",
+            text: __('today'),
             value: function () {
                 let value = [];
                 let date1 = new Date();
@@ -23,7 +23,7 @@ function getRangeShortcuts() {
             }()
         },
         {
-            text: "昨天",
+            text: __('yesterday'),
             value: function () {
                 let value = [];
                 let date1 = new Date();
@@ -38,7 +38,7 @@ function getRangeShortcuts() {
             }()
         },
         {
-            text: "前天",
+            text: __('yesterday -1'),
             value: function () {
                 let value = [];
                 let date1 = new Date();
@@ -54,7 +54,7 @@ function getRangeShortcuts() {
             }()
         },
         {
-            text: "7天内",
+            text: __('within 7 days'),
             value: function () {
                 let value = [];
                 let date1 = new Date();
@@ -70,7 +70,7 @@ function getRangeShortcuts() {
             }()
         },
         {
-            text: "这个月",
+            text: __('this month'),
             value: function () {
                 let value = [];
                 let date1 = new Date();
@@ -86,7 +86,7 @@ function getRangeShortcuts() {
             }()
         },
         {
-            text: "上个月",
+            text: __('last month'),
             value: function () {
                 let value = [];
                 let date1 = new Date();
@@ -103,7 +103,7 @@ function getRangeShortcuts() {
             }()
         },
         {
-            text: "今年",
+            text:__('this year'),
             value: function () {
                 let value = [];
                 let date1 = new Date();
@@ -154,4 +154,14 @@ function prettyFormat(str) {
         return ''
     }
     return "<pre>" + result + "</pre>"
+}
+
+/**
+ * @desc    js翻译
+ * @param key
+ * @returns {*}
+ */
+function __(key) {
+    let _jsTrans = window.CONFIG.JS_TRANS
+    return _jsTrans[key] || key
 }

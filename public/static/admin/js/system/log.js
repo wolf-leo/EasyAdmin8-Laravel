@@ -16,7 +16,7 @@ define(["jquery", "easy-admin"], function ($, ea) {
                 lineStyle: 'height: auto;',
                 toolbar: ['refresh', 'export',
                     [{
-                        text: '框架日志',
+                        text: __('Framework log'),
                         url: 'system.log/record',
                         method: 'open',
                         auth: 'record',
@@ -28,36 +28,36 @@ define(["jquery", "easy-admin"], function ($, ea) {
                 ],
                 cols: [[
                     {field: 'id', width: 80, title: 'ID', search: false},
-                    {field: 'month', width: 80, title: '日志月份', hide: true, search: 'time', timeType: 'month', searchValue: util.toDateString(new Date(), 'yyyy-MM')},
+                    {field: 'month', width: 80, title: __('month'), hide: true, search: 'time', timeType: 'month', searchValue: util.toDateString(new Date(), 'yyyy-MM')},
                     {
-                        field: 'admin.username', width: 100, title: '后台用户', search: false, templet: function (res) {
+                        field: 'admin.username', width: 100, title: __('username'), search: false, templet: function (res) {
                             let admin = res.admin
                             return admin ? admin.username : '-'
                         }
                     },
-                    {field: 'method', width: 100, title: '请求方法'},
-                    {field: 'title', width: 180, title: '请求标题'},
-                    {field: 'ip', width: 150, title: 'IP地址'},
-                    {field: 'url', minWidth: 150, title: '路由地址', align: "left"},
+                    {field: 'method', width: 100, title: __('method')},
+                    {field: 'title', width: 180, title: __('title')},
+                    {field: 'ip', width: 150, title: 'ip'},
+                    {field: 'url', minWidth: 150, title: 'url', align: "left"},
                     {
-                        field: 'content', minWidth: 200, title: '请求数据', align: "left", templet: function (res) {
+                        field: 'content', minWidth: 200, title: __('data'), align: "left", templet: function (res) {
                             let html = '<div class="layui-colla-item">' +
-                                '<div class="layui-colla-title">点击预览</div>' +
+                                '<div class="layui-colla-title">' + __('Click to preview') + '</div>' +
                                 '<div class="layui-colla-content">' + prettyFormat(res.content) + '</div>' +
                                 '</div>'
                             return '<div class="layui-collapse" lay-accordion>' + html + '</div>'
                         }
                     },
                     {
-                        field: 'response', minWidth: 200, title: '回调数据', align: "left", templet: function (res) {
+                        field: 'response', minWidth: 200, title: __('response'), align: "left", templet: function (res) {
                             let html = '<div class="layui-colla-item">' +
-                                '<div class="layui-colla-title">点击预览</div>' +
+                                '<div class="layui-colla-title">' + __('Click to preview') + '</div>' +
                                 '<div class="layui-colla-content">' + prettyFormat(res.response) + '</div>' +
                                 '</div>'
                             return '<div class="layui-collapse" lay-accordion>' + html + '</div>'
                         }
                     },
-                    {field: 'create_time', minWidth: 100, title: '创建时间', search: 'range'},
+                    {field: 'create_time', minWidth: 100, title: __('create time'), search: 'range'},
                 ]],
                 done: function () {
                     layui.element.render('collapse')

@@ -430,7 +430,7 @@ define(["jquery"], function ($) {
                     '<ul>\n' + bgColorHtml + '</ul>\n' +
                     '</div>\n' +
                     '<div class="more-menu-list">\n' +
-                    '<a class="more-menu-item" href="https://gitee.com/wolf18/easyAdmin8" target="_blank"><i class="layui-icon layui-icon-tabs" style="font-size: 16px;"></i> 开源地址</a>\n' +
+                    '<a class="more-menu-item" href="https://github.com/EasyAdmin8" target="_blank"><i class="layui-icon layui-icon-tabs" style="font-size: 16px;"></i> GitHub</a>\n' +
                     '</div>' +
                     '</div>';
                 layer.open({

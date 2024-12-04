@@ -12,7 +12,7 @@ use App\Http\Services\annotation\NodeAnnotation;
 use App\Http\Services\annotation\ControllerAnnotation;
 
 /**
- * @ControllerAnnotation(title="系统节点管理")
+ * @ControllerAnnotation(title="System Node Management")
  */
 class NodeController extends AdminController
 {
@@ -23,7 +23,7 @@ class NodeController extends AdminController
     }
 
     /**
-     * @NodeAnnotation(title="列表")
+     * @NodeAnnotation(title="list")
      */
     public function index(): View|JsonResponse
     {
@@ -42,14 +42,14 @@ class NodeController extends AdminController
     }
 
     /**
-     * @NodeAnnotation(title="系统节点更新")
+     * @NodeAnnotation(title="System Node Update")
      */
     public function refreshNode(): JsonResponse
     {
         $force = request()->input('force');
         if (!request()->ajax()) return $this->error();
         $nodeList = (new NodeService())->getNodeList();
-        if (empty($nodeList)) return $this->error('暂无需要更新的系统节点');
+        if (empty($nodeList)) return $this->error(ea_trans('No need to update any content', true, 'common'));
         $model = new SystemNode();
         try {
             if ($force == 1) {
@@ -85,14 +85,14 @@ class NodeController extends AdminController
             }
             $model->addAll($nodeList);
             TriggerService::updateNode();
-        } catch (\Exception $e) {
-            return $this->error('节点更新失败:' . $e->getMessage());
+        }catch (\Exception $e) {
+            return $this->error(ea_trans('operation failed', false) . ':' . $e->getMessage());
         }
-        return $this->success('节点更新成功');
+        return $this->success(ea_trans('operation successful', false));
     }
 
     /**
-     * @NodeAnnotation(title="清除失效节点")
+     * @NodeAnnotation(title="Clear invalid nodes")
      */
     public function clearNode(): JsonResponse
     {
@@ -109,9 +109,9 @@ class NodeController extends AdminController
                 !isset($formatNodeList[$vo['node']]) && $model->where('id', $vo['id'])->delete();
             }
             TriggerService::updateNode();
-        } catch (\Exception $e) {
-            return $this->error('节点更新失败:' . $e->getMessage());
+        }catch (\Exception $e) {
+            return $this->error(ea_trans('operation failed', false) . ':' . $e->getMessage());
         }
-        return $this->success('节点更新成功');
+        return $this->success(ea_trans('operation successful', false));
     }
 }

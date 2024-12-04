@@ -163,18 +163,37 @@ if (!function_exists('updateFields')) {
 
     /**
      * @param string|null $key
+     * @param bool $usePathInfo
+     * @param string $action
+     * @param string $module
      * @param array $replace
      * @param string|null $locale
-     * @return string|null
+     * @return string|array
      */
-    function ea_trans(?string $key, array $replace = [], ?string $locale = null): ?string
+    function ea_trans(?string $key = '', bool $usePathInfo = true, string $action = '', string $module = 'admin', array $replace = [], ?string $locale = null): string|array
     {
-        $_key = !str_starts_with($key, 'messages.') ? 'messages.' . $key : $key;
+        $prefix = $module;
+        if ($usePathInfo) {
+            $parameters = request()->route()->parameters;
+            $secondary  = $parameters['secondary'] ?? '';
+            $controller = $parameters['controller'] ?? 'index';
+            $action     = $action ?: ($parameters['action'] ?? 'index');
+            $prefix     = ($prefix ? $prefix . '.' : '') . ($secondary ? $secondary . '.' : '') . $controller . '.' . $action;
+        }
+        if (empty($key)) {
+            $tran_key = "messages.{$prefix}";
+            $response = __($tran_key);
+            return is_array($response) ? $response : [];
+        }
+        $_key     = ($prefix ? $prefix . '.' : '') . $key;
+        $tran_key = !str_starts_with($key, 'messages.') ? 'messages.' . $_key : $_key;
         try {
-            $translation = __($_key, $replace, $locale);
+            $translation = __($tran_key, $replace, $locale);
+            if ('messages.' . $_key === $translation) $translation = $key;
         }catch (\TypeError $exception) {
             $translation = explode('messages.', $key)[1] ?? '';
         }
-        return $translation ?: $key;
+        $response = $translation ?: $key;
+        return is_string($response) ? $response : $key;
     }
 }

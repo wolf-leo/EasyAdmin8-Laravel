@@ -15,13 +15,13 @@ use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 /**
- * @ControllerAnnotation(title="CURD可视化管理")
+ * @ControllerAnnotation(title="CURD Visual Management")
  */
 class CurdGenerateController extends AdminController
 {
 
     /**
-     * @NodeAnnotation(title="列表")
+     * @NodeAnnotation(title="list")
      */
     public function index(): View
     {
@@ -29,7 +29,7 @@ class CurdGenerateController extends AdminController
     }
 
     /**
-     * @NodeAnnotation(title="列表")
+     * @NodeAnnotation(title="save")
      */
     public function save(): Response|JsonResponse|View
     {
@@ -39,7 +39,7 @@ class CurdGenerateController extends AdminController
             case "search":
                 $tb_prefix = request()->input('tb_prefix', '');
                 $tb_name   = request()->input('tb_name', '');
-                if (empty($tb_name)) return $this->error('参数错误');
+                if (empty($tb_name)) return $this->error(ea_trans('parameter error', false));
                 try {
                     $list = DB::select("show full columns from {$tb_prefix}{$tb_name}");
                     $data = [];
@@ -53,7 +53,7 @@ class CurdGenerateController extends AdminController
                             'desc'  => $value->Comment,
                         ];
                     }
-                    return $this->success('查询成功', compact('data', 'list'));
+                    return $this->success(ea_trans('operation successful', false), compact('data', 'list'));
                 }catch (\PDOException|\Exception $exception) {
                     return $this->error($exception->getMessage());
                 }
@@ -61,7 +61,7 @@ class CurdGenerateController extends AdminController
             case "add":
                 $tb_prefix = request()->input('tb_prefix', '');
                 $tb_name   = request()->input('tb_name', '');
-                if (empty($tb_name)) return $this->error('参数错误');
+                if (empty($tb_name)) return $this->error(ea_trans('parameter error', false));
 
                 $tb_fields = request()->input('tb_fields');
                 $force     = (int)request()->post('force', 0);
@@ -108,7 +108,7 @@ class CurdGenerateController extends AdminController
                     }
                     $build    = $build->render();
                     $fileList = $build->getFileList();
-                    if (empty($fileList)) return $this->error('这里什么都没有');
+                    if (empty($fileList)) return $this->error('empty');
                     $result = $build->create();
                     $_file  = $result[0] ?? '';
                     $link   = '';
@@ -117,7 +117,7 @@ class CurdGenerateController extends AdminController
                         $_fileExp_last = array_slice($_fileExp, -2);
                         $link          = '/' . config('easyadmin.ADMIN', 'admin') . '/' . $_fileExp_last[0] . '.' . Str::snake(explode('Controller.php', end($_fileExp_last))[0] ?? '') . '/index';
                     }
-                    return $this->success('生成成功', compact('result', 'link'));
+                    return $this->success(ea_trans('operation successful', false), compact('result', 'link'));
                 }catch (FileException $exception) {
                     return json(['code' => -1, 'msg' => $exception->getMessage(), '__token__' => csrf_token()]);
                 }
@@ -125,32 +125,32 @@ class CurdGenerateController extends AdminController
             case "delete":
                 $tb_prefix = request()->input('tb_prefix', '');
                 $tb_name   = request()->input('tb_name', '');
-                if (empty($tb_name)) return $this->error('参数错误');
+                if (empty($tb_name)) return $this->error(ea_trans('parameter error', false));
                 try {
                     $build    = (new BuildCurd())->setTablePrefix($tb_prefix)->setTable($tb_name);
                     $build    = $build->render();
                     $fileList = $build->getFileList();
-                    if (empty($fileList)) return $this->error('这里什么都没有');
+                    if (empty($fileList)) return $this->error('empty');
                     $result = $build->delete();
-                    return $this->success('删除自动生成CURD文件成功', compact('result'));
+                    return $this->success(ea_trans('Successfully deleted automatically generated CURD file', true, 'common'), compact('result'));
                 }catch (FileException $exception) {
                     return json(['code' => -1, 'msg' => $exception->getMessage(), '__token__' => csrf_token()]);
                 }
                 break;
             case 'console':
                 $command = request()->input('command', '');
-                if (empty($command)) $this->error('请输入命令');
+                if (empty($command)) $this->error(ea_trans('Please enter the command', true, 'common'));
                 $commandExp = explode(' ', $command);
                 try {
                     $output = Artisan::call('curd', [...$commandExp]);
                 }catch (\Throwable $exception) {
                     return $this->error($exception->getMessage() . $exception->getLine());
                 }
-                if (empty($output)) $this->error('设置错误');
+                if (empty($output)) $this->error(ea_trans('Setting error', true, 'common'));
                 return $this->success();
                 break;
             default:
-                return $this->error('参数错误');
+                return $this->error(ea_trans('parameter error', false));
                 break;
         }
     }

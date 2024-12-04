@@ -77,20 +77,20 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                 ok = ok || function (res) {
                 };
                 no = no || function (res) {
-                    var msg = res.msg == undefined ? '返回数据格式有误' : res.msg;
+                    var msg = res.msg == undefined ? __('data format is incorrect') : res.msg;
                     admin.msg.error(msg);
                     return false;
                 };
                 ex = ex || function (res) {
                 };
                 if (option.url == '') {
-                    admin.msg.error('请求地址不能为空');
+                    admin.msg.error(__('data format is incorrect'));
                     return false;
                 }
                 if (option.prefix == true) {
                     option.url = admin.url(option.url);
                 }
-                var index = admin.msg.loading('加载中');
+                var index = admin.msg.loading(__('loading'));
                 $.ajax({
                     url: option.url,
                     type: type,
@@ -108,7 +108,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                         }
                     },
                     error: function (xhr, textstatus, thrown) {
-                        admin.msg.error('Status:' + xhr.status + '，' + xhr.statusText + '，请稍后再试！', function () {
+                        admin.msg.error(`Status:${xhr.status},${xhr.statusText},${__('try again later')}`, function () {
                             ex(this);
                         });
                         return false;
@@ -173,7 +173,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
             },
             // 对话框
             confirm: function (msg, ok, no) {
-                var index = layer.confirm(msg, {title: '操作确认', btn: ['确认', '取消']}, function () {
+                var index = layer.confirm(msg, {title: __('operate confirm'), btn: [__('confirm'), __('cancel')]}, function () {
                     typeof ok === 'function' && ok.call(this);
                 }, function () {
                     typeof no === 'function' && no.call(this);
@@ -221,7 +221,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                 // 判断是否为移动端
                 if (admin.checkMobile()) {
                     options.defaultToolbar = !options.search ? ['filter'] : ['filter', {
-                        title: '搜索',
+                        title: __('search'),
                         layEvent: 'TABLE_SEARCH',
                         icon: 'layui-icon-search',
                         extend: 'data-table-id="' + options.id + '"'
@@ -285,15 +285,15 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                         toolbarHtml += ' <button class="layui-btn layui-btn-sm layuimini-btn-primary" data-table-refresh="' + tableId + '"><i class="fa fa-refresh"></i> </button>\n';
                     } else if (v === 'add') {
                         if (admin.checkAuth('add', elem)) {
-                            toolbarHtml += '<button class="layui-btn layui-btn-normal layui-btn-sm" data-open="' + init.add_url + '" data-title="添加"><i class="fa fa-plus"></i> 添加</button>\n';
+                            toolbarHtml += `<button class="layui-btn layui-btn-normal layui-btn-sm" data-open="${init.add_url}" data-title="${__('add')}"><i class="fa fa-plus"></i> ${__('add')}</button>` + '\n';
                         }
                     } else if (v === 'delete') {
                         if (admin.checkAuth('delete', elem)) {
-                            toolbarHtml += '<button class="layui-btn layui-btn-sm layui-btn-danger" data-url="' + init.delete_url + '" data-table-delete="' + tableId + '"><i class="fa fa-trash-o"></i> 删除</button>\n';
+                            toolbarHtml += `<button class="layui-btn layui-btn-sm layui-btn-danger" data-url="${init.delete_url}" data-table-delete="${tableId}"><i class="fa fa-trash-o"></i> ${__('delete')}</button>` + '\n';
                         }
                     } else if (v === 'export') {
                         if (admin.checkAuth('export', elem)) {
-                            toolbarHtml += '<button class="layui-btn layui-btn-sm layui-btn-success easyadmin-export-btn" data-url="' + init.export_url + '" data-table-export="' + tableId + '"><i class="fa fa-file-excel-o"></i> 导出</button>\n';
+                            toolbarHtml += `<button class="layui-btn layui-btn-sm layui-btn-success easyadmin-export-btn" data-url="${init.export_url}" data-table-export="${tableId}"><i class="fa fa-file-excel-o"></i> ${__('export')}</button>` + '\n'
                         }
                     } else if (typeof v === "object") {
                         $.each(v, function (ii, vv) {
@@ -325,7 +325,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                     d.title = d.title || d.field || '';
                     d.selectList = d.selectList || {};
                     d.search = admin.parame(d.search, true);
-                    d.searchTip = d.searchTip || '请输入' + d.title || '';
+                    d.searchTip = d.searchTip || __('enter') + d.title || '';
                     d.searchValue = d.searchValue || '';
                     d.searchOp = d.searchOp || '%*%';
                     d.timeType = d.timeType || 'datetime';
@@ -353,7 +353,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                                     '<label class="layui-form-label">' + d.title + '</label>\n' +
                                     '<div class="layui-input-inline">\n' +
                                     '<select class="layui-select" id="c-' + d.fieldAlias + '" name="' + d.fieldAlias + '"  data-search-op="' + d.searchOp + '" >\n' +
-                                    '<option value="">- 全部 -</option> \n' +
+                                    '<option value="">- ' + __('all') + ' -</option> \n' +
                                     selectHtml +
                                     '</select>\n' +
                                     '</div>\n' +
@@ -394,12 +394,12 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                     let searchTableShow = $(elem).attr('searchTableShow') || 'true'
                     let tableSearchClass = searchTableShow === 'false' ? 'table-search-fieldset layui-hide' : 'table-search-fieldset'
                     $(elem).before('<fieldset id="searchFieldset_' + tableId + '" class="' + tableSearchClass + '">\n' +
-                        '<legend>条件搜索</legend>\n' +
+                        '<legend>' + __('conditional search') + '</legend>\n' +
                         '<form class="layui-form layui-form-pane form-search">\n' +
                         formHtml +
                         '<div class="layui-form-item layui-inline" style="margin-left: 115px">\n' +
-                        '<button type="submit" class="layui-btn layui-btn-normal" data-type="tableSearch" data-table="' + tableId + '" lay-submit lay-filter="' + tableId + '_filter"> 搜 索</button>\n' +
-                        '<button type="reset" class="layui-btn layui-btn-primary" data-table-reset="' + tableId + '"> 重 置 </button>\n' +
+                        '<button type="submit" class="layui-btn layui-btn-normal" data-type="tableSearch" data-table="' + tableId + '" lay-submit lay-filter="' + tableId + '_filter"> ' + __('search button') + '</button>\n' +
+                        '<button type="reset" class="layui-btn layui-btn-primary" data-table-reset="' + tableId + '">  ' + __('reset button') + ' </button>\n' +
                         ' </div>' +
                         '</form>' +
                         '</fieldset>');
@@ -607,8 +607,8 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                                     method: 'open',
                                     field: 'id',
                                     icon: '',
-                                    text: '编辑',
-                                    title: '编辑信息',
+                                    text: __('edit'),
+                                    title: __('edit'),
                                     auth: 'edit',
                                     url: option.init.edit_url,
                                     extend: ""
@@ -624,8 +624,8 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                                     method: 'get',
                                     field: 'id',
                                     icon: '',
-                                    text: '删除',
-                                    title: '确定删除？',
+                                    text: __('delete'),
+                                    title: __('delete confirm'),
                                     auth: 'delete',
                                     url: option.init.delete_url,
                                     extend: ""
@@ -641,6 +641,12 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
 
                         $.each(item, function (i, operat) {
                             if (typeof operat !== 'object') return
+
+                            if ('function' === typeof operat.templet) {
+                                html += operat.templet(data);
+                                return true;
+                            }
+
                             operat.class = operat.class || '';
                             operat.icon = operat.icon || '';
                             operat.auth = operat.auth || '';
@@ -718,7 +724,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                 var option = data.LAY_COL || {};
                 option.filter = option.filter || option.field || null;
                 option.checked = option.checked || 1;
-                option.tips = option.tips || '开|关';
+                option.tips = option.tips || __('open | close');
                 try {
                     var value = admin.table.defaultValue(data);
                 } catch (e) {
@@ -1008,7 +1014,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
 
             // 表格修改
             $("body").on("mouseenter", ".table-edit-tips", function () {
-                var openTips = layer.tips('点击行内容可以进行修改', $(this), {tips: [2, '#e74c3c'], time: 4000});
+                var openTips = layer.tips(__('Click on the line content to make modifications'), $(this), {tips: [2, '#e74c3c'], time: 4000});
             });
 
             // 监听弹出层的打开
@@ -1027,7 +1033,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                     var checkStatus = table.checkStatus(tableId),
                         data = checkStatus.data;
                     if (data.length <= 0) {
-                        admin.msg.error('请勾选需要操作的数据');
+                        admin.msg.error(__('please check the data to be operated on'));
                         return false;
                     }
                     var ids = [];
@@ -1165,7 +1171,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                     direct = $(this).attr('data-direct'),
                     field = $(this).attr('data-field') || 'id';
 
-                title = title || '确定进行该操作？';
+                title = title || __('confirm to perform this operation')
 
                 if (direct === 'true') {
                     admin.msg.confirm(title, function () {
@@ -1180,7 +1186,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                     var checkStatus = table.checkStatus(tableId),
                         data = checkStatus.data;
                     if (data.length <= 0) {
-                        admin.msg.error('请勾选需要操作的数据');
+                        admin.msg.error(__('please check the data to be operated on'));
                         return false;
                     }
                     var ids = [];
@@ -1228,7 +1234,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                 })
                 let schPar = 'filter=' + JSON.stringify(formatData.formatFilter) + '&' + 'op=' + JSON.stringify(formatData.formatOp);
                 url = (url.includes('?')) ? url + '&' + schPar : url + '?' + schPar;
-                var index = admin.msg.confirm('根据查询进行导出，确定导出？', function () {
+                var index = admin.msg.confirm(__('are you sure about exporting?'), function () {
                     window.location = admin.url(url);
                     layer.close(index);
                 });
@@ -1243,14 +1249,14 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                 var checkStatus = table.checkStatus(tableId),
                     data = checkStatus.data;
                 if (data.length <= 0) {
-                    admin.msg.error('请勾选需要删除的数据');
+                    admin.msg.error(__('please check the data to be deleted'));
                     return false;
                 }
                 var ids = [];
                 $.each(data, function (i, v) {
                     ids.push(v.id);
                 });
-                admin.msg.confirm('确定删除？', function () {
+                admin.msg.confirm(__('confirm to delete'), function () {
                     admin.request.post({
                         url: url,
                         data: {
@@ -1481,7 +1487,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                         var uploadName = $(this).attr('data-upload-delete'),
                             deleteUrl = $(this).attr('data-upload-url'),
                             sign = $(this).attr('data-upload-sign');
-                        var confirm = admin.msg.confirm('确定删除？', function () {
+                        var confirm = admin.msg.confirm(__('confirm to delete'), function () {
                             var elem = "input[name='" + uploadName + "']";
                             var currentUrl = $(elem).val();
                             var url = '';
@@ -1514,17 +1520,17 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                             checkedKey: 'id',
                             searchType: 'more',
                             searchList: [
-                                {searchKey: 'title', searchPlaceholder: '请输入文件名'},
+                                {searchKey: 'title', searchPlaceholder: __('enter a file name')},
                             ],
                             table: {
                                 url: admin.url('ajax/getUploadFiles'),
                                 cols: [[
                                     {type: selectCheck},
                                     {field: 'id', title: 'ID'},
-                                    {field: 'url', minWidth: 80, search: false, title: '图片信息', imageHeight: 40, align: "center", templet: admin.table.image},
-                                    {field: 'original_name', width: 150, title: '文件原名', align: "center"},
-                                    {field: 'mime_type', width: 120, title: 'mime类型', align: "center"},
-                                    {field: 'create_time', width: 200, title: '创建时间', align: "center", search: 'range'},
+                                    {field: 'url', minWidth: 80, search: false, title: __('picture information'), imageHeight: 40, align: "center", templet: admin.table.image},
+                                    {field: 'original_name', width: 150, title: __('original file name'), align: "center"},
+                                    {field: 'mime_type', width: 120, title: __('mime type'), align: "center"},
+                                    {field: 'create_time', width: 200, title: __('create time'), align: "center", search: 'range'},
                                 ]]
                             },
                             done: function (e, data) {
@@ -1533,7 +1539,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                                     urlArray.push(val.url)
                                 });
                                 var url = urlArray.join(uploadSign);
-                                admin.msg.success('选择成功', function () {
+                                admin.msg.success(__('selected successfully'), function () {
                                     $(elem).val(url);
                                     $(elem).trigger("input");
                                 });
@@ -1577,7 +1583,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                                                 async customInsert(res, insertFn) {
                                                     let code = res.code || 0
                                                     if (code != '1') {
-                                                        layer.msg(res.msg || '上传失败', {icon: 2});
+                                                        layer.msg(res.msg || __('upload failed'), {icon: 2});
                                                         return
                                                     }
                                                     let url = res.data?.url || ''
@@ -1642,7 +1648,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                         html = '<option value=""></option>';
                     var fields = selectFields.replace(/\s/g, "").split(',');
                     if (fields.length !== 2) {
-                        return admin.msg.error('下拉选择字段有误');
+                        return admin.msg.error(__('the dropdown selection field is incorrect'));
                     }
                     admin.request.get(
                         {
