@@ -54,6 +54,15 @@
         </div>
     </div>
     <div class="layui-form-item">
+        <label class="layui-form-label">新标签页窗口</label>
+        <div class="layui-input-block">
+            <input type="radio" name="iframe_open_top" value="0" title="不允许" @if(1!=sysconfig('site','iframe_open_top')) checked @endif>
+            <input type="radio" name="iframe_open_top" value="1" title="允许" @if(1==sysconfig('site','iframe_open_top')) checked @endif>
+            <br>
+            <tip>是否允许弹框在新标签页打开。</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
         <label class="layui-form-label">默认编辑器</label>
         <div class="layui-input-block">
             @foreach($editor_types as $key=>$val)

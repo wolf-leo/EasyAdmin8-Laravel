@@ -23,7 +23,8 @@
             VERSION: "{{$version}}",
             CSRF_TOKEN: '{{ csrf_token() }}',
             ADMIN_UPLOAD_URL: "{{$adminUploadUrl}}",
-            EDITOR_TYPE: "{{sysconfig('site','editor_type')?:'ueditor'}}",
+            IFRAME_OPEN_TOP: "{{$iframeOpenTop??0}}",
+            EDITOR_TYPE: "{{sysconfig('site','editor_type')?:'wangEditor'}}",
         };
     </script>
     <script src="/static/plugs/xmSelect/xm-select.js" charset="utf-8"></script>
