@@ -90,7 +90,6 @@ class AdminController extends Controller
             'version'              => config('app.debug') ? time() : $version,
             'adminUploadUrl'       => __url('ajax/upload', [], false),
             'adminEditor'          => sysconfig('site', 'editor_type') ?: 'wangEditor',
-            'jsTrans'              => __("messages.{$adminConfig['admin_alias_name']}.js") + ea_trans('', true, 'common'),
         ];
         $this->assign($data);
     }
@@ -105,6 +104,9 @@ class AdminController extends Controller
 
     public function fetch(string $template = '', array $args = []): View
     {
+        $adminConfig     = config('admin');
+        $jsTrans         = __("messages.{$adminConfig['admin_alias_name']}.js") + ea_trans('', true, 'common');
+        $args['jsTrans'] = $jsTrans;
         if (empty($template)) {
             $basePath = ".{$this->controller}.{$this->action}";
             if ($this->secondary) {

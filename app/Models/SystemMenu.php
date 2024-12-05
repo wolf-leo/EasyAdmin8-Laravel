@@ -14,7 +14,7 @@ class SystemMenu extends BaseModel
                         ['status', '=', 1],
                     ])->get()->toArray();
         $pidMenuList = $this->buildPidMenu(0, $list);
-        return array_merge([['id' => 0, 'pid' => 0, 'title' => '顶级菜单']], $pidMenuList);
+        return array_merge([['id' => 0, 'pid' => 0, 'title' => ea_trans('Menu Top',false)]], $pidMenuList);
     }
 
     protected function buildPidMenu($pid, $list, $level = 0): array

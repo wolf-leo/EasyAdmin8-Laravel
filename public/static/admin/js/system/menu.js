@@ -37,7 +37,11 @@ define(["jquery", "easy-admin", "treetable", "iconPickerFa", "autocomplete"], fu
                     // @todo 不直接使用ea.table.render(); 进行表格初始化, 需要使用 ea.table.formatCols(); 方法格式化`cols`列数据
                     cols: ea.table.formatCols([[
                         {type: 'checkbox'},
-                        {field: 'title', width: 250, title: __('menu name'), align: 'left'},
+                        {
+                            field: 'title', width: 250, title: __('menu name'), align: 'left', templet: function (d) {
+                                return __(d.title)
+                            }
+                        },
                         {field: 'icon', width: 100, title: __('menu icon'), templet: ea.table.icon},
                         {field: 'href', minWidth: 120, title: __('menu url')},
                         {

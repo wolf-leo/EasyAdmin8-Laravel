@@ -300,33 +300,33 @@ CREATE TABLE `ea_system_menu`
 -- Records of ea_system_menu
 -- ----------------------------
 INSERT INTO `ea_system_menu`
-VALUES ('227', '99999999', '后台首页', 'fa fa-home', 'index/welcome', '', '_self', '0', '1', null, null, '1573120497', null);
+VALUES ('227', '99999999', 'Home Page', 'fa fa-home', 'index/welcome', '', '_self', '0', '1', null, null, '1573120497', null);
 INSERT INTO `ea_system_menu`
-VALUES ('228', '0', '系统管理', 'fa fa-cog', '', '', '_self', '0', '1', '', null, '1588999529', null);
+VALUES ('228', '0', 'System Management', 'fa fa-cog', '', '', '_self', '0', '1', '', null, '1588999529', null);
 INSERT INTO `ea_system_menu`
-VALUES ('234', '228', '菜单管理', 'fa fa-tree', 'system.menu/index', '', '_self', '10', '1', '', null, '1588228555', null);
+VALUES ('234', '228', 'Menu Management', 'fa fa-tree', 'system.menu/index', '', '_self', '10', '1', '', null, '1588228555', null);
 INSERT INTO `ea_system_menu`
-VALUES ('244', '228', '管理员管理', 'fa fa-user', 'system.admin/index', '', '_self', '12', '1', '', '1573185011', '1588228573', null);
+VALUES ('244', '228', 'Administrator Management', 'fa fa-user', 'system.admin/index', '', '_self', '12', '1', '', '1573185011', '1588228573', null);
 INSERT INTO `ea_system_menu`
-VALUES ('245', '228', '角色管理', 'fa fa-bitbucket-square', 'system.auth/index', '', '_self', '11', '1', '', '1573435877', '1588228634', null);
+VALUES ('245', '228', 'Roles Management', 'fa fa-bitbucket-square', 'system.auth/index', '', '_self', '11', '1', '', '1573435877', '1588228634', null);
 INSERT INTO `ea_system_menu`
-VALUES ('246', '228', '节点管理', 'fa fa-list', 'system.node/index', '', '_self', '9', '1', '', '1573435919', '1588228648', null);
+VALUES ('246', '228', 'Nodes Management', 'fa fa-list', 'system.node/index', '', '_self', '9', '1', '', '1573435919', '1588228648', null);
 INSERT INTO `ea_system_menu`
-VALUES ('247', '228', '配置管理', 'fa fa-asterisk', 'system.config/index', '', '_self', '8', '1', '', '1573457448', '1588228566', null);
+VALUES ('247', '228', 'Configuration Management', 'fa fa-asterisk', 'system.config/index', '', '_self', '8', '1', '', '1573457448', '1588228566', null);
 INSERT INTO `ea_system_menu`
-VALUES ('248', '228', '上传管理', 'fa fa-arrow-up', 'system.uploadfile/index', '', '_self', '0', '1', '', '1573542953', '1588228043', null);
+VALUES ('248', '228', 'Upload Management', 'fa fa-arrow-up', 'system.uploadfile/index', '', '_self', '0', '1', '', '1573542953', '1588228043', null);
 INSERT INTO `ea_system_menu`
-VALUES ('249', '0', '商城管理', 'fa fa-list', '', '', '_self', '0', '1', '', '1589439884', '1589439884', null);
+VALUES ('249', '0', 'Mall Management', 'fa fa-list', '', '', '_self', '0', '1', '', '1589439884', '1589439884', null);
 INSERT INTO `ea_system_menu`
-VALUES ('250', '249', '商品分类', 'fa fa-calendar-check-o', 'mall.cate/index', '', '_self', '0', '1', '', '1589439910', '1589439966', null);
+VALUES ('250', '249', 'Commodity Classification', 'fa fa-calendar-check-o', 'mall.cate/index', '', '_self', '0', '1', '', '1589439910', '1589439966', null);
 INSERT INTO `ea_system_menu`
-VALUES ('251', '249', '商品管理', 'fa fa-list', 'mall.goods/index', '', '_self', '0', '1', '', '1589439931', '1589439942', null);
+VALUES ('251', '249', 'Commodity Management', 'fa fa-list', 'mall.goods/index', '', '_self', '0', '1', '', '1589439931', '1589439942', null);
 INSERT INTO `ea_system_menu`
-VALUES ('252', '228', '快捷入口', 'fa fa-list', 'system.quick/index', '', '_self', '0', '1', '', '1589623683', '1589623683', null);
+VALUES ('252', '228', 'Quick Entrance', 'fa fa-list', 'system.quick/index', '', '_self', '0', '1', '', '1589623683', '1589623683', null);
 INSERT INTO `ea_system_menu`
-VALUES ('253', '228', '日志管理', 'fa fa-connectdevelop', 'system.log/index', '', '_self', '0', '1', '', '1589623684', '1589623684', null);
+VALUES ('253', '228', 'Log Management', 'fa fa-connectdevelop', 'system.log/index', '', '_self', '0', '1', '', '1589623684', '1589623684', null);
 INSERT INTO `ea_system_menu`
-VALUES ('254', '228', 'CURD可视化', 'fa fa fa-shower', 'system.curdGenerate/index', '', '_self', '0', '1', '', '1589623684', '1589623684', null);
+VALUES ('254', '228', 'CURD Visualization', 'fa fa fa-shower', 'system.curdGenerate/index', '', '_self', '0', '1', '', '1589623684', '1589623684', null);
 
 -- ----------------------------
 -- Table structure for ea_system_node

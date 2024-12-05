@@ -13,15 +13,6 @@ class InstallController extends Controller
 {
     use JumpTrait;
 
-    protected array $trans = [];
-
-    public function initialize()
-    {
-        $this->middleware(function ($request, $next) {
-            $this->trans = __('messages.install');
-            return $next($request);
-        });
-    }
 
     public function index(Request $request): View|JsonResponse
     {
@@ -30,11 +21,11 @@ class InstallController extends Controller
         $errorInfo   = null;
         if (is_file($installPath . DIRECTORY_SEPARATOR . 'lock' . DIRECTORY_SEPARATOR . 'install.lock')) {
             $isInstall = true;
-            $errorInfo = $this->trans['information 3'];
+            $errorInfo = $this->transMsg('information 3');
         }elseif (version_compare(phpversion(), '8.1.0', '<')) {
-            $errorInfo = $this->trans['PHP Tips'];
+            $errorInfo = $this->transMsg('PHP Tips');
         }elseif (!extension_loaded("PDO")) {
-            $errorInfo = $this->trans['PDO Tips'];
+            $errorInfo = $this->transMsg('PDO Tips');
         }
         if (!$request->ajax()) {
             $currentHost = ($_SERVER['SERVER_PORT'] == 443 ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . '/';
@@ -43,7 +34,7 @@ class InstallController extends Controller
         }
         if ($errorInfo) return $this->error($errorInfo);
         $envFile = base_path() . DIRECTORY_SEPARATOR . '.env';
-        if (!is_file($envFile)) return $this->error($this->trans['ENV Tips']);
+        if (!is_file($envFile)) return $this->error($this->transMsg('ENV Tips'));
         $charset = 'utf8mb4';
 
         $post       = $request->post();
@@ -62,16 +53,16 @@ class InstallController extends Controller
         // 判断是否有特殊字符
         $check = preg_match('/[0-9a-zA-Z]+$/', $adminUrl, $matches);
         if (!$check) {
-            $validateError = $this->trans['validateError 1'];
+            $validateError = $this->transMsg('validateError 1');
             return $this->error($validateError);
         }
 
         if (strlen($adminUrl) < 2) {
-            $validateError = $this->trans['validateError 2'];
+            $validateError = $this->transMsg('validateError 2');
         }elseif (strlen($password) < 5) {
-            $validateError = $this->trans['validateError 3'];
+            $validateError = $this->transMsg('validateError 3');
         }elseif (strlen($username) < 4) {
-            $validateError = $this->trans['validateError 4'];
+            $validateError = $this->transMsg('validateError 4');
         }
         if (!empty($validateError)) return $this->error($validateError);
         $config = [
@@ -92,13 +83,13 @@ class InstallController extends Controller
         // 检测数据库连接
         $this->checkConnect($config);
         // 检测数据库是否存在
-        if (!$cover && $this->checkDatabase($database)) return $this->error($this->trans['databaseError 1']);
+        if (!$cover && $this->checkDatabase($database)) return $this->error($this->transMsg('databaseError 1'));
         // 创建数据库
         $this->createDatabase($database, $config);
 
         // 导入sql语句等等
         $this->install($username, $password, array_merge($config, ['database' => $database]), $adminUrl);
-        return $this->success($this->trans['System installation successful']);
+        return $this->success($this->transMsg('System installation successful'));
     }
 
     protected function install($username, $password, $config): bool|string
@@ -204,7 +195,7 @@ class InstallController extends Controller
             if (version_compare($_version, '5.7.0', '<')) {
                 $data = [
                     'code' => 0,
-                    'msg'  => $this->trans['databaseError 2']
+                    'msg'  => $this->transMsg('databaseError 2'),
                 ];
                 die(json_encode($data));
             }
@@ -231,5 +222,12 @@ class InstallController extends Controller
         $charset  = $config['charset'] ?? 'utf8mb4';
         if ($needDatabase) return "mysql:host=$host;port=$port;dbname=$database;charset=$charset";
         return "mysql:host=$host;port=$port;charset=$charset";
+    }
+
+    protected function transMsg(string $key): array|string
+    {
+        $_key = "install.$key";
+        $msg  = ea_trans("install.$key", false, '', '');
+        return $_key == $msg ? $key : $msg;
     }
 }

@@ -540,7 +540,6 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                     var col = cols[i];
                     for (index in col) {
                         var val = col[index];
-
                         // 判断是否包含初始化数据
                         if (val.init === undefined) {
                             cols[i][index]['init'] = init;
@@ -588,9 +587,12 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                         if (val.selectList !== undefined && val.templet === undefined) {
                             cols[i][index]['templet'] = admin.table.list;
                         }
-
+                        if(typeof val.templet ==='function'){
+                            console.log( val.templet)
+                        }
                     }
                 }
+                console.log(cols)
                 return cols;
             },
             tool: function (data, option) {

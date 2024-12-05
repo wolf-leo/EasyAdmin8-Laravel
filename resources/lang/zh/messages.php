@@ -82,7 +82,9 @@ return [
         'Cannot be empty or formatted incorrectly'                     => '不能为空或格式错误',
         'please enter'                                                 => '请输入',
         'Modification is not allowed in the demonstration environment' => '演示环境下不允许修改',
-        'ajax'                                                         => [
+        'Menu Top'                                                     => '顶级菜单',
+
+        'ajax' => [
             'common' => [
                 'Successfully cleared cache'             => '清理缓存成功',
                 'placeholder'                            => '占位',
@@ -93,7 +95,8 @@ return [
                 'The specified upload type is incorrect' => '指定上传类型有误',
             ],
         ],
-        'index'                                                        => [
+
+        'index' => [
             'index'        => [
                 'logout'                                                  => '退出登录',
                 'color scheme'                                            => '配色方案',
@@ -169,7 +172,8 @@ return [
                 'reminder information2'   => 'APP 扫描二维码 后 输入验证码 进行绑定',
             ],
         ],
-        'login'                                                        => [
+
+        'login' => [
             'index' => [
                 'username placeholder'                      => '请输入登录账号',
                 'password placeholder'                      => '请输入密码',
@@ -186,7 +190,8 @@ return [
                 'Google captcha error'                      => '谷歌验证码错误',
             ]
         ],
-        'mall'                                                         => [
+
+        'mall' => [
             'cate'  => [
                 'common' => [
                     'cate name'           => '分类名称',
@@ -221,7 +226,8 @@ return [
                 ],
             ],
         ],
-        'system'                                                       => [
+
+        'system' => [
             'config'       => [
                 'common' => [
                     'System Configuration Management' => '系统配置管理',
@@ -296,7 +302,6 @@ return [
             ],
             'menu'         => [
                 'common' => [
-                    'menu management' => '菜单管理',
                     'Add menu prompt' => '添加菜单提示',
                     'menu name'       => '菜单名称',
                     'menu icon'       => '菜单图标',
@@ -307,7 +312,8 @@ return [
                     'add subordinate' => '添加下级',
                     'home'            => '首页',
                     'module'          => '模块',
-                    'menu'            => '菜单',
+                    'Previous menu'   => '上级菜单',
+
                 ],
                 'add'    => [
                     'Homepage cannot add submenus' => '首页不能添加子菜单',
@@ -335,7 +341,8 @@ return [
                 ],
             ],
         ],
-        'js'                                                           => [
+
+        'js' => [
             'operate'                                         => '操作',
             'title'                                           => '标题',
             'icon'                                            => '图标',
@@ -391,6 +398,20 @@ return [
             'please check the data to be operated on'         => '请勾选需要操作的数据',
             'please check the data to be deleted'             => '请勾选需要删除的数据',
             'are you sure about exporting?'                   => '根据查询进行导出，确定导出？',
+            'Menu Management'                                 => '菜单管理',
+            'Home Page'                                       => '后台首页',
+            'System Management'                               => '系统管理',
+            'Administrator Management'                        => '管理员管理',
+            'Roles Management'                                => '角色管理',
+            'Nodes Management'                                => '节点管理',
+            'Configuration Management'                        => '配置管理',
+            'Upload Management'                               => '上传管理',
+            'Mall Management'                                 => '商城管理',
+            'Commodity Classification'                        => '商品分类',
+            'Commodity Management'                            => '商品管理',
+            'Quick Entrance'                                  => '快捷入口',
+            'Log Management'                                  => '日志管理',
+            'CURD Visualization'                              => 'CURD可视化',
         ],
     ],
     'test'  => [
