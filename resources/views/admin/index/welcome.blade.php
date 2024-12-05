@@ -75,18 +75,18 @@
                                             <div class="swiper-wrapper">
                                                 @foreach($quicks as $value)
 
-                                                <div class="swiper-slide">
-                                                    @foreach($value as $vo)
+                                                    <div class="swiper-slide">
+                                                        @foreach($value as $vo)
 
-                                                    <div class="layui-col-xs3 layuimini-qiuck-module">
-                                                        <a layuimini-content-href="{{__url($vo['href'])}}" data-title="{{$vo['title']}}">
-                                                            <i class="{{$vo['icon']}}"></i>
-                                                            <cite>{{$vo['title']}}</cite>
-                                                        </a>
+                                                            <div class="layui-col-xs3 layuimini-qiuck-module">
+                                                                <a layuimini-content-href="{{__url($vo['href'])}}" data-title="{{$vo['title']}}">
+                                                                    <i class="{{$vo['icon']}}"></i>
+                                                                    <cite>{{$vo['title']}}</cite>
+                                                                </a>
+                                                            </div>
+                                                        @endforeach
+
                                                     </div>
-                                                    @endforeach
-
-                                                </div>
                                                 @endforeach
 
                                             </div>
@@ -186,6 +186,21 @@
                                 <td>
                                     <a href="https://github.com/wolf-leo/EasyAdmin8-Laravel" target="_blank" style="text-decoration: none;">
                                         <i class="layui-icon layui-icon-github" style="font-size: 25px; color: #333333;"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>其他版本</td>
+                                <td>
+                                    <a href="http://laravel-i18n.easyadmin8.top/" target="_blank" class="layui-text-em">
+                                        <button type="button" class="layui-btn layui-bg-blue layui-btn-xs layui-btn-radius">
+                                            <i class="layui-icon layui-icon-website" style="font-size: 15px;"></i>多语言版
+                                        </button>
+                                    </a>
+                                    <a href="http://laravel-10.easyadmin8.top/" target="_blank" class="layui-text-em">
+                                        <button type="button" class="layui-btn layui-bg-blue layui-btn-xs layui-btn-radius">
+                                            <i class="layui-icon layui-icon-website" style="font-size: 15px;"></i>10.x版
+                                        </button>
                                     </a>
                                 </td>
                             </tr>
