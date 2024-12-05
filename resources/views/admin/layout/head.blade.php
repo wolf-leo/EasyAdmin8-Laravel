@@ -23,6 +23,7 @@
             VERSION: "{{$version}}",
             CSRF_TOKEN: '{{ csrf_token() }}',
             ADMIN_UPLOAD_URL: "{{$adminUploadUrl}}",
+            IFRAME_OPEN_TOP: "{{$iframeOpenTop??0}}",
             EDITOR_TYPE: "{{sysconfig('site','editor_type')?:'wangEditor'}}",
         };
     </script>
