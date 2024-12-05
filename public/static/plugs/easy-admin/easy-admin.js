@@ -587,12 +587,8 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                         if (val.selectList !== undefined && val.templet === undefined) {
                             cols[i][index]['templet'] = admin.table.list;
                         }
-                        if(typeof val.templet ==='function'){
-                            console.log( val.templet)
-                        }
                     }
                 }
-                console.log(cols)
                 return cols;
             },
             tool: function (data, option) {

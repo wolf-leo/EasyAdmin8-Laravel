@@ -182,8 +182,15 @@ if (!function_exists('updateFields')) {
         }
         if (empty($key)) {
             $tran_key = "messages.{$prefix}";
-            $response = __($tran_key);
-            return is_array($response) ? $response : [];
+            $cacheKey = 'lang:' . app()->getLocale() . ':' . $tran_key;
+            if (Cache::has($cacheKey)) {
+                $translation = Cache::get($cacheKey);
+            }else {
+                $response    = __($tran_key);
+                $translation = is_array($response) ? $response : [];
+                Cache::put($cacheKey, $translation, 3600);
+            }
+            return $translation;
         }
         $_key     = ($prefix ? $prefix . '.' : '') . $key;
         $tran_key = !str_starts_with($key, 'messages.') ? 'messages.' . $_key : $_key;
