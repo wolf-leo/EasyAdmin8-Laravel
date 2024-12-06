@@ -51,7 +51,7 @@ define(["jquery"], function ($) {
             var ele = element;
             if (options.isIframe) ele = parent.layui.element;
             ele.tabAdd('layuiminiTab', {
-                title: '<span class="layuimini-tab-active"></span><span>' + options.title + '</span><i class="layui-icon layui-unselect layui-tab-close">ဆ</i>' //用于演示
+                title: '<span class="layuimini-tab-active"></span><span>' + __(options.title) + '</span><i class="layui-icon layui-unselect layui-tab-close">ဆ</i>' //用于演示
                 , content: '<iframe width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0"   src="' + options.href + '"></iframe>'
                 , id: options.tabId
             });

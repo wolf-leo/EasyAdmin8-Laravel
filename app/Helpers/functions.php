@@ -172,7 +172,8 @@ if (!function_exists('updateFields')) {
      */
     function ea_trans(?string $key = '', bool $usePathInfo = true, string $action = '', string $module = 'admin', array $replace = [], ?string $locale = null): string|array
     {
-        $prefix = $module;
+        $cacheExpireTime = 7200;
+        $prefix          = $module;
         if ($usePathInfo) {
             $parameters = request()->route()->parameters;
             $secondary  = $parameters['secondary'] ?? '';
@@ -188,7 +189,7 @@ if (!function_exists('updateFields')) {
             }else {
                 $response    = __($tran_key);
                 $translation = is_array($response) ? $response : [];
-                Cache::put($cacheKey, $translation, 3600);
+                Cache::put($cacheKey, $translation, $cacheExpireTime);
             }
             return $translation;
         }
@@ -200,7 +201,13 @@ if (!function_exists('updateFields')) {
         }catch (\TypeError $exception) {
             $translation = explode('messages.', $key)[1] ?? '';
         }
-        $response = $translation ?: $key;
+        $cacheKey = 'lang:' . app()->getLocale() . ':' . $tran_key;
+        if (Cache::has($cacheKey)) {
+            $response = Cache::get($cacheKey);
+        }else {
+            $response = $translation ?: $key;
+            Cache::put($cacheKey, $response, $cacheExpireTime);
+        }
         return is_string($response) ? $response : $key;
     }
 }

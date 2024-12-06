@@ -498,7 +498,7 @@ DROP TABLE IF EXISTS `ea_system_quick`;
 CREATE TABLE `ea_system_quick`
 (
     `id`          bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-    `title`       varchar(20) NOT NULL COMMENT '快捷入口名称',
+    `title`       varchar(60) NOT NULL COMMENT '快捷入口名称',
     `icon`        varchar(100) DEFAULT NULL COMMENT '图标',
     `href`        varchar(255) DEFAULT NULL COMMENT '快捷链接',
     `sort`        int(11) DEFAULT '0' COMMENT '排序',
@@ -514,21 +514,21 @@ CREATE TABLE `ea_system_quick`
 -- Records of ea_system_quick
 -- ----------------------------
 INSERT INTO `ea_system_quick`
-VALUES ('1', '管理员管理', 'fa fa-user', 'system.admin/index', '0', '1', '', '1589624097', '1589624792', null);
+VALUES ('1', 'Administrator Management', 'fa fa-user', 'system.admin/index', '0', '1', '', '1589624097', '1589624792', null);
 INSERT INTO `ea_system_quick`
-VALUES ('2', '角色管理', 'fa fa-bitbucket-square', 'system.auth/index', '0', '1', '', '1589624772', '1589624781', null);
+VALUES ('2', 'Roles Management', 'fa fa-bitbucket-square', 'system.auth/index', '0', '1', '', '1589624772', '1589624781', null);
 INSERT INTO `ea_system_quick`
-VALUES ('3', '菜单管理', 'fa fa-tree', 'system.menu/index', '0', '1', null, '1589624097', '1589624792', null);
+VALUES ('3', 'Menu Management', 'fa fa-tree', 'system.menu/index', '0', '1', null, '1589624097', '1589624792', null);
 INSERT INTO `ea_system_quick`
-VALUES ('6', '节点管理', 'fa fa-list', 'system.node/index', '0', '1', null, '1589624772', '1589624781', null);
+VALUES ('6', 'Nodes Management', 'fa fa-list', 'system.node/index', '0', '1', null, '1589624772', '1589624781', null);
 INSERT INTO `ea_system_quick`
-VALUES ('7', '配置管理', 'fa fa-asterisk', 'system.config/index', '0', '1', null, '1589624097', '1589624792', null);
+VALUES ('7', 'Configuration Management', 'fa fa-asterisk', 'system.config/index', '0', '1', null, '1589624097', '1589624792', null);
 INSERT INTO `ea_system_quick`
-VALUES ('8', '上传管理', 'fa fa-arrow-up', 'system.uploadfile/index', '0', '1', null, '1589624772', '1589624781', null);
+VALUES ('8', 'Upload Management', 'fa fa-arrow-up', 'system.uploadfile/index', '0', '1', null, '1589624772', '1589624781', null);
 INSERT INTO `ea_system_quick`
-VALUES ('10', '商品分类', 'fa fa-calendar-check-o', 'mall.cate/index', '0', '1', null, '1589624097', '1589624792', null);
+VALUES ('10', 'Commodity Classification', 'fa fa-calendar-check-o', 'mall.cate/index', '0', '1', null, '1589624097', '1589624792', null);
 INSERT INTO `ea_system_quick`
-VALUES ('11', '商品管理', 'fa fa-list', 'mall.goods/index', '0', '1', null, '1589624772', '1589624781', null);
+VALUES ('11', 'Commodity Management', 'fa fa-list', 'mall.goods/index', '0', '1', null, '1589624772', '1589624781', null);
 
 -- ----------------------------
 -- Table structure for ea_system_uploadfile

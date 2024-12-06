@@ -81,7 +81,7 @@
                                                             <div class="layui-col-xs3 layuimini-qiuck-module">
                                                                 <a layuimini-content-href="{{__url($vo['href'])}}" data-title="{{$vo['title']}}">
                                                                     <i class="{{$vo['icon']}}"></i>
-                                                                    <cite>{{$vo['title']}}</cite>
+                                                                    <cite>{{ea_trans($vo['title'],false,'','admin.js')}}</cite>
                                                                 </a>
                                                             </div>
                                                         @endforeach
