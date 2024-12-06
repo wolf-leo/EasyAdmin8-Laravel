@@ -27,7 +27,7 @@ define(["jquery", "easy-admin", "iconPickerFa", "autocomplete"], function ($, ea
                     {field: 'icon', width: 80, title: __('icon'), templet: ea.table.icon},
                     {field: 'href', minWidth: 120, title: 'href'},
                     {field: 'remark', minWidth: 80, title: __('remark')},
-                    {field: 'status', title: __('status'), width: 85, search: 'select', selectList: {0: __('disable'), 1: __('enable')}, templet: ea.table.switch},
+                    {field: 'status', title: __('status'), width: 120, search: 'select', selectList: {0: __('disable'), 1: __('enable')}, templet: ea.table.switch},
                     {field: 'create_time', minWidth: 80, title: __('create time'), search: 'range'},
                     {width: 250, title: __('operate'), templet: ea.table.tool, operat: ['edit', 'delete']}
                 ]],
