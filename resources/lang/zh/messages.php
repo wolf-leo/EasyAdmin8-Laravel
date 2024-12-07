@@ -367,6 +367,7 @@ return [
             'enable'                                          => '启用',
             'all'                                             => '全部',
             'enter'                                           => '请输入',
+            'language'                                        => 'zh',
             'today'                                           => '今天',
             'yesterday'                                       => '昨天',
             'yesterday -1'                                    => '前天',

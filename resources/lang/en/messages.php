@@ -25,6 +25,8 @@ return [
         // You can define the multilingual configuration required in the JS file here
         'js'    => [
             'hello world' => 'Hello World',
+            'enter'       => 'please enter ',
+            'language'    => 'en',
         ],
     ],
 ];

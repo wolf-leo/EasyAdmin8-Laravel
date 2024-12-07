@@ -822,7 +822,7 @@ define(["jquery", "tableSelect"], function ($, tableSelect) {
                             return {name: value[key], value: key}
                         })
                         init.xmSelectModel[index] = xmSelect.render({
-                            el: '.xmSelect-' + index, language: 'zn', data: keysArray, name: index,
+                            el: '.xmSelect-' + index, language: __('language') === 'zh' ? 'zn' : __('language'), data: keysArray, name: index,
                             filterable: true, paging: true, pageSize: 10, theme: {color: '#16b777'}, toolbar: {show: true},
                         })
                     })
