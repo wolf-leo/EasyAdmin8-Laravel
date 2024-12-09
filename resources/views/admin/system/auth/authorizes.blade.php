@@ -10,14 +10,14 @@
     <form id="app-form" class="layui-form layuimini-form">
 
         <div class="layui-form-item">
-            <label class="layui-form-label required">权限名称</label>
+            <label class="layui-form-label required">{{ea_trans('Permission Name',true,'common')}}</label>
             <div class="layui-input-block">
                 <input type="text" name="title" readonly class="layui-input" value="{{$row['title']}}">
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label required">分配节点</label>
+            <label class="layui-form-label required">{{ea_trans('Assign Node',true,'common')}}</label>
             <div class="layui-input-block">
                 <ul id="tree" class="ztree"></ul>
             </div>
@@ -27,8 +27,8 @@
 
         <div class="hr-line"></div>
         <div class="layui-form-item text-center">
-            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="system.auth/saveAuthorize">确认</button>
-            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置</button>
+            <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="system.auth/saveAuthorize">{{ea_trans('confirm',false)}}</button>
+            <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">{{ea_trans('reset',false)}}</button>
         </div>
 
     </form>

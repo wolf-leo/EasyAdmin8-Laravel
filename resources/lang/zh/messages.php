@@ -81,8 +81,10 @@ return [
         'Cannot be empty'                                              => '不能为空',
         'Cannot be empty or formatted incorrectly'                     => '不能为空或格式错误',
         'please enter'                                                 => '请输入',
+        'Please Enter'                                                 => '请输入',
         'Modification is not allowed in the demonstration environment' => '演示环境下不允许修改',
         'Menu Top'                                                     => '顶级菜单',
+        'remark'                                                       => '备注',
 
         'ajax' => [
             'common' => [
@@ -251,6 +253,7 @@ return [
                     'Authorization Save'         => '授权保存',
                     'Role permission management' => '角色权限管理',
                     'Permission Name'            => '权限名称',
+                    'Assign Node'                => '分配节点',
                 ],
             ],
             'quick'        => [
@@ -277,6 +280,13 @@ return [
                     'account'                  => '登录账户',
                     'times'                    => '登录次数',
                     'Set password'             => '设置密码',
+                    'user profile picture'     => '用户头像',
+                    'login account'            => '登录账户',
+                    'login password'           => '登录密码',
+                    'confirm password'         => '确认密码',
+                    'user mobile phone'        => '用户手机',
+                    'role permission'          => '角色权限',
+                    'default for empty'        => '为空默认',
                 ],
                 'index'  => [
                     'passwords do not match' => '两次输入的密码输入不一致',
