@@ -115,49 +115,56 @@ if (!function_exists('insertFields')) {
 
     function insertFields($model, array $params = [])
     {
-        $post   = request()->post();
+        $post = request()->post();
+        if (!empty($params)) $post += $params;
         $fields = Schema::getColumnListing($model->getTable());
         if (in_array('create_time', $fields)) $post['create_time'] = time();
         $tableColumn = array_keys($post);
         $fields      = array_intersect($tableColumn, $fields);
         foreach ($fields as $value) {
             if (isset($params[$value])) $post[$value] = $params[$value];
-            $model->$value = $post[$value] ?? '';
+            $model->$value = $post[$value];
         }
         return $model->save();
     }
 
 }
+
 if (!function_exists('updateFields')) {
 
     function updateFields($model, $row, array $params = [])
     {
-        $post   = request()->post();
+        $post = request()->post();
+        if (!empty($params)) $post += $params;
         $fields = Schema::getColumnListing($model->getTable());
         if (in_array('update_time', $fields)) $post['update_time'] = time();
         $tableColumn = array_keys($post);
         $fields      = array_intersect($tableColumn, $fields);
+        $dirty       = $row->getDirty();
         foreach ($fields as $value) {
             if (isset($params[$value])) $post[$value] = $params[$value];
-            $row->$value = $post[$value] ?? '';
+            if (!isset($dirty[$value])) {
+                $row->$value = $post[$value];
+            }
         }
         return $row->save();
     }
 
-    /**
-     * @param string|null $detail
-     * @param string $name
-     * @param string $placeholder
-     * @return string
-     */
-    function editor_textarea(?string $detail, string $name = 'desc', string $placeholder = '请输入'): string
-    {
-        $editor_type = sysconfig('site', 'editor_type');
-        return match ($editor_type) {
-            'ckeditor' => "<textarea name='{$name}' rows='20' class='layui-textarea editor' placeholder='{$placeholder}'>{$detail}</textarea>",
-            'ueditor'  => "<script type='text/plain' id='{$name}' name='{$name}' class='editor' data-content='{$detail}'></script>",
-            'EasyMDE'  => "<textarea id='{$name}' class='editor' name='{$name}'>{$detail}</textarea>",
-            default    => "<div class='wangEditor_div'><textarea name='{$name}' rows='20' class='layui-textarea editor layui-hide'>{$detail}</textarea><div id='editor_toolbar_{$name}'></div><div id='editor_{$name}' style='height: 300px'></div></div>",
-        };
-    }
+}
+
+/**
+ * @param string|null $detail
+ * @param string $name
+ * @param string $placeholder
+ * @return string
+ */
+function editor_textarea(?string $detail, string $name = 'desc', string $placeholder = '请输入'): string
+{
+    $editor_type = sysconfig('site', 'editor_type');
+    return match ($editor_type) {
+        'ckeditor' => "<textarea name='{$name}' rows='20' class='layui-textarea editor' placeholder='{$placeholder}'>{$detail}</textarea>",
+        'ueditor'  => "<script type='text/plain' id='{$name}' name='{$name}' class='editor' data-content='{$detail}'></script>",
+        'EasyMDE'  => "<textarea id='{$name}' class='editor' name='{$name}'>{$detail}</textarea>",
+        default    => "<div class='wangEditor_div'><textarea name='{$name}' rows='20' class='layui-textarea editor layui-hide'>{$detail}</textarea><div id='editor_toolbar_{$name}'></div><div id='editor_{$name}' style='height: 300px'></div></div>",
+    };
 }
