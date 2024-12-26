@@ -123,7 +123,7 @@ if (!function_exists('insertFields')) {
         $fields      = array_intersect($tableColumn, $fields);
         foreach ($fields as $value) {
             if (isset($params[$value])) $post[$value] = $params[$value];
-            $model->$value = $post[$value] ?? '';
+            $model->$value = $post[$value];
         }
         return $model->save();
     }
@@ -142,8 +142,8 @@ if (!function_exists('updateFields')) {
         $dirty       = $row->getDirty();
         foreach ($fields as $value) {
             if (isset($params[$value])) $post[$value] = $params[$value];
-            if (empty($dirty[$value])) {
-                $row->$value = $post[$value] ?? '';
+            if (!isset($dirty[$value])) {
+                $row->$value = $post[$value];
             }
         }
         return $row->save();
