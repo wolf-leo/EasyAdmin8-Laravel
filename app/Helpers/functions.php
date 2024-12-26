@@ -115,7 +115,8 @@ if (!function_exists('insertFields')) {
 
     function insertFields($model, array $params = [])
     {
-        $post   = request()->post();
+        $post = request()->post();
+        if (!empty($params)) $post += $params;
         $fields = Schema::getColumnListing($model->getTable());
         if (in_array('create_time', $fields)) $post['create_time'] = time();
         $tableColumn = array_keys($post);
@@ -132,14 +133,18 @@ if (!function_exists('updateFields')) {
 
     function updateFields($model, $row, array $params = [])
     {
-        $post   = request()->post();
+        $post = request()->post();
+        if (!empty($params)) $post += $params;
         $fields = Schema::getColumnListing($model->getTable());
         if (in_array('update_time', $fields)) $post['update_time'] = time();
         $tableColumn = array_keys($post);
         $fields      = array_intersect($tableColumn, $fields);
+        $dirty       = $row->getDirty();
         foreach ($fields as $value) {
             if (isset($params[$value])) $post[$value] = $params[$value];
-            $row->$value = $post[$value] ?? '';
+            if (empty($dirty[$value])) {
+                $row->$value = $post[$value] ?? '';
+            }
         }
         return $row->save();
     }
