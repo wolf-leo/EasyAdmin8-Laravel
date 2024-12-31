@@ -70,9 +70,9 @@ trait JumpTrait
      * @param array $data
      * @param string|null $url
      * @param int $wait
-     * @return Response
+     * @return Response|JsonResponse|View
      */
-    public function responseView(string $msg = '', array $data = [], string $url = null, int $wait = 3): Response
+    public function responseView(string $msg = '', array $data = [], string $url = null, int $wait = 3): Response|JsonResponse|View
     {
         if (empty($msg)) $msg = ea_trans('operation failed');
         if (is_null($url)) {
