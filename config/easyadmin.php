@@ -9,4 +9,5 @@ return [
     'IS_CSRF'           => env('EASYADMIN.IS_CSRF', false),
     'STATIC_PATH'       => env('EASYADMIN.STATIC_PATH', '/static'),
     'OSS_STATIC_PREFIX' => env('EASYADMIN.OSS_STATIC_PREFIX', 'static_easyadmin'),
+    'ADMIN_SYSTEM_LOG'  => env('EASYADMIN.ADMIN_SYSTEM_LOG', true),
 ];
