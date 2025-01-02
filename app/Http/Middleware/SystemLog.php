@@ -33,6 +33,7 @@ class SystemLog
     public function handle(Request $request, Closure $next)
     {
         $response = $next($request);
+        if (!config('easyadmin.ADMIN_SYSTEM_LOG')) return $response;
         if (!$request->ajax()) return $response;
         $method = $request->method();
         if (!in_array($method, ['POST', 'PUT', 'DELETE'])) return $response;
