@@ -10,9 +10,7 @@ use Illuminate\View\View;
 use App\Http\Services\annotation\NodeAnnotation;
 use App\Http\Services\annotation\ControllerAnnotation;
 
-/**
- * @ControllerAnnotation(title="系统配置管理")
- */
+#[ControllerAnnotation(title: '系统配置管理')]
 class ConfigController extends AdminController
 {
 
@@ -25,17 +23,13 @@ class ConfigController extends AdminController
         $this->assign(compact('upload_types', 'editor_types'));
     }
 
-    /**
-     * @NodeAnnotation(title="列表")
-     */
+    #[NodeAnnotation(title: '列表', auth: true)]
     public function index(): View
     {
         return $this->fetch();
     }
 
-    /**
-     * @NodeAnnotation(title="保存")
-     */
+    #[NodeAnnotation(title: '保存', auth: true)]
     public function save(): JsonResponse
     {
         if (!request()->ajax()) return $this->error();
@@ -53,7 +47,7 @@ class ConfigController extends AdminController
                 if (in_array($key, $notAddFields)) continue;
                 if ($this->model->where('name', $key)->count()) {
                     $this->model->where('name', $key)->update(['value' => $val,]);
-                } else {
+                }else {
                     $this->model->insert(
                         [
                             'name'  => $key,
@@ -63,7 +57,7 @@ class ConfigController extends AdminController
                 }
             }
             TriggerService::updateSysconfig();
-        } catch (\Exception $e) {
+        }catch (\Exception $e) {
             return $this->error('保存失败:' . $e->getMessage());
         }
         return $this->success('保存成功');

@@ -11,9 +11,7 @@ use Illuminate\View\View;
 use App\Http\Services\annotation\NodeAnnotation;
 use App\Http\Services\annotation\ControllerAnnotation;
 
-/**
- * @ControllerAnnotation(title="角色权限管理")
- */
+#[ControllerAnnotation(title: '角色权限管理')]
 class AuthController extends AdminController
 {
     public function initialize()
@@ -22,9 +20,7 @@ class AuthController extends AdminController
         $this->model = new SystemAuth();
     }
 
-    /**
-     * @NodeAnnotation(title="授权")
-     */
+    #[NodeAnnotation(title: '授权', auth: true)]
     public function authorizes(): View|JsonResponse
     {
         $id  = request()->input('id');
@@ -38,9 +34,7 @@ class AuthController extends AdminController
         return $this->fetch();
     }
 
-    /**
-     * @NodeAnnotation(title="授权保存")
-     */
+    #[NodeAnnotation(title: '授权保存', auth: true)]
     public function saveAuthorize(): JsonResponse
     {
         if (!request()->ajax()) return $this->error();
@@ -63,7 +57,7 @@ class AuthController extends AdminController
                 $authNode->addAll($saveAll);
             }
             TriggerService::updateMenu();
-        } catch (\Exception $e) {
+        }catch (\Exception $e) {
             return $this->error('保存失败:' . $e->getMessage());
         }
         return $this->success('保存成功');

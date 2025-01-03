@@ -6,9 +6,7 @@ use App\Http\Controllers\common\AdminController;
 use App\Http\Services\annotation\NodeAnnotation;
 use App\Http\Services\annotation\ControllerAnnotation;
 
-/**
- * @ControllerAnnotation(title="{{controllerAnnotation}}")
- */
+#[ControllerAnnotation(title: '{{controllerAnnotation}}')]
 class {{controllerName}}Controller extends AdminController
 {
 

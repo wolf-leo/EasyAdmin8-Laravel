@@ -11,9 +11,7 @@ use Illuminate\View\View;
 use App\Http\Services\annotation\NodeAnnotation;
 use App\Http\Services\annotation\ControllerAnnotation;
 
-/**
- * @ControllerAnnotation(title="系统节点管理")
- */
+#[ControllerAnnotation(title: '系统节点管理')]
 class NodeController extends AdminController
 {
     public function initialize()
@@ -22,9 +20,7 @@ class NodeController extends AdminController
         $this->model = new SystemNode();
     }
 
-    /**
-     * @NodeAnnotation(title="列表")
-     */
+    #[NodeAnnotation(title: '列表', auth: true)]
     public function index(): View|JsonResponse
     {
         if (request()->ajax()) {
@@ -41,9 +37,7 @@ class NodeController extends AdminController
         return $this->fetch();
     }
 
-    /**
-     * @NodeAnnotation(title="系统节点更新")
-     */
+    #[NodeAnnotation(title: '系统节点更新', auth: true)]
     public function refreshNode(): JsonResponse
     {
         $force = request()->input('force');
@@ -85,15 +79,13 @@ class NodeController extends AdminController
             }
             $model->addAll($nodeList);
             TriggerService::updateNode();
-        } catch (\Exception $e) {
+        }catch (\Exception $e) {
             return $this->error('节点更新失败:' . $e->getMessage());
         }
         return $this->success('节点更新成功');
     }
 
-    /**
-     * @NodeAnnotation(title="清除失效节点")
-     */
+    #[NodeAnnotation(title: '清除失效节点', auth: true)]
     public function clearNode(): JsonResponse
     {
         if (!request()->ajax()) return $this->error();
@@ -109,7 +101,7 @@ class NodeController extends AdminController
                 !isset($formatNodeList[$vo['node']]) && $model->where('id', $vo['id'])->delete();
             }
             TriggerService::updateNode();
-        } catch (\Exception $e) {
+        }catch (\Exception $e) {
             return $this->error('节点更新失败:' . $e->getMessage());
         }
         return $this->success('节点更新成功');

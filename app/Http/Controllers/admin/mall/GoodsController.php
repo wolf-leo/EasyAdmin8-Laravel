@@ -9,9 +9,7 @@ use App\Models\MallGoods;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 
-/**
- * @ControllerAnnotation(title="商城商品管理")
- */
+#[ControllerAnnotation(title: '商城商品管理')]
 class GoodsController extends AdminController
 {
 
@@ -27,9 +25,7 @@ class GoodsController extends AdminController
         $this->model = new MallGoods();
     }
 
-    /**
-     * @NodeAnnotation(title="列表")
-     */
+    #[NodeAnnotation(title: '列表', auth: true)]
     public function index(): View|JsonResponse
     {
         if (!request()->ajax()) return $this->fetch();
@@ -45,9 +41,7 @@ class GoodsController extends AdminController
         return json($data);
     }
 
-    /**
-     * @NodeAnnotation(title="入库")
-     */
+    #[NodeAnnotation(title: '入库', auth: true)]
     public function stock(): View|JsonResponse
     {
         $id  = request()->input('id');

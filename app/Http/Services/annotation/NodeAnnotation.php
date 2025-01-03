@@ -2,32 +2,24 @@
 
 namespace App\Http\Services\annotation;
 
-use Doctrine\Common\Annotations\Annotation\Attributes;
+use Attribute;
 
 /**
- * 创建节点注解类
- *
- * @Annotation
- * @Target({"METHOD","CLASS"})
- * @Attributes({
- *   @Attribute("time", type = "int")
- * })
+ * action 节点注解类
  */
+#[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_METHOD)]
 final class NodeAnnotation
 {
 
-    /**
-     * 节点名称
-     * @Required()
-     * @var string
-     */
-    public string $title;
+    /** 过滤节点 */
+    const IGNORE_NODE = 'NODE';
 
     /**
-     * 是否开启权限控制
-     * @Enum({true,false})
-     * @var bool
+     * @param string $title
+     * @param bool $auth 是否需要权限
+     * @param string|array $ignore
      */
-    public bool $auth = true;
-
+    public function __construct(public string $title = '', public bool $auth = true, public string|array $ignore = '')
+    {
+    }
 }

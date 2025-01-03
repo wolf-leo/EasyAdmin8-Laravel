@@ -3,20 +3,18 @@
 namespace App\Http\Controllers\admin\system;
 
 use App\Http\Controllers\common\AdminController;
+use App\Http\Services\annotation\MiddlewareAnnotation;
 use App\Http\Services\tool\CommonTool;
 use App\Models\SystemLog;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use App\Http\Services\annotation\NodeAnnotation;
 use App\Http\Services\annotation\ControllerAnnotation;
 use jianyan\excel\Excel;
 use PhpOffice\PhpSpreadsheet\Writer\Exception;
 
-/**
- * @ControllerAnnotation(title="操作日志管理")
- */
+#[ControllerAnnotation(title: '操作日志管理')]
 class LogController extends AdminController
 {
     public function initialize()
@@ -25,9 +23,7 @@ class LogController extends AdminController
         $this->model = new SystemLog();
     }
 
-    /**
-     * @NodeAnnotation(title="列表")
-     */
+    #[NodeAnnotation(title: '列表', auth: true)]
     public function index(): View|JsonResponse
     {
         if (!request()->ajax()) return $this->fetch();
@@ -50,9 +46,7 @@ class LogController extends AdminController
         return json($data);
     }
 
-    /**
-     * @NodeAnnotation(title="导出")
-     */
+    #[NodeAnnotation(title: '导出', auth: true)]
     public function export(): View|bool
     {
         if (config('easyadmin.IS_DEMO', false)) {
@@ -87,10 +81,9 @@ class LogController extends AdminController
         }
     }
 
-    /**
-     * @NodeAnnotation(title="框架日志")
-     */
-    public function record()
+    #[MiddlewareAnnotation(ignore: MiddlewareAnnotation::IGNORE_LOG)]
+    #[NodeAnnotation(title: '框架日志', auth: true, ignore: NodeAnnotation::IGNORE_NODE)]
+    public function record(): View
     {
         return (new \Wolfcode\PhpLogviewer\laravel\LogViewer())->fetch();
     }

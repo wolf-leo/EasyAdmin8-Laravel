@@ -9,9 +9,7 @@ use Illuminate\View\View;
 use App\Http\Services\annotation\NodeAnnotation;
 use App\Http\Services\annotation\ControllerAnnotation;
 
-/**
- * @ControllerAnnotation(title="上传文件管理")
- */
+#[ControllerAnnotation(title: '上传文件管理')]
 class UploadfileController extends AdminController
 {
 

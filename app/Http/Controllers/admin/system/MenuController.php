@@ -12,9 +12,7 @@ use Illuminate\View\View;
 use App\Http\Services\annotation\NodeAnnotation;
 use App\Http\Services\annotation\ControllerAnnotation;
 
-/**
- * @ControllerAnnotation(title="菜单管理")
- */
+#[ControllerAnnotation(title: '菜单管理')]
 class MenuController extends AdminController
 {
     public function initialize()
@@ -23,9 +21,7 @@ class MenuController extends AdminController
         $this->model = new SystemMenu();
     }
 
-    /**
-     * @NodeAnnotation(title="添加")
-     */
+    #[NodeAnnotation(title: '添加', auth: true)]
     public function add(): View|JsonResponse
     {
         $id     = request()->input('id');
@@ -52,13 +48,13 @@ class MenuController extends AdminController
             }
             try {
                 $save = insertFields($this->model);
-            } catch (\Exception $e) {
+            }catch (\Exception $e) {
                 return $this->error('保存失败');
             }
             if (!empty($save)) {
                 TriggerService::updateMenu();
                 return $this->success('保存成功');
-            } else {
+            }else {
                 return $this->error('保存失败');
             }
         }
@@ -67,9 +63,7 @@ class MenuController extends AdminController
         return $this->fetch();
     }
 
-    /**
-     * @NodeAnnotation(title="编辑")
-     */
+    #[NodeAnnotation(title: '编辑', auth: true)]
     public function edit(): View|JsonResponse
     {
         $id  = request()->input('id');
@@ -94,13 +88,13 @@ class MenuController extends AdminController
             if ($row->pid == HOME_PID) $params['pid'] = HOME_PID;
             try {
                 $save = updateFields($this->model, $row, $params);
-            } catch (\Exception $e) {
+            }catch (\Exception $e) {
                 return $this->error('保存失败');
             }
             if (!empty($save)) {
                 TriggerService::updateMenu();
                 return $this->success('保存成功');
-            } else {
+            }else {
                 return $this->error('保存失败');
             }
         }
@@ -109,9 +103,7 @@ class MenuController extends AdminController
         return $this->fetch();
     }
 
-    /**
-     * @NodeAnnotation(title="属性修改")
-     */
+    #[NodeAnnotation(title: '属性修改', auth: true)]
     public function modify(): JsonResponse
     {
         $post      = request()->post();
@@ -139,16 +131,14 @@ class MenuController extends AdminController
         try {
             foreach ($post as $key => $item) if ($key == 'field') $row->$item = $post['value'];
             $row->save();
-        } catch (\Exception $e) {
+        }catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
         TriggerService::updateMenu();
         return $this->success('保存成功');
     }
 
-    /**
-     * @NodeAnnotation(title="删除")
-     */
+    #[NodeAnnotation(title: '删除', auth: true)]
     public function delete(): JsonResponse
     {
         if (!request()->ajax()) return $this->error();
@@ -158,28 +148,26 @@ class MenuController extends AdminController
         if (empty($row)) return $this->error('数据不存在');
         try {
             $save = $this->model->whereIn('id', $id)->delete();
-        } catch (\PDOException | \Exception $e) {
+        }catch (\PDOException|\Exception $e) {
             return $this->error('删除失败:' . $e->getMessage());
         }
         if ($save) {
             TriggerService::updateMenu();
             return $this->success('删除成功');
-        } else {
+        }else {
             return $this->error('删除失败');
         }
     }
 
-    /**
-     * @NodeAnnotation(title="添加菜单提示")
-     */
+    #[NodeAnnotation(title: '添加菜单提示', auth: true)]
     public function getMenuTips(): JsonResponse
     {
         $node = request()->input('keywords');
         $list = SystemNode::where('node', 'Like', "%{$node}%")->limit(10)->select('node', 'title')->get()->toArray();
         return json([
-                        'code'    => 0,
-                        'content' => $list,
-                        'type'    => 'success',
-                    ]);
+            'code'    => 0,
+            'content' => $list,
+            'type'    => 'success',
+        ]);
     }
 }
