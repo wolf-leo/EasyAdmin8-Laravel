@@ -9,16 +9,9 @@ use App\Models\MallGoods;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 
-/**
- * @ControllerAnnotation(title="Mall Product Management")
- */
+#[ControllerAnnotation(title: 'Mall Product Management')]
 class GoodsController extends AdminController
 {
-    /**
-     * 过滤不需要生成的权限节点 默认 CURD 中会自动生成部分节点 可以在此处过滤
-     * @var array[]
-     */
-    protected array $ignoreNode = ['export'];
 
     public function initialize()
     {
@@ -26,9 +19,7 @@ class GoodsController extends AdminController
         $this->model = new MallGoods();
     }
 
-    /**
-     * @NodeAnnotation(title="list")
-     */
+    #[NodeAnnotation(title: 'list', auth: true)]
     public function index(): View|JsonResponse
     {
         if (!request()->ajax()) return $this->fetch();
@@ -44,9 +35,7 @@ class GoodsController extends AdminController
         return json($data);
     }
 
-    /**
-     * @NodeAnnotation(title="stock")
-     */
+    #[NodeAnnotation(title: 'stock', auth: true)]
     public function stock(): View|JsonResponse
     {
         $id  = request()->input('id');

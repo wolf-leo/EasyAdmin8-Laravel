@@ -7,9 +7,7 @@ use App\Models\SystemQuick;
 use App\Http\Services\annotation\NodeAnnotation;
 use App\Http\Services\annotation\ControllerAnnotation;
 
-/**
- * @ControllerAnnotation(title="Quick access management")
- */
+#[ControllerAnnotation(title: 'Quick access management')]
 class QuickController extends AdminController
 {
 

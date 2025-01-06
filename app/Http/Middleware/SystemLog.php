@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Http\Services\annotation\ControllerAnnotation;
+use App\Http\Services\annotation\MiddlewareAnnotation;
 use App\Http\Services\annotation\NodeAnnotation;
 use App\Http\Services\SystemLogService;
 use App\Http\Services\tool\CommonTool;
@@ -53,15 +54,26 @@ class SystemLog
             $_name       = $pathInfoExp[0] ?? '';
             $_controller = ucfirst($pathInfoExp[1] ?? '');
             if ($_name && $_controller) {
-                $className       = "App\Http\Controllers\admin\\{$_name}\\{$_controller}Controller";
-                $reflectionClass = new \ReflectionClass($className);
-                $parser          = new DocParser();
-                $parser->setIgnoreNotImportedAnnotations(true);
-                $reader               = new AnnotationReader($parser);
-                $controllerAnnotation = $reader->getClassAnnotation($reflectionClass, ControllerAnnotation::class);
-                $reflectionAction     = $reflectionClass->getMethod($_action);
-                $nodeAnnotation       = $reader->getMethodAnnotation($reflectionAction, NodeAnnotation::class);
-                $title                = $controllerAnnotation->title . ' - ' . $nodeAnnotation->title;
+                $className        = "App\Http\Controllers\admin\\{$_name}\\{$_controller}Controller";
+                $reflectionMethod = new \ReflectionMethod($className, $_action);
+                $attributes       = $reflectionMethod->getAttributes(MiddlewareAnnotation::class);
+                foreach ($attributes as $attribute) {
+                    $annotation = $attribute->newInstance();
+                    $_ignore    = (array)$annotation->ignore;
+                    if (in_array('log', array_map('strtolower', $_ignore))) return $response;
+                }
+                $controllerTitle      = $nodeTitle = '';
+                $controllerAttributes = (new \ReflectionClass($className))->getAttributes(ControllerAnnotation::class);
+                $actionAttributes     = $reflectionMethod->getAttributes(NodeAnnotation::class);
+                foreach ($controllerAttributes as $controllerAttribute) {
+                    $controllerAnnotation = $controllerAttribute->newInstance();
+                    $controllerTitle      = $controllerAnnotation->title ?? '';
+                }
+                foreach ($actionAttributes as $actionAttribute) {
+                    $actionAnnotation = $actionAttribute->newInstance();
+                    $nodeTitle        = $actionAnnotation->title ?? '';
+                }
+                $title = $controllerTitle . ' - ' . $nodeTitle;
             }
         }catch (\Throwable $exception) {
         }

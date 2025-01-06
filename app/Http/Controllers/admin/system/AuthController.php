@@ -11,9 +11,7 @@ use Illuminate\View\View;
 use App\Http\Services\annotation\NodeAnnotation;
 use App\Http\Services\annotation\ControllerAnnotation;
 
-/**
- * @ControllerAnnotation(title="Role permission management")
- */
+#[ControllerAnnotation(title: 'Role permission Management')]
 class AuthController extends AdminController
 {
     public function initialize()
@@ -22,9 +20,7 @@ class AuthController extends AdminController
         $this->model = new SystemAuth();
     }
 
-    /**
-     * @NodeAnnotation(title="Authorize")
-     */
+    #[NodeAnnotation(title: 'Authorize', auth: true)]
     public function authorizes(): View|JsonResponse
     {
         $id  = request()->input('id');
@@ -38,9 +34,7 @@ class AuthController extends AdminController
         return $this->fetch();
     }
 
-    /**
-     * @NodeAnnotation(title="Authorization Save")
-     */
+    #[NodeAnnotation(title: 'Authorize save', auth: true)]
     public function saveAuthorize(): JsonResponse
     {
         if (!request()->ajax()) return $this->error();

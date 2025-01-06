@@ -20,9 +20,7 @@ use App\Http\Services\annotation\ControllerAnnotation;
 trait Curd
 {
 
-    /**
-     * @NodeAnnotation(title="list")
-     */
+    #[NodeAnnotation(title: 'list', auth: true)]
     public function index(): View|JsonResponse
     {
         if (!request()->ajax()) return $this->fetch();
@@ -41,9 +39,7 @@ trait Curd
         return json($data);
     }
 
-    /**
-     * @NodeAnnotation(title="add")
-     */
+    #[NodeAnnotation(title: 'add', auth: true)]
     public function add(): View|JsonResponse
     {
         if (request()->ajax()) {
@@ -57,9 +53,7 @@ trait Curd
         return $this->fetch();
     }
 
-    /**
-     * @NodeAnnotation(title="edit")
-     */
+    #[NodeAnnotation(title: 'edit', auth: true)]
     public function edit(): View|JsonResponse
     {
         $id  = (int)request()->input('id');
@@ -77,9 +71,7 @@ trait Curd
         return $this->fetch();
     }
 
-    /**
-     * @NodeAnnotation(title="delete")
-     */
+    #[NodeAnnotation(title: 'delete', auth: true)]
     public function delete(): JsonResponse
     {
         if (!request()->ajax()) return $this->error();
@@ -95,9 +87,7 @@ trait Curd
         return $save ? $this->success(ea_trans('operation successful', false)) : $this->error(ea_trans('operation failed', false));
     }
 
-    /**
-     * @NodeAnnotation(title="export")
-     */
+    #[NodeAnnotation(title: 'export', auth: true)]
     public function export(): View|bool
     {
         if (config('easyadmin.IS_DEMO', false)) {
@@ -126,9 +116,7 @@ trait Curd
         }
     }
 
-    /**
-     * @NodeAnnotation(title="modify")
-     */
+    #[NodeAnnotation(title: 'modify', auth: true)]
     public function modify(): JsonResponse
     {
         if (!request()->ajax()) return $this->error();

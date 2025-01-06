@@ -12,9 +12,7 @@ use Illuminate\View\View;
 use App\Http\Services\annotation\NodeAnnotation;
 use App\Http\Services\annotation\ControllerAnnotation;
 
-/**
- * @ControllerAnnotation(title="menu management")
- */
+#[ControllerAnnotation(title: 'menu management')]
 class MenuController extends AdminController
 {
     public function initialize()
@@ -23,9 +21,7 @@ class MenuController extends AdminController
         $this->model = new SystemMenu();
     }
 
-    /**
-     * @NodeAnnotation(title="add")
-     */
+    #[NodeAnnotation(title: 'add', auth: true)]
     public function add(): View|JsonResponse
     {
         $id     = request()->input('id');
@@ -67,9 +63,7 @@ class MenuController extends AdminController
         return $this->fetch();
     }
 
-    /**
-     * @NodeAnnotation(title="edit")
-     */
+    #[NodeAnnotation(title: 'edit', auth: true)]
     public function edit(): View|JsonResponse
     {
         $id  = request()->input('id');
@@ -109,9 +103,7 @@ class MenuController extends AdminController
         return $this->fetch();
     }
 
-    /**
-     * @NodeAnnotation(title="modify")
-     */
+    #[NodeAnnotation(title: 'modify', auth: true)]
     public function modify(): JsonResponse
     {
         $post      = request()->post();
@@ -146,9 +138,7 @@ class MenuController extends AdminController
         return $this->success(ea_trans('operation successful', false));
     }
 
-    /**
-     * @NodeAnnotation(title="delete")
-     */
+    #[NodeAnnotation(title: 'delete', auth: true)]
     public function delete(): JsonResponse
     {
         if (!request()->ajax()) return $this->error();
@@ -169,9 +159,7 @@ class MenuController extends AdminController
         }
     }
 
-    /**
-     * @NodeAnnotation(title="Add menu prompt")
-     */
+    #[NodeAnnotation(title: 'Add menu prompt', auth: true)]
     public function getMenuTips(): JsonResponse
     {
         $node = request()->input('keywords');

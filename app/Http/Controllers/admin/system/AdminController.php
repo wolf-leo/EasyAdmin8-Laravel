@@ -11,9 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
-/**
- * @ControllerAnnotation(title="Administrator management")
- */
+#[ControllerAnnotation(title: 'Administrator Management')]
 class AdminController extends Controller
 {
     public function initialize()
@@ -24,9 +22,7 @@ class AdminController extends Controller
         $this->assign(compact('auth_list'));
     }
 
-    /**
-     * @NodeAnnotation(title="add")
-     */
+    #[NodeAnnotation(title: 'add', auth: true)]
     public function add(): View|JsonResponse
     {
         if (request()->ajax()) {
@@ -45,9 +41,7 @@ class AdminController extends Controller
         return $this->fetch();
     }
 
-    /**
-     * @NodeAnnotation(title="edit")
-     */
+    #[NodeAnnotation(title: 'edit', auth: true)]
     public function edit(): View|JsonResponse
     {
         $id  = request()->input('id');
@@ -71,9 +65,7 @@ class AdminController extends Controller
         return $this->fetch();
     }
 
-    /**
-     * @NodeAnnotation(title="change password")
-     */
+    #[NodeAnnotation(title: 'change password', auth: true)]
     public function password(): View|JsonResponse
     {
         $id  = request()->input('id');

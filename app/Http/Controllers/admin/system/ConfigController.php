@@ -10,9 +10,7 @@ use Illuminate\View\View;
 use App\Http\Services\annotation\NodeAnnotation;
 use App\Http\Services\annotation\ControllerAnnotation;
 
-/**
- * @ControllerAnnotation(title="System Configuration Management")
- */
+#[ControllerAnnotation(title: 'System Configuration Management')]
 class ConfigController extends AdminController
 {
 
@@ -25,17 +23,13 @@ class ConfigController extends AdminController
         $this->assign(compact('upload_types', 'editor_types'));
     }
 
-    /**
-     * @NodeAnnotation(title="list")
-     */
+    #[NodeAnnotation(title: 'list', auth: true)]
     public function index(): View
     {
         return $this->fetch();
     }
 
-    /**
-     * @NodeAnnotation(title="save")
-     */
+    #[NodeAnnotation(title: 'save', auth: true)]
     public function save(): JsonResponse
     {
         if (!request()->ajax()) return $this->error();

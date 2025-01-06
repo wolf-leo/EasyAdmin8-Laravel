@@ -14,23 +14,17 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
-/**
- * @ControllerAnnotation(title="CURD Visual Management")
- */
+#[ControllerAnnotation(title: 'CURD Visual Management')]
 class CurdGenerateController extends AdminController
 {
 
-    /**
-     * @NodeAnnotation(title="list")
-     */
+    #[NodeAnnotation(title: 'list', auth: true)]
     public function index(): View
     {
         return $this->fetch();
     }
 
-    /**
-     * @NodeAnnotation(title="save")
-     */
+    #[NodeAnnotation(title: 'save', auth: true)]
     public function save(): Response|JsonResponse|View
     {
         if (!request()->ajax()) return $this->error();

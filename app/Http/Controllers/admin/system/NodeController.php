@@ -11,9 +11,7 @@ use Illuminate\View\View;
 use App\Http\Services\annotation\NodeAnnotation;
 use App\Http\Services\annotation\ControllerAnnotation;
 
-/**
- * @ControllerAnnotation(title="System Node Management")
- */
+#[ControllerAnnotation(title: 'System Node Management')]
 class NodeController extends AdminController
 {
     public function initialize()
@@ -22,9 +20,7 @@ class NodeController extends AdminController
         $this->model = new SystemNode();
     }
 
-    /**
-     * @NodeAnnotation(title="list")
-     */
+    #[NodeAnnotation(title: 'list', auth: true)]
     public function index(): View|JsonResponse
     {
         if (request()->ajax()) {
@@ -41,9 +37,7 @@ class NodeController extends AdminController
         return $this->fetch();
     }
 
-    /**
-     * @NodeAnnotation(title="System Node Update")
-     */
+    #[NodeAnnotation(title: 'System Node Update', auth: true)]
     public function refreshNode(): JsonResponse
     {
         $force = request()->input('force');
@@ -91,9 +85,7 @@ class NodeController extends AdminController
         return $this->success(ea_trans('operation successful', false));
     }
 
-    /**
-     * @NodeAnnotation(title="Clear invalid nodes")
-     */
+    #[NodeAnnotation(title: 'Clear invalid nodes', auth: true)]
     public function clearNode(): JsonResponse
     {
         if (!request()->ajax()) return $this->error();
