@@ -43,7 +43,7 @@ class MenuService
         $treeList = [];
         foreach ($menuList as $v) {
             $check = empty($v['href']) || $authServer->checkNode($v['href']);
-            !empty($v['href']) && $v['href'] = '/' . $this->adminConfig['admin_alias_name'] . "/{$v['href']}";
+            !empty($v['href']) && $v['href'] = filter_var($v['href'], FILTER_VALIDATE_URL) ? $v['href'] : '/' . $this->adminConfig['admin_alias_name'] . "/{$v['href']}";
             if ($pid == $v['pid'] && $check) {
                 $node  = $v;
                 $child = $this->buildMenuChild($v['id'], $menuList, $authServer);
