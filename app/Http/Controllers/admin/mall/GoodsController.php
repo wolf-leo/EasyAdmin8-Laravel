@@ -12,6 +12,8 @@ use Illuminate\View\View;
 #[ControllerAnnotation(title: 'Mall Product Management')]
 class GoodsController extends AdminController
 {
+    #[NodeAnnotation(ignore: ['export'])] // 过滤不需要生成的权限节点 默认 CURD 中会自动生成部分节点 可以在此处过滤
+    protected array $ignoreNode;
 
     public function initialize()
     {
