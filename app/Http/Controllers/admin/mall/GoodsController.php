@@ -13,11 +13,8 @@ use Illuminate\View\View;
 class GoodsController extends AdminController
 {
 
-    /**
-     * 过滤不需要生成的权限节点 默认 CURD 中会自动生成部分节点 可以在此处过滤
-     * @var array[]
-     */
-    protected array $ignoreNode = ['export'];
+    #[NodeAnnotation(ignore: ['export'])] // 过滤不需要生成的权限节点 默认 CURD 中会自动生成部分节点 可以在此处过滤
+    protected array $ignoreNode;
 
     public function initialize()
     {

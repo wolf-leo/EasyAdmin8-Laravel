@@ -7,7 +7,7 @@ use Attribute;
 /**
  * action 节点注解类
  */
-#[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_METHOD)]
+#[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_METHOD| Attribute::TARGET_PROPERTY)]
 final class NodeAnnotation
 {
 

@@ -31,6 +31,12 @@ class AdminController extends Controller
     public string $order = 'id';
 
     /**
+     * 过滤节点更新
+     * @var array
+     */
+    protected array $ignoreNode = [];
+
+    /**
      * 不导出的字段信息
      * @var array
      */
