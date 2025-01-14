@@ -28,7 +28,6 @@
             JS_TRANS: JSON.parse('{!! json_encode($jsTrans??[],256) !!}'),
         };
     </script>
-    <script src="/static/plugs/xmSelect/xm-select.js" charset="utf-8"></script>
     <script src="/static/plugs/layui-v2.x/layui.js" charset="utf-8"></script>
     <script src="/static/plugs/require-2.3.6/require.js" charset="utf-8"></script>
     <script src="/static/config-admin.js?v={{$version}}" charset="utf-8"></script>
