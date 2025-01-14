@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin\mall;
 
 use App\Http\Controllers\common\AdminController;
+use App\Http\Services\annotation\MiddlewareAnnotation;
 use App\Http\Services\annotation\NodeAnnotation;
 use App\Http\Services\annotation\ControllerAnnotation;
 use App\Models\MallGoods;
@@ -56,5 +57,11 @@ class GoodsController extends AdminController
         }
         $this->assign(compact('row'));
         return $this->fetch();
+    }
+
+    #[MiddlewareAnnotation(ignore: MiddlewareAnnotation::IGNORE_LOGIN)]
+    public function no_check_login(): string
+    {
+        return '这里演示方法不需要经过登录验证';
     }
 }

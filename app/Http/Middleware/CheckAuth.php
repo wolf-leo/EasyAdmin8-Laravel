@@ -26,17 +26,6 @@ class CheckAuth
         $parameters  = request()->route()->parameters;
         $controller  = $parameters['controller'] ?? 'index';
         $adminId     = session('admin.id', 0);
-        if (!in_array($controller, $adminConfig['no_login_controller'])) {
-            $expireTime = session('admin.expire_time');
-            if (empty($adminId)) {
-                return $this->responseView(ea_trans('Please log in to the backend first', false), [], __url("/login"));
-            }
-            // 判断是否登录过期
-            if ($expireTime !== true && time() > $expireTime) {
-                $request->session()->forget('admin');
-                return $this->responseView(ea_trans('Login has expired, please log in again', false), [], __url("/login"));
-            }
-        }
         // 验证权限
         if ($adminId) {
             $authService = app(AuthService::class, ['adminId' => $adminId]);

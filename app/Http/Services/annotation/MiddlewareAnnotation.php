@@ -10,7 +10,8 @@ final class MiddlewareAnnotation
     /** 过滤日志 */
     const IGNORE_LOG = 'LOG';
 
-    public function __construct(public string $type = '', public string|array $ignore = '')
-    {
-    }
+    /** 免登录 */
+    const IGNORE_LOGIN = 'LOGIN';
+
+    public function __construct(public string $type = '', public string|array $ignore = '') {}
 }

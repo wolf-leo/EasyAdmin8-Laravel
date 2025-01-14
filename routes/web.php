@@ -40,6 +40,7 @@ Route::get('/install/language/{lang}', function ($lang) {
 
 Route::middleware([
     \App\Http\Middleware\SetLocale::class,
+    \App\Http\Middleware\CheckLogin::class,
     \App\Http\Middleware\SystemLog::class,
     \App\Http\Middleware\CheckAuth::class,
 ])->group(function () use ($admin) {
