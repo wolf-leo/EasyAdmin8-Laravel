@@ -17,7 +17,7 @@ class CheckAuth
      * Handle an incoming request.
      *
      * @param Request $request
-     * @param Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
+     * @param Closure(Request): (Response) $next
      * @return Response
      */
     public function handle(Request $request, Closure $next): Response
@@ -26,17 +26,6 @@ class CheckAuth
         $parameters  = request()->route()->parameters;
         $controller  = $parameters['controller'] ?? 'index';
         $adminId     = session('admin.id', 0);
-        if (!in_array($controller, $adminConfig['no_login_controller'])) {
-            $expireTime = session('admin.expire_time');
-            if (empty($adminId)) {
-                return $this->responseView('请先登录后台', [], __url("/login"));
-            }
-            // 判断是否登录过期
-            if ($expireTime !== true && time() > $expireTime) {
-                $request->session()->forget('admin');
-                return $this->responseView('登录已过期，请重新登录', [], __url("/login"));
-            }
-        }
         // 验证权限
         if ($adminId) {
             $authService = app(AuthService::class, ['adminId' => $adminId]);
