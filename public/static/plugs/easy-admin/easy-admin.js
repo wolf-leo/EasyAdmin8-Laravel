@@ -1,4 +1,4 @@
-define(["jquery", "tableSelect"], function ($, tableSelect) {
+define(["jquery", "tableSelect", "xmSelect"], function ($, tableSelect,xmSelect) {
 
     var form = layui.form,
         layer = layui.layer,
